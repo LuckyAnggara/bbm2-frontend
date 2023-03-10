@@ -1,18 +1,9 @@
 <template>
-  <Menu
-    as="div"
-    class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-  >
+  <Menu as="div" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
     <div>
-      <MenuButton
-        class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-      >
+      <MenuButton class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
         <span class="sr-only">Open user menu</span>
-        <img
-          class="w-8 h-8 rounded-full"
-          src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-          alt="user photo"
-        />
+        <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
       </MenuButton>
     </div>
 
@@ -28,15 +19,8 @@
         class="absolute w-52 right-5 top-10 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
       >
         <div class="px-4 py-3" role="none">
-          <p class="text-sm px-1 text-gray-900 dark:text-white" role="none">
-            Lucky Anggara
-          </p>
-          <p
-            class="px-1 text-sm font-medium text-gray-900 truncate dark:text-gray-300"
-            role="none"
-          >
-            Cashier
-          </p>
+          <p class="text-sm px-1 text-gray-900 dark:text-white" role="none">Lucky Anggara</p>
+          <p class="px-1 text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">Cashier</p>
         </div>
         <div class="px-1 py-1">
           <MenuItem>
@@ -65,8 +49,8 @@
           </MenuItem>
         </div>
       </MenuItems>
-    </transition> </Menu
-  >>
+    </transition>
+  </Menu>
 </template>
 
 <script setup>

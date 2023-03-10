@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 import HelloWorld from '../components/HelloWorld.vue'
 import Persediaan from '../views/persediaan/Persediaan.vue'
+import NewSales from '../views/sales/NewSales.vue'
 import Login from '../views/Login/Login.vue'
 import { useAuthStore } from '../stores/auth'
 
@@ -24,6 +25,17 @@ const routes = [
       transition: 'slide-left',
       requiresAuth: true,
       title: 'Hello World',
+      layout: 'layout-content',
+    },
+  },
+  {
+    path: '/new-sales',
+    name: 'sales',
+    component: NewSales,
+    meta: {
+      transition: 'slide-left',
+      requiresAuth: true,
+      title: 'New Sales',
       layout: 'layout-content',
     },
   },

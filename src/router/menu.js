@@ -1,8 +1,4 @@
-import {
-  RectangleGroupIcon,
-  BuildingStorefrontIcon,
-  BriefcaseIcon,
-} from '@heroicons/vue/24/outline'
+import { RectangleGroupIcon, BuildingStorefrontIcon, BriefcaseIcon } from '@heroicons/vue/24/outline'
 
 export const menu = [
   {
@@ -13,9 +9,9 @@ export const menu = [
   },
   {
     id: 1,
-    name: 'Point of Sales',
+    name: 'Sales',
     icon: BuildingStorefrontIcon,
-    to: 'dashboard',
+    to: 'sales',
   },
   {
     id: 2,
