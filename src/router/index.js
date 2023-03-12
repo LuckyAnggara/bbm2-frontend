@@ -29,8 +29,19 @@ const routes = [
     },
   },
   {
-    path: '/new-sales',
-    name: 'sales',
+    path: '/sales/new-sales',
+    name: 'new-sales',
+    component: NewSales,
+    meta: {
+      transition: 'slide-left',
+      requiresAuth: true,
+      title: 'New Sales',
+      layout: 'layout-content',
+    },
+  },
+  {
+    path: '/sales/daftar-sales',
+    name: 'daftar-sales',
     component: NewSales,
     meta: {
       transition: 'slide-left',
