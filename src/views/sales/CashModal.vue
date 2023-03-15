@@ -1,5 +1,5 @@
 <template>
-  <Transition name="modal">
+  <div>
     <div
       v-if="show"
       aria-hidden="true"
@@ -7,28 +7,16 @@
     >
       <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
         <!-- Modal content -->
-        <div
-          class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
-        >
+        <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
           <!-- Modal header -->
-          <div
-            class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600"
-          >
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-              Metode Pembayaran Cash
-            </h3>
+          <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Metode Pembayaran Cash</h3>
             <button
               @click="closeModal"
               type="button"
               class="text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
             >
-              <svg
-                aria-hidden="true"
-                class="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fill-rule="evenodd"
                   d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -42,21 +30,11 @@
 
           <div class="flex flex-col space-y-6">
             <div class="flex items-center justify-between">
-              <label
-                for="description"
-                class="block mb-2 text-2xl font-medium text-gray-900 dark:text-white w-1/3"
-                >Total</label
-              >
-              <span class="text-3xl dark:text-white text-black">{{
-                IDRCurrency.format(salesStore.currentData.total.total ?? 0)
-              }}</span>
+              <label for="description" class="block mb-2 text-2xl font-medium text-gray-900 dark:text-white w-1/3">Total</label>
+              <span class="text-3xl dark:text-white text-black">{{ IDRCurrency.format(salesStore.currentData.total.total ?? 0) }}</span>
             </div>
             <div class="sm:col-span-2">
-              <label
-                for="description"
-                class="block mb-2 text-2xl font-medium text-gray-900 dark:text-white"
-                >Jumlah Pembayaran</label
-              >
+              <label for="description" class="block mb-2 text-2xl font-medium text-gray-900 dark:text-white">Jumlah Pembayaran</label>
               <InputCurrency
                 :options="{ currency: 'IDR' }"
                 v-model="pembayaran"
@@ -71,20 +49,13 @@
               /> -->
             </div>
             <div class="flex items-center justify-between">
-              <label
-                for="description"
-                class="block mb-2 text-2xl font-medium text-gray-900 dark:text-white w-1/3"
-                >Kembali</label
-              >
-              <span class="text-3xl text-red-500">{{
-                IDRCurrency.format(kembali)
-              }}</span>
+              <label for="description" class="block mb-2 text-2xl font-medium text-gray-900 dark:text-white w-1/3">Kembali</label>
+              <span class="text-3xl text-red-500">{{ IDRCurrency.format(kembali) }}</span>
             </div>
 
-            <div
-              class="flex items-center space-x-4 justify-between place-self-end"
-            >
+            <div class="flex items-center space-x-4 justify-between place-self-end">
               <button
+                @click="prosesRequest"
                 type="button"
                 class="text-blue-600 inline-flex items-center hover:text-white border border-blue-600 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-900"
               >
@@ -96,31 +67,42 @@
         </div>
       </div>
     </div>
-  </Transition>
+
+    <!-- Loading Modal -->
+    <Teleport to="body">
+      <!-- use the modal component, pass in the prop -->
+      <LoadingModal :show="showLoadingModal"></LoadingModal>
+    </Teleport>
+  </div>
 </template>
 
 <script setup>
 import { PaperAirplaneIcon } from '@heroicons/vue/24/outline'
-import { ref, computed } from 'vue'
-import { useCurrencyInput } from 'vue-currency-input'
+import { ref, computed, nextTick } from 'vue'
 import { useSalesStore } from '../../stores/sales'
 import { IDRCurrency } from '../../utilities/formatter'
-
+import LoadingModal from '../../components/loading/LoadingModal.vue'
 import InputCurrency from '../../components/input/InputCurrency.vue'
 
 const props = defineProps({
   show: Boolean,
 })
+
 const emit = defineEmits(['close'])
 
 const salesStore = useSalesStore()
 const pembayaran = ref(0)
-
-const { inputRef } = useCurrencyInput({ currency: 'EUR' })
+const showLoadingModal = ref(false)
 
 const kembali = computed(() => {
   return pembayaran.value - salesStore.currentData.total.total
 })
+
+async function prosesRequest() {
+  emit('close')
+  await nextTick()
+  showLoadingModal.value = true
+}
 
 function closeModal() {
   emit('close')

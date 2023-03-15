@@ -1,10 +1,5 @@
 <template>
-  <Input
-    ref="inputRef"
-    v-model="formattedValue"
-    :class="customClass"
-    type="text"
-  />
+  <input ref="inputRef" v-model="formattedValue" :class="customClass" type="text" />
 </template>
 
 <script>
