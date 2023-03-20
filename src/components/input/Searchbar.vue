@@ -3,7 +3,7 @@
     @mouseenter="disabledAdd == true ? '' : (showResult = true)"
     class="w-96 space-y-4 relative"
   >
-    <form class="flex items-center" autocomplete="off">
+    <form class="flex items-center" autocomplete="off" @submit.prevent>
       <label for="simple-search" class="sr-only">{{ placeholder }}</label>
       <div class="relative w-full">
         <div

@@ -13,18 +13,18 @@ export const menu = [
   },
   {
     id: 1,
-    name: 'Sales',
+    name: 'Penjualan',
     icon: BuildingStorefrontIcon,
     child: [
       {
         id: 0,
-        name: 'Daftar Sales',
-        to: 'daftar-sales',
+        name: 'Daftar Penjualan',
+        to: 'daftar-sale',
       },
       {
         id: 1,
-        name: 'New Sales',
-        to: 'new-sales',
+        name: 'Penjualan Baru',
+        to: 'new-sale',
       },
     ],
   },
@@ -41,9 +41,15 @@ export const menu = [
       },
       {
         id: 1,
-        name: 'New Sales',
-        to: 'new-sales',
+        name: 'Penjualan Baru',
+        to: 'new-sale',
       },
     ],
+  },
+  {
+    id: 3,
+    name: 'Invoice',
+    // icon: BriefcaseIcon,
+    to: 'invoice',
   },
 ]

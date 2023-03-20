@@ -7,14 +7,26 @@
     >
       <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
         <!-- Modal content -->
-        <div class="bg-white dark:bg-gray-800 py-2 px-5 rounded-lg flex items-center flex-col">
+        <div
+          class="bg-white dark:bg-gray-800 py-2 px-5 rounded-lg flex items-center flex-col"
+        >
           <div class="loader-dots block relative w-20 h-5 mt-2">
-            <div class="absolute top-0 mt-1 w-3 h-3 rounded-full bg-green-500"></div>
-            <div class="absolute top-0 mt-1 w-3 h-3 rounded-full bg-green-500"></div>
-            <div class="absolute top-0 mt-1 w-3 h-3 rounded-full bg-green-500"></div>
-            <div class="absolute top-0 mt-1 w-3 h-3 rounded-full bg-green-500"></div>
+            <div
+              class="absolute top-0 mt-1 w-3 h-3 rounded-full bg-blue-500"
+            ></div>
+            <div
+              class="absolute top-0 mt-1 w-3 h-3 rounded-full bg-blue-500"
+            ></div>
+            <div
+              class="absolute top-0 mt-1 w-3 h-3 rounded-full bg-blue-500"
+            ></div>
+            <div
+              class="absolute top-0 mt-1 w-3 h-3 rounded-full bg-blue-500"
+            ></div>
           </div>
-          <div class="text-gray-500 text-xs font-medium mt-2 text-center">Prossesing transaction</div>
+          <div class="text-gray-500 text-xs font-medium mt-2 text-center">
+            <slot></slot>
+          </div>
         </div>
       </div>
     </div>
@@ -33,8 +45,6 @@ function closeModal() {
 }
 </script>
 
-<!-- component -->
-<!-- This is an example component -->
 <style>
 .loader-dots div {
   animation-timing-function: cubic-bezier(0, 1, 1, 0);

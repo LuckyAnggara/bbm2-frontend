@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="!itemStore.isLoading"
-    class="flex items-center justify-between pb-4"
-  >
+  <div class="flex items-center justify-between pb-4">
     <div>
       <div class="flex items-center space-x-2">
         <label
@@ -11,11 +8,12 @@
           >Show</label
         >
         <select
-          v-model="itemStore.currentLimit"
+          :value="currentLimit"
+          @input="$emit('update:currentLimit', $event.target.value)"
           class="shadow-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         >
           <option
-            :selected="itemStore.currentLimit == length ? true : false"
+            :selected="currentLimit == length ? true : false"
             v-for="length in lengths"
             :key="length"
           >
@@ -44,78 +42,76 @@
         </svg>
       </div>
       <input
-        v-model="itemStore.searchName"
-        @keyup.enter="itemStore.getData()"
+        :value="searchQuery"
+        @input="$emit('update:searchQuery', $event.target.value)"
+        @keyup.enter="$emit('onEnter')"
         type="text"
         class="shadow-md block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder="Search for items"
+        placeholder="Press Enter untuk mencari"
       />
     </div>
   </div>
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <table class="w-full text-sm text-left">
       <thead
-        class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400"
+        class="text-lg text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-300"
       >
         <tr>
-          <th scope="col" class="px-6 py-3">No</th>
-          <th scope="col" class="px-6 py-3">Nama Produk</th>
-          <th scope="col" class="px-6 py-3">Merek</th>
-          <th scope="col" class="px-6 py-3">Satuan</th>
-          <th scope="col" class="px-6 py-3">Saldo</th>
-          <th scope="col" class="px-6 py-3">Action</th>
+          <th
+            scope="col"
+            class="px-6 py-3"
+            v-for="column in props.columns"
+            :key="column.key"
+          >
+            {{ column.label }}
+          </th>
         </tr>
       </thead>
-      <tbody class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-        <tr v-if="itemStore.isLoading">
-          <td colspan="6" class="text-center py-12">
+      <tbody
+        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-black dark:text-gray-400"
+      >
+        <tr v-if="isLoading">
+          <td :colspan="props.columns.length" class="text-center py-12">
             <CircleLoading>Prosesing ... </CircleLoading>
           </td>
         </tr>
-        <tr v-else-if="!itemStore.isLoading && itemStore.items?.length < 0">
-          <td colspan="6" class="text-center py-12">No Data</td>
+        <tr v-else-if="!isLoading && data.length < 1">
+          <td :colspan="props.columns.length" class="text-center py-12">
+            No Data
+          </td>
         </tr>
         <tr
           v-else
-          v-for="(item, index) in itemStore.items"
-          :key="item.id"
-          class="hover:bg-gray-50 dark:hover:bg-gray-600"
+          v-for="(item, index) in data"
+          :key="index"
+          class="hover:bg-gray-100 dark:hover:bg-gray-600"
         >
-          <td class="px-6 py-4">{{ itemStore.from + index }}</td>
-          <th
-            scope="row"
-            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-          >
-            {{ item?.name.toUpperCase() }}
-          </th>
-          <td class="px-6 py-4">{{ item.brand?.name.toUpperCase() }}</td>
-          <td class="px-6 py-4">{{ item.unit?.name.toUpperCase() }}</td>
-          <td class="px-6 py-4">{{ item?.balance }}</td>
-          <td class="px-6 py-4">
-            <a
-              href="#"
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-              >Edit</a
-            >
+          <td class="px-6 py-4" v-for="column in columns" :key="column.key">
+            <span v-if="column.key !== 'action'" :class="column.class">
+              {{ item[column.key] }}
+            </span>
+            <span v-else>
+              <slot name="action" :id="item.id"></slot>
+            </span>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-  <div v-if="!itemStore.isLoading" class="flex flex-col items-center mt-4">
+  <div v-if="!isLoading" class="flex flex-col items-center mt-4">
     <!-- Help text -->
     <span class="text-sm text-gray-700 dark:text-gray-400">
       Showing
       <span class="font-semibold text-gray-900 dark:text-white">{{
-        itemStore.from ?? 0
+        pagginate.from ?? 0
       }}</span>
       to
       <span class="font-semibold text-gray-900 dark:text-white">{{
-        itemStore.to ?? 0
+        pagginate.to ?? 0
       }}</span>
       of
       <span class="font-semibold text-gray-900 dark:text-white">{{
-        itemStore.total ?? 0
+        pagginate.total ?? 0
       }}</span>
       Entries
     </span>
@@ -125,27 +121,16 @@
         <ul class="inline-flex -space-x-px">
           <li>
             <a
-              @click="itemStore.getData(previousPage)"
+              @click="emit('previousPage')"
               :disabled="itemStore.currentPage == 1 ? true : false"
               class="cursor-pointer px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >Previous</a
             >
           </li>
-          <!-- <li v-for="n in itemStore.pageLength" :key="n">
-            <a
-              @click="itemStore.getData('&' + n)"
-              :disabled="itemStore.currentPage == n"
-              :class="[
-                itemStore.currentPage == n
-                  ? 'px-3 py-2 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white'
-                  : 'cursor-pointer px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white',
-              ]"
-              >{{ n }}</a
-            >
-          </li> -->
+
           <li>
             <a
-              @click="itemStore.getData(nextPage)"
+              @click="emit('nextPage')"
               :disabled="
                 itemStore.lastPage == itemStore.currentPage ? true : false
               "
@@ -164,28 +149,62 @@ import { ref, onMounted, computed, onUnmounted } from 'vue'
 import { useItemStore } from '../../stores/persediaan'
 import CircleLoading from '../../components/loading/CircleLoading.vue'
 
-const itemStore = useItemStore()
+const props = defineProps({
+  columns: {
+    type: Array,
+    required: true,
+    default: () => [],
+  },
+  data: {
+    type: Array,
+    required: true,
+    default: () => [],
+  },
+  isLoading: {
+    type: Boolean,
+    default: false,
+  },
+  currentLimit: {
+    type: [String, Number],
+  },
+  itemStore: {
+    type: Object,
+    default() {
+      return []
+    },
+  },
+  searchQuery: {
+    type: String,
+  },
+  pagginate: {
+    type: Object,
+    required: true,
+    default() {
+      return {
+        from: 0,
+        to: 0,
+        total: 0,
+      }
+    },
+  },
+})
+
 const lengths = ref([5, 10, 20, 30, 40, 50])
+const emit = defineEmits([
+  'nextPage',
+  'previousPage',
+  'update:searchQuery',
+  'update:currentLimit',
+  'onEnter',
+])
 
-onMounted(() => {
-  itemStore.getData()
-})
+// onMounted(() => {
+//   itemStore.getData()
+// })
 
-const previousPage = computed(() => {
-  return '&page=' + (itemStore.currentPage - 1)
-})
-
-const nextPage = computed(() => {
-  return '&page=' + (itemStore.currentPage + 1)
-})
-
-itemStore.$subscribe((mutation, state) => {
-  if (mutation.events.key == 'currentLimit') {
-    itemStore.getData()
-  }
-})
-
-onUnmounted(() => {
-  itemStore.$reset()
-})
+// itemStore.$subscribe((mutation, state) => {
+//   if (mutation.events.key == 'currentLimit') {
+//     itemStore.getData()
+//   }
+// })
 </script>

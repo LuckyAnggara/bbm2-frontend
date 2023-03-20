@@ -2,9 +2,12 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 import HelloWorld from '../components/HelloWorld.vue'
 import Persediaan from '../views/persediaan/Persediaan.vue'
-import NewSales from '../views/sales/NewSales.vue'
+import NewSale from '../views/sales/NewSale.vue'
+import DaftarPenjualan from '../views/sales/DaftarPenjualan.vue'
 import Login from '../views/Login/Login.vue'
+import Invoice from '../views/invoice/SaleInvoice.vue'
 import { useAuthStore } from '../stores/auth'
+import { useVersionStore } from '../stores/version'
 
 const routes = [
   {
@@ -29,24 +32,24 @@ const routes = [
     },
   },
   {
-    path: '/sales/new-sales',
-    name: 'new-sales',
-    component: NewSales,
+    path: '/sale/new-sale',
+    name: 'new-sale',
+    component: NewSale,
     meta: {
       transition: 'slide-left',
       requiresAuth: true,
-      title: 'New Sales',
+      title: 'Penjualan Baru',
       layout: 'layout-content',
     },
   },
   {
-    path: '/sales/daftar-sales',
-    name: 'daftar-sales',
-    component: NewSales,
+    path: '/sales/daftar-sale',
+    name: 'daftar-sale',
+    component: DaftarPenjualan,
     meta: {
       transition: 'slide-left',
       requiresAuth: true,
-      title: 'New Sales',
+      title: 'Daftar Penjualan',
       layout: 'layout-content',
     },
   },
@@ -58,6 +61,17 @@ const routes = [
       transition: 'slide-left',
       requiresAuth: true,
       title: 'Persediaan',
+      layout: 'layout-content',
+    },
+  },
+  {
+    path: '/invoice',
+    name: 'invoice',
+    component: Invoice,
+    meta: {
+      transition: 'slide-left',
+      requiresAuth: true,
+      title: 'Invoice',
       layout: 'layout-content',
     },
   },

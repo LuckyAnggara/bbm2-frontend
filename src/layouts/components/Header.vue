@@ -2,6 +2,11 @@
   <nav
     class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"
   >
+    <!-- :class="[
+      !versionStore.isOnline
+        ? 'dark:bg-red-500 bg-red-500 border-red-200 dark::border-red-500'
+        : 'bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700',
+    ]" -->
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center justify-start">
@@ -88,10 +93,12 @@ import { useAuthStore } from '../../stores/Auth'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import UserDropdown from './UserDropdown.vue'
+// import { useVersionStore } from '../../stores/version'
 const toast = useToast()
 
 const router = useRouter()
 const authStore = useAuthStore()
+// const versionStore = useVersionStore()
 const isDark = ref(localStorage.getItem('isDark') || false)
 // const isDark = computed(() => {
 //   return localStorage.getItem('isDark')
@@ -129,4 +136,8 @@ async function logout() {
     }
   }, 5000)
 }
+
+// onBeforeMount(() => {
+//   versionStore.get() // <div>
+// })
 </script>
