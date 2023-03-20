@@ -7,28 +7,16 @@
     >
       <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
         <!-- Modal content -->
-        <div
-          class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
-        >
+        <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
           <!-- Modal header -->
-          <div
-            class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600"
-          >
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-              Data Customer
-            </h3>
+          <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Data Customer</h3>
             <button
               @click="closeModal"
               type="button"
               class="text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
             >
-              <svg
-                aria-hidden="true"
-                class="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fill-rule="evenodd"
                   d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -41,12 +29,8 @@
           <!-- Modal body -->
 
           <div>
-            <div class="mb-4">
-              <label
-                for="name"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Cari Pelanggan</label
-              >
+            <div class="mb-24">
+              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cari Pelanggan</label>
               <Searchbar
                 v-model="customerStore.searchName"
                 @cari-data="cariData()"
@@ -67,51 +51,26 @@
             <form autocomplete="off">
               <div class="grid gap-4 mb-4 sm:grid-cols-2">
                 <div>
-                  <label
-                    for="name"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >Nama Lengkap</label
-                  >
+                  <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Lengkap</label>
                   <input
                     ref="namaLengkap"
                     :disabled="isCustomer == true && isEdit == false"
                     v-model="customerData.name"
                     type="text"
-                    :class="[
-                      !isEdit
-                        ? 'bg-gray-200 dark:bg-gray-900'
-                        : 'bg-gray-50 dark:bg-gray-700',
-                    ]"
+                    :class="[!isEdit ? 'bg-gray-200 dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-700']"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Nama Lengkap"
                   />
                   <div v-if="canSubmit == true || isEdit == true">
-                    <span
-                      v-if="
-                        customerData.id !== '' ||
-                        customerData.id == 'unidentified'
-                      "
-                      class="text-blue-400 py-2"
-                      >Pelanggan Tetap</span
-                    >
-                    <span v-else class="text-green-400 py-2"
-                      >Pelanggan Baru</span
-                    >
+                    <span v-if="customerData.id !== '' || customerData.id == 'unidentified'" class="text-blue-400 py-2">Pelanggan Tetap</span>
+                    <span v-else class="text-green-400 py-2">Pelanggan Baru</span>
                   </div>
                 </div>
                 <div>
-                  <label
-                    for="brand"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >Nomor Telepon</label
-                  >
+                  <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor Telepon</label>
                   <input
                     :disabled="isCustomer == true && isEdit == false"
-                    :class="[
-                      !isEdit
-                        ? 'bg-gray-200 dark:bg-gray-900'
-                        : 'bg-gray-50 dark:bg-gray-700',
-                    ]"
+                    :class="[!isEdit ? 'bg-gray-200 dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-700']"
                     v-model="customerData.phone_number"
                     type="text"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -120,17 +79,9 @@
                 </div>
 
                 <div class="sm:col-span-2">
-                  <label
-                    for="description"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >Alamat Lengkap</label
-                  >
+                  <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat Lengkap</label>
                   <textarea
-                    :class="[
-                      !isEdit
-                        ? 'bg-gray-200 dark:bg-gray-900'
-                        : 'bg-gray-50 dark:bg-gray-700',
-                    ]"
+                    :class="[!isEdit ? 'bg-gray-200 dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-700']"
                     :disabled="isCustomer == true && isEdit == false"
                     v-model="customerData.address"
                     rows="5"
@@ -143,10 +94,7 @@
                 <div class="flex space-x-4">
                   <button
                     :disabled="customerStore.isEditLoading"
-                    :class="[
-                      canSubmit == true ? '' : isEdit ? '' : 'hidden',
-                      customerStore.isEditLoading ? 'cursor-wait' : '',
-                    ]"
+                    :class="[canSubmit == true ? '' : isEdit ? '' : 'hidden', customerStore.isEditLoading ? 'cursor-wait' : '']"
                     @click="clearData"
                     ref="submit"
                     type="button"
@@ -166,19 +114,13 @@
                   <button
                     :disabled="customerStore.isEditLoading"
                     @click="editData"
-                    :class="[
-                      isCustomer == true ? '' : 'hidden',
-                      customerStore.isEditLoading ? 'cursor-wait' : '',
-                    ]"
+                    :class="[isCustomer == true ? '' : 'hidden', customerStore.isEditLoading ? 'cursor-wait' : '']"
                     ref="submit"
                     type="button"
                     class="text-white-600 inline-flex items-center hover:text-white border border-green-600 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-900"
                   >
                     <div>
-                      <span
-                        v-if="customerStore.isEditLoading"
-                        class="text-center flex items-center"
-                      >
+                      <span v-if="customerStore.isEditLoading" class="text-center flex items-center">
                         <CircleLoading :bg-circle="'fill-green-500'" />
                         Prosessing</span
                       >
@@ -209,14 +151,10 @@
 </template>
 
 <script setup>
-import {
-  PaperAirplaneIcon,
-  TrashIcon,
-  PencilSquareIcon,
-  XMarkIcon,
-} from '@heroicons/vue/24/outline'
+import { PaperAirplaneIcon, TrashIcon, PencilSquareIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { nextTick, onMounted, ref, computed } from 'vue'
 import { useCustomerStore } from '../../stores/customer'
+import { useAuthStore } from '../../stores/auth'
 import { useToast } from 'vue-toastification'
 
 import Searchbar from '../../components/input/Searchbar.vue'
@@ -231,7 +169,8 @@ const namaLengkap = ref(null)
 const submit = ref(null)
 const toast = useToast()
 const customerStore = useCustomerStore()
-const customerData = ref({ id: '', name: '', address: '', phone_number: '' })
+const authStore = useAuthStore()
+const customerData = ref({ id: '', userId: authStore.userData.id })
 const isCustomer = ref(false)
 const isEdit = ref(false)
 const canClose = ref(true)
@@ -248,7 +187,7 @@ function clearData() {
   isCustomer.value = false
   isEdit.value = false
   customerStore.searchName = ''
-  customerData.value = { id: '', name: '', address: '', phone_number: '' }
+  customerData.value = { id: '', name: '', address: '', phone_number: '', userId: authStore.userData.id }
   emit('sendCustomer', customerData.value)
   toast.info('Data customer di hapus', {
     timeout: 2000,
@@ -276,6 +215,7 @@ async function editData() {
 function addData(item) {
   canClose.value = false
   customerData.value = item
+  customerData.value.userId = authStore.userData.id
   isCustomer.value = true
   toast.success(item.name + ' menjadi customer transaksi ini', {
     timeout: 2000,
@@ -308,11 +248,7 @@ function submitCustomer() {
 }
 
 const canSubmit = computed(() => {
-  return customerData.value.name == ''
-    ? false
-    : isEdit.value == false
-    ? true
-    : false
+  return customerData.value.name == '' ? false : isEdit.value == false ? true : false
 })
 
 // watch(customerData.name, (x) => {

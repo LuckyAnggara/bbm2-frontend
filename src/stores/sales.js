@@ -25,7 +25,7 @@ export const useSalesStore = defineStore('salesStore', {
         this.response = response.data
         this.isTransactionSuccess = true
       } catch (error) {
-        toast.error(error, {
+        toast.error(error.message, {
           timeout: 3000,
         })
       } finally {
