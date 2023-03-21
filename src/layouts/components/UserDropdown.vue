@@ -1,10 +1,15 @@
 <template>
   <Menu as="div" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
     <div>
-      <MenuButton class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
-        <span class="sr-only">Open user menu</span>
-        <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
-      </MenuButton>
+      <template v-if="authStore.isLoading">
+        <CircleLoading title="Logging Out" />
+      </template>
+      <template v-else>
+        <MenuButton class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
+          <span class="sr-only">Open user menu</span>
+          <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
+        </MenuButton>
+      </template>
     </div>
 
     <transition
@@ -58,6 +63,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { useAuthStore } from '../../stores/Auth'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
+import CircleLoading from '../../components/loading/CircleLoading.vue'
 const toast = useToast()
 
 const router = useRouter()
@@ -66,7 +72,7 @@ const authStore = useAuthStore()
 async function logout() {
   toast.info('Logging out in progress', {
     id: 'logout',
-    position: 'top-right',
+    position: 'bottom-right',
     timeout: false,
     closeOnClick: false,
     pauseOnFocusLoss: false,
@@ -85,6 +91,6 @@ async function logout() {
       toast.dismiss('logout')
       router.push({ name: 'login' })
     }
-  }, 5000)
+  }, 1000)
 }
 </script>

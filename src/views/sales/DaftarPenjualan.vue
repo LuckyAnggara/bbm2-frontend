@@ -1,27 +1,24 @@
 <template>
   <TableComplex
-    v-model:search-query="itemStore.searchName"
+    v-model:search-query="salesStore.searchName"
     :columns="column"
-    :is-loading="itemStore.isLoading"
+    :is-loading="salesStore.isLoading"
     :data="formattedTableData"
     :pagginate="pagginate"
-    :item-store="itemStore"
-    v-model:current-limit="itemStore.currentLimit"
-    @next-page="itemStore.getData(nextPage)"
-    @previous-page="itemStore.getData(previousPage)"
-    @on-enter="itemStore.getData()"
+    :item-store="salesStore"
+    :use-filter="true"
+    v-model:current-limit="salesStore.currentLimit"
+    @next-page="salesStore.getData(nextPage)"
+    @previous-page="salesStore.getData(previousPage)"
+    @on-enter="salesStore.getData()"
   >
     <template #action="{ id }">
       <div class="flex space-x-3">
-        <a
-          @click="edit(id)"
-          class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:dark:text-white hover:text-black duration-300 ease-in-out"
+        <a @click="edit(id)" class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:dark:text-white hover:text-black duration-300 ease-in-out"
           ><PencilSquareIcon class="h-7 w-7"
         /></a>
 
-        <a
-          @click="edit(id)"
-          class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:dark:text-white hover:text-black duration-300 ease-in-out"
+        <a @click="edit(id)" class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:dark:text-white hover:text-black duration-300 ease-in-out"
           ><TrashIcon class="h-7 w-7"
         /></a>
       </div>
@@ -31,51 +28,53 @@
 
 <script setup>
 import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline'
-import { onMounted, computed, onUnmounted } from 'vue'
+import { computed, onUnmounted, onBeforeMount } from 'vue'
 import TableComplex from '../../components/table/TableComplex.vue'
-import { useItemStore } from '../../stores/persediaan'
+import { useSalesStore } from '../../stores/sales'
 
 const column = [
-  { key: 'id', label: 'No' },
-  { key: 'name', label: 'Nama Produk', class: 'uppercase' },
-  { key: 'brand_name', label: 'Merek', class: 'uppercase' },
-  { key: 'unit_name', label: 'Satuan', class: 'uppercase' },
-  { key: 'balance', label: 'Saldo' },
+  { key: 'id', label: 'No', type: 'number', type: 'id' },
+  { key: 'created_at', label: 'Tanggal', class: 'uppercase', type: 'date' },
+  { key: 'invoice', label: 'Invoice', class: 'uppercase' },
+  { key: 'customer_name', label: 'Nama Pelanggan', class: 'uppercase' },
+  { key: 'grand_total', label: 'Total', class: 'uppercase', type: 'currency' },
+  { key: 'maker_name', label: 'Maker' },
   { key: 'action', label: 'Action' },
 ]
 
-const itemStore = useItemStore()
+const salesStore = useSalesStore()
 
 const pagginate = computed(() => {
   return {
-    from: itemStore.from ?? 0,
-    to: itemStore.to ?? 0,
-    total: itemStore.total ?? 0,
+    from: salesStore.from ?? 0,
+    to: salesStore.to ?? 0,
+    total: salesStore.total ?? 0,
   }
 })
 const formattedTableData = computed(() => {
-  return itemStore.items?.map((item) => {
+  return salesStore.items?.map((item) => {
     return {
       id: item.id,
-      brand_name: item.brand?.name ?? '',
-      unit_name: item.unit?.name ?? '',
-      name: item.name ?? '',
-      balance: item.balance ?? 0,
+      invoice: item.invoice,
+      created_at: item.created_at,
+      customer_name: item.customer?.name ?? '',
+      maker_name: item.maker?.name ?? '',
+      grand_total: item.grand_total ?? 0,
     }
   })
 })
 
 const previousPage = computed(() => {
-  return '&page=' + (itemStore.currentPage - 1)
+  return '&page=' + (salesStore.currentPage - 1)
 })
 
 const nextPage = computed(() => {
-  return '&page=' + (itemStore.currentPage + 1)
+  return '&page=' + (salesStore.currentPage + 1)
 })
 
-itemStore.$subscribe((mutation, state) => {
+salesStore.$subscribe((mutation, state) => {
   if (mutation.events.key == 'currentLimit') {
-    itemStore.getData()
+    salesStore.getData()
   }
 })
 
@@ -83,11 +82,11 @@ function edit(id) {
   alert(id)
 }
 
-onMounted(() => {
-  itemStore.getData()
+onBeforeMount(() => {
+  salesStore.getData()
 })
 
 onUnmounted(() => {
-  itemStore.$reset()
+  salesStore.$reset()
 })
 </script>

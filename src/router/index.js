@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 import HelloWorld from '../components/HelloWorld.vue'
-import Persediaan from '../views/persediaan/Persediaan.vue'
+import DaftarPersediaan from '../views/persediaan/DaftarPersediaan.vue'
 import NewSale from '../views/sales/NewSale.vue'
 import DaftarPenjualan from '../views/sales/DaftarPenjualan.vue'
 import Login from '../views/Login/Login.vue'
@@ -56,11 +56,11 @@ const routes = [
   {
     path: '/persediaan',
     name: 'persediaan',
-    component: Persediaan,
+    component: DaftarPersediaan,
     meta: {
       transition: 'slide-left',
       requiresAuth: true,
-      title: 'Persediaan',
+      title: 'Daftar Persediaan',
       layout: 'layout-content',
     },
   },

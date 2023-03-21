@@ -6,13 +6,19 @@ import 'vue-toastification/dist/index.css'
 import './assets/style.css'
 import App from './App.vue'
 import router from './router/index'
+import moment from 'moment'
 import axiosIns from './services/axios'
+
+moment.locale('id')
 
 const pinia = createPinia()
 const app = createApp(App)
 // Make sure to _use_ the router instance to make the
 // whole app router-aware.
-app.config.globalProperties.axios = axiosIns
+app.config.globalProperties = {
+  moment: moment,
+}
+
 app.use(router)
 app.use(pinia)
 
