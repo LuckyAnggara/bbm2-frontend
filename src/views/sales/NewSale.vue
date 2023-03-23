@@ -5,7 +5,9 @@
       <!-- Start coding here -->
       <div class="flex flex-col space-y-5">
         <div class="relative bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
-          <div class="flex flex-col items-center justify-between p-4 space-y-2 md:flex-row md:space-y-0 md:space-x-4">
+          <div
+            class="flex flex-col items-center justify-between p-4 space-y-2 md:flex-row md:space-y-0 md:space-x-4"
+          >
             <div>
               <Searchbar
                 @cari-data="cariData()"
@@ -21,7 +23,9 @@
               </Searchbar>
             </div>
 
-            <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
+            <div
+              class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3"
+            >
               <button
                 @click="showModal = true"
                 type="button"
@@ -33,19 +37,28 @@
 
               <Teleport to="body">
                 <!-- use the modal component, pass in the prop -->
-                <CustomerModal :show="showModal" @close="showModal = false" @sendCustomer="updateCustomer"> </CustomerModal>
+                <CustomerModal
+                  :show="showModal"
+                  @close="showModal = false"
+                  @sendCustomer="updateCustomer"
+                >
+                </CustomerModal>
               </Teleport>
             </div>
           </div>
         </div>
 
         <div class="overflow-x-auto shadow-md sm:rounded-lg w-full">
-          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 px-2">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+          <table
+            class="w-full text-sm text-left text-gray-500 dark:text-gray-400 px-2"
+          >
+            <thead
+              class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400"
+            >
               <tr>
                 <th scope="col" class="py-3 w-16 text-center">No</th>
-                <th scope="col" class="px-2 py-3 w-60">Nama Produk</th>
-                <th scope="col" class="px-2 py-3 w-36">Harga</th>
+                <th scope="col" class="px-2 py-3 w-52">Nama Produk</th>
+                <th scope="col" class="px-2 py-3 w-48">Harga</th>
                 <th scope="col" class="px-2 py-3 w-20">Qty</th>
                 <th scope="col" class="px-2 py-3 w-20">Satuan</th>
                 <th scope="col" class="px-2 py-3 w-24">Diskon</th>
@@ -54,9 +67,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-if="currentCart.length < 1" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <tr
+                v-if="currentCart.length < 1"
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              >
                 <td colspan="8" class="px-6 py-4 text-center">
-                  <span class="text-xl dark:text-gray-200 text-black">Tidak ada data</span>
+                  <span class="text-xl dark:text-gray-200 text-black"
+                    >Tidak ada data</span
+                  >
                 </td>
               </tr>
               <tr
@@ -66,16 +84,18 @@
                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-md"
               >
                 <td class="px-3 py-4 text-center">{{ 1 + index }}</td>
-                <th scope="row" class="py-4 px-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <th
+                  scope="row"
+                  class="py-4 px-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
                   {{ item.name.toUpperCase() }}
                 </th>
 
                 <td class="px-2 py-4">
-                  <input
-                    min="0"
-                    type="number"
-                    class="w-full dark:bg-gray-700 bg-gray-100 text-black dark:text-white border border-gray-800 text-md rounded-lg p-2 font-medium"
+                  <InputCurrency
+                    :options="{ currency: 'IDR' }"
                     v-model="item.price"
+                    :custom-class="'w-full dark:bg-gray-700 bg-gray-100 text-black dark:text-white border border-gray-800 text-md rounded-lg p-2 font-medium'"
                   />
                 </td>
                 <td class="px-2 py-4">
@@ -86,7 +106,9 @@
                     v-model="item.qty"
                   />
                 </td>
-                <td class="px-2 py-4 text-sm text-gray-900 whitespace-nowrap dark:text-white">
+                <td
+                  class="px-2 py-4 text-sm text-gray-900 whitespace-nowrap dark:text-white"
+                >
                   {{ item.unit?.toUpperCase() }}
                 </td>
                 <td class="px-2 py-4">
@@ -97,11 +119,16 @@
                     v-model="item.disc"
                   />
                 </td>
-                <td class="px-2 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                <td
+                  class="px-2 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+                >
                   {{ IDRCurrency.format(item.qty * item.price - item.disc) }}
                 </td>
                 <td class="px-2 py-4">
-                  <TrashIcon @click="removeItem(index)" class="h-6 w-6 hover:text-blue-500 cursor-pointer hover:animate-bounce" />
+                  <TrashIcon
+                    @click="removeItem(index)"
+                    class="h-6 w-6 hover:text-blue-500 cursor-pointer hover:animate-bounce"
+                  />
                 </td>
               </tr>
             </tbody>
@@ -114,48 +141,76 @@
 
     <section class="w-2/6">
       <div class="flex flex-col space-y-5">
-        <div class="relative h-fit bg-white shadow-md dark:bg-gray-800 sm:rounded-lg py-2 px-2">
+        <div
+          class="relative h-fit bg-white shadow-md dark:bg-gray-800 sm:rounded-lg py-2 px-2"
+        >
           <ul class="">
             <li class="px-6 mb">
-              <div class="border-b-2 dark:border-gray-600 border-gray-400 pt-6 pb-4 dark:text-white text-black flex justify-between flex-row font-thin">
+              <div
+                class="border-b-2 dark:border-gray-600 border-gray-400 pt-6 pb-4 dark:text-white text-black flex justify-between flex-row font-thin"
+              >
                 <span class="text-xl w-1/3">Pelanggan</span>
-                <span class="text-xl font-normal cursor-pointer break-words flex-wrap w-1/3 text-right" @click="showModal = true">{{
-                  currentCustomer.name?.toUpperCase()
+                <span
+                  class="text-xl font-normal cursor-pointer break-words flex-wrap w-1/3 text-right"
+                  @click="showModal = true"
+                  >{{ currentCustomer.name?.toUpperCase() }}</span
+                >
+              </div>
+            </li>
+            <li class="px-6">
+              <div
+                class="dark:border-gray-600 border-gray-400 pt-6 pb-2 dark:text-white text-black flex justify-between flex-row font-thin"
+              >
+                <span class="text-xl">Subtotal</span>
+                <span class="text-xl font-normal">{{
+                  IDRCurrency.format(subTotal)
                 }}</span>
               </div>
             </li>
             <li class="px-6">
-              <div class="dark:border-gray-600 border-gray-400 pt-6 pb-2 dark:text-white text-black flex justify-between flex-row font-thin">
-                <span class="text-xl">Subtotal</span>
-                <span class="text-xl font-normal">{{ IDRCurrency.format(subTotal) }}</span>
-              </div>
-            </li>
-            <li class="px-6">
-              <div class="border-b-2 dark:border-gray-600 border-gray-400 pb-6 pt-2 dark:text-white text-black flex justify-between flex-row font-thin">
+              <div
+                class="border-b-2 dark:border-gray-600 border-gray-400 pb-6 pt-2 dark:text-white text-black flex justify-between flex-row font-thin"
+              >
                 <span class="text-xl">Diskon</span>
-                <span class="text-xl text-red-600 font-normal">{{ IDRCurrency.format(discount) }}</span>
+                <span class="text-xl text-red-600 font-normal">{{
+                  IDRCurrency.format(discount)
+                }}</span>
               </div>
             </li>
             <li class="px-6">
-              <div class="border-b-2 dark:border-gray-600 border-gray-400 py-6 dark:text-white text-black flex justify-between flex-row font-medium">
+              <div
+                class="border-b-2 dark:border-gray-600 border-gray-400 py-6 dark:text-white text-black flex justify-between flex-row font-medium"
+              >
                 <span class="text-xl"></span>
-                <span class="text-xl">{{ IDRCurrency.format(totalBeforeTax) }}</span>
+                <span class="text-xl">{{
+                  IDRCurrency.format(totalBeforeTax)
+                }}</span>
               </div>
             </li>
 
             <li class="px-6">
-              <div class="dark:border-gray-600 border-gray-400 py-6 dark:text-white text-black flex justify-between flex-row font-medium">
+              <div
+                class="dark:border-gray-600 border-gray-400 py-6 dark:text-white text-black flex justify-between flex-row font-medium"
+              >
                 <div class="flex items-center">
                   <label class="relative inline-flex cursor-pointer">
-                    <input type="checkbox" class="sr-only peer" v-model="pajakOn" />
+                    <input
+                      type="checkbox"
+                      class="sr-only peer"
+                      v-model="pajakOn"
+                    />
                     <div
                       class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
                     ></div>
-                    <span class="text-xl ml-4">Pajak ({{ nomPajak * 100 }}%)</span>
+                    <span class="text-xl ml-4"
+                      >Pajak ({{ nomPajak * 100 }}%)</span
+                    >
                   </label>
                 </div>
 
-                <span class="text-red-600 font-normal">{{ IDRCurrency.format(tax) }}</span>
+                <span class="text-red-600 font-normal">{{
+                  IDRCurrency.format(tax)
+                }}</span>
               </div>
             </li>
 
@@ -173,16 +228,24 @@
             </li>
 
             <li class="px-6">
-              <div class="border-b-2 dark:border-gray-600 border-gray-400 py-6 dark:text-white text-black flex justify-between flex-row font-medium">
+              <div
+                class="border-b-2 dark:border-gray-600 border-gray-400 py-6 dark:text-white text-black flex justify-between flex-row font-medium"
+              >
                 <span class="text-xl">Total</span>
-                <span class="text-xl" :class="[total < 0 ? 'text-red-500' : '']">{{ IDRCurrency.format(total) }}</span>
+                <span
+                  class="text-xl"
+                  :class="[total < 0 ? 'text-red-500' : '']"
+                  >{{ IDRCurrency.format(total) }}</span
+                >
               </div>
             </li>
           </ul>
 
           <ul>
             <li class="px-6">
-              <div class="border-b-2 dark:border-gray-600 border-gray-400 py-6 dark:text-white text-black flex justify-between flex-row font-medium">
+              <div
+                class="border-b-2 dark:border-gray-600 border-gray-400 py-6 dark:text-white text-black flex justify-between flex-row font-medium"
+              >
                 <span class="text-xl">Metode Pembayaran</span>
                 <div class="flex-col space-y-6">
                   <button
@@ -225,7 +288,9 @@
 
           <ul>
             <li class="px-6">
-              <div class="dark:border-gray-600 border-gray-400 py-6 dark:text-white text-black flex justify-between flex-row font-medium">
+              <div
+                class="dark:border-gray-600 border-gray-400 py-6 dark:text-white text-black flex justify-between flex-row font-medium"
+              >
                 <span class="text-xl">Opsi</span>
                 <div class="flex-col space-y-6">
                   <button
@@ -254,19 +319,28 @@
     <!-- Modal -->
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
-      <CashModal :show="showCashModal" @close="showCashModal = false" @submitTransaction="submitTransaction"> </CashModal>
+      <CashModal
+        :show="showCashModal"
+        @close="showCashModal = false"
+        @submitTransaction="submitTransaction"
+      >
+      </CashModal>
     </Teleport>
 
     <!-- Loading Modal -->
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
-      <LoadingModal :show="salesStore.isStoreLoading">Processing transaction</LoadingModal>
+      <LoadingModal :show="salesStore.isStoreLoading"
+        >Processing transaction</LoadingModal
+      >
     </Teleport>
 
     <!-- Loading Modal -->
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
-      <SuccessModal :show="salesStore.isTransactionSuccess" @submit="successStore"
+      <SuccessModal
+        :show="salesStore.isTransactionSuccess"
+        @submit="successStore"
         ><template #message> Transaction success </template>
         <template #buttonText> Next </template>
       </SuccessModal>
@@ -275,8 +349,26 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch, nextTick, defineAsyncComponent } from 'vue'
-import { PlusIcon, TrashIcon, BanknotesIcon, CreditCardIcon, QrCodeIcon, BookOpenIcon, UserIcon, BookmarkIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import {
+  ref,
+  reactive,
+  computed,
+  watch,
+  nextTick,
+  defineAsyncComponent,
+  onUnmounted,
+} from 'vue'
+import {
+  PlusIcon,
+  TrashIcon,
+  BanknotesIcon,
+  CreditCardIcon,
+  QrCodeIcon,
+  BookOpenIcon,
+  UserIcon,
+  BookmarkIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
 import { useRouter, useRoute } from 'vue-router'
 import { useItemStore } from '../../stores/persediaan'
 import { useSalesStore } from '../../stores/sales'
@@ -305,11 +397,18 @@ const nomPajak = ref(11 / 100)
 const tax = ref(0)
 const ongkosKirim = ref(0)
 const currentCustomer = ref({
-  userId: authStore.userData.id,
+  user: {
+    id: authStore.userData.id,
+    branchId: authStore.userData.branch_id,
+  },
 })
 
-const LoadingModal = defineAsyncComponent(() => import('../../components/modal/LoadingModal.vue'))
-const SuccessModal = defineAsyncComponent(() => import('../../components/modal/SuccessModal.vue'))
+const LoadingModal = defineAsyncComponent(() =>
+  import('../../components/modal/LoadingModal.vue')
+)
+const SuccessModal = defineAsyncComponent(() =>
+  import('../../components/modal/SuccessModal.vue')
+)
 
 // Computed
 const subTotal = computed(() => {
@@ -385,9 +484,11 @@ function updateCustomer(n) {
   currentCustomer.value = n
 }
 
-function modalCash() {
+async function modalCash() {
   if (updateStore()) {
-    nextTick()
+    // KONFIRMASI TRANSAKSI PEMBAYARAN MELALUI CASH / TUNAI
+    salesStore.currentData.isCash = true
+    await nextTick()
     showCashModal.value = true
   }
 }
@@ -395,7 +496,21 @@ function modalCash() {
 async function submitTransaction() {
   showCashModal.value = false
   await nextTick()
+  // UPDATE DATA UNTUK TRANSAKSI KAS MASUK KE KASIR
+  salesStore.currentData.transaction = {
+    amount: total.value,
+    type: 'IN',
+  }
+  // PROSES TRANSAKSI
   salesStore.store()
+  await nextTick()
+  salesStore.$patch({
+    currentData: {},
+  })
+  itemStore.$patch({
+    searchName: null,
+    responses: null,
+  })
 }
 
 function updateStore() {
@@ -411,7 +526,10 @@ function updateStore() {
         shipping: ongkosKirim.value,
         total: total.value,
       },
-      userId: authStore.userData.id,
+      user: {
+        id: authStore.userData.id,
+        branchId: authStore.userData.branch_id,
+      },
     }
     return true
   } else {
@@ -428,4 +546,9 @@ async function successStore() {
   await nextTick()
   router.push({ name: 'invoice', params: { aa: 'aa' } })
 }
+
+onUnmounted(() => {
+  salesStore.$reset()
+  itemStore.$reset()
+})
 </script>

@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 import axiosIns from '../services/axios'
+import { useToast } from 'vue-toastification'
+const toast = useToast()
 
 // ITEM STORE
 export const useCustomerStore = defineStore('customerStore', {
@@ -51,12 +53,11 @@ export const useCustomerStore = defineStore('customerStore', {
       this.isEditLoading = true
       try {
         const response = await axiosIns.put(`/customers/${data.id}`, data)
-        this.customer = response.data.customer
-        this.message = 'Update Success'
-        return this.message
+        toast.success(response.data.message, {
+          timeout: 2000,
+        })
       } catch (error) {
-        this.message = error.message
-        return this.message
+        alert(error)
       } finally {
         this.isEditLoading = false
       }
