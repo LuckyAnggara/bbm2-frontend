@@ -46,10 +46,10 @@ export const menu = [
       },
     ],
   },
-  {
-    id: 3,
-    name: 'Invoice',
-    // icon: BriefcaseIcon,
-    to: 'invoice',
-  },
+  // {
+  //   id: 3,
+  //   name: 'Invoice',
+  //   // icon: BriefcaseIcon,
+  //   to: 'invoice',
+  // },
 ]

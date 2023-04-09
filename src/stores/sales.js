@@ -1,19 +1,39 @@
 import { defineStore } from 'pinia'
 import axiosIns from '../services/axios'
 import { useToast } from 'vue-toastification'
+
 import { useAuthStore } from './auth'
 const toast = useToast()
+const userData = JSON.parse(localStorage.getItem('userData'))
 
 // ITEM STORE
 export const useSalesStore = defineStore('salesStore', {
   state: () => {
     return {
       responses: {},
+      singleResponses: null,
       isStoreLoading: false,
+      isDestroyLoading: false,
       isTransactionSuccess: false,
       currentLimit: 10,
       searchName: '',
-      currentData: {},
+      currentData: {
+        customerData: {
+          id: '',
+          name: '',
+          address: '',
+          phone_number: '',
+          userId: userData.id,
+          saveCustomer: false,
+        },
+        currentCart: [],
+        total: {},
+        credit: {
+          amount: 0,
+          due_date: null,
+          notes: '',
+        },
+      },
       isLoading: false,
     }
   },
@@ -54,10 +74,24 @@ export const useSalesStore = defineStore('salesStore', {
     async getData(page = '') {
       this.isLoading = true
       try {
-        const response = await axiosIns.get(`/sales?limit=${this.currentLimit}${this.branchQuery}${this.searchQuery}${page}`)
+        const response = await axiosIns.get(
+          `/sales?limit=${this.currentLimit}${this.branchQuery}${this.searchQuery}${page}`
+        )
         this.responses = response.data.data
       } catch (error) {
         alert(error)
+      }
+      this.isLoading = false
+    },
+    async showData(id = '') {
+      this.isLoading = true
+      try {
+        const response = await axiosIns.get(`/sales/${id}`)
+        this.singleResponses = response.data.data
+      } catch (error) {
+        toast.error('Data not found', {
+          position: 'bottom-right',
+        })
       }
       this.isLoading = false
     },
@@ -68,7 +102,7 @@ export const useSalesStore = defineStore('salesStore', {
         toast.success('Transaksi berhasil di proses', {
           timeout: 3000,
         })
-        this.response = response.data
+        this.responses = response.data.data
         this.isTransactionSuccess = true
       } catch (error) {
         toast.error(error.message, {
@@ -76,6 +110,23 @@ export const useSalesStore = defineStore('salesStore', {
         })
       } finally {
         this.isStoreLoading = false
+      }
+    },
+    async destroyData(id) {
+      this.isDestroyLoading = true
+      try {
+        const response = await axiosIns.delete(`/sales/${id}`)
+        toast.success('Data berhasil di hapus', {
+          timeout: 2000,
+        })
+        const index = this.items.findIndex((item) => item.id === id)
+        this.responses.data.splice(index, 1)
+      } catch (error) {
+        toast.error(error.response.data.message, {
+          timeout: 2000,
+        })
+      } finally {
+        this.isDestroyLoading = false
       }
     },
   },

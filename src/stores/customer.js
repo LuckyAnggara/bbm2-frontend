@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import axiosIns from '../services/axios'
 import { useToast } from 'vue-toastification'
+import { useAuthStore } from './auth'
 const toast = useToast()
 
 // ITEM STORE
@@ -28,7 +29,11 @@ export const useCustomerStore = defineStore('customerStore', {
       }
       return '&name=' + state.searchName
     },
-    branchQuery(state) {
+    branchQuery() {
+      const authStore = useAuthStore()
+      return '&branch=' + authStore.userData.branch_id
+    },
+    branchQuery2(state) {
       if (state.searchBranch == '' || null) {
         return ''
       }

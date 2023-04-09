@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import axiosIns from '../services/axios'
 import { useToast } from 'vue-toastification'
 import { nextTick } from 'vue'
+import { getActivePinia } from 'pinia'
+
 const toast = useToast()
 
 export const useAuthStore = defineStore('auth', {
@@ -58,6 +60,10 @@ export const useAuthStore = defineStore('auth', {
             localStorage.removeItem('userData')
             localStorage.removeItem('token')
           }
+
+          const pinia = getActivePinia()
+
+          pinia._s.forEach((store) => console.info(store))
           return true
         } else {
           return false

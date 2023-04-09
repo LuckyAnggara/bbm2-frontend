@@ -2,10 +2,11 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 import HelloWorld from '../components/HelloWorld.vue'
 import DaftarPersediaan from '../views/persediaan/DaftarPersediaan.vue'
-import NewSale from '../views/sales/NewSale.vue'
+import WizardSale from '../views/sales/WizardSale.vue'
 import DaftarPenjualan from '../views/sales/DaftarPenjualan.vue'
 import Login from '../views/Login/Login.vue'
 import Invoice from '../views/invoice/SaleInvoice.vue'
+import PaymentCredit from '../views/sales/PaymentCredit.vue'
 import { useAuthStore } from '../stores/auth'
 import { useVersionStore } from '../stores/version'
 
@@ -34,7 +35,7 @@ const routes = [
   {
     path: '/sale/new-sale',
     name: 'new-sale',
-    component: NewSale,
+    component: WizardSale,
     meta: {
       transition: 'slide-left',
       requiresAuth: true,
@@ -65,13 +66,24 @@ const routes = [
     },
   },
   {
-    path: '/invoice',
+    path: '/sales/invoice/:id',
     name: 'invoice',
     component: Invoice,
     meta: {
       transition: 'slide-left',
       requiresAuth: true,
-      title: 'Invoice',
+      title: 'Detail Penjualan',
+      layout: 'layout-content',
+    },
+  },
+  {
+    path: '/sales/detail/:id/payment-credit',
+    name: 'payment-credit',
+    component: PaymentCredit,
+    meta: {
+      transition: 'slide-left',
+      requiresAuth: true,
+      title: 'Detail Pembayaran Kredit',
       layout: 'layout-content',
     },
   },
