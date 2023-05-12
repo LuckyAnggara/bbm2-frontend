@@ -1,5 +1,12 @@
 <template>
-  <input ref="inputRef" v-model="formattedValue" :class="customClass" type="text" />
+  <input
+    :required="isRequired"
+    ref="inputRef"
+    v-model="formattedValue"
+    :class="customClass"
+    :placeholder="placeholder"
+    type="text"
+  />
 </template>
 
 <script>
@@ -10,6 +17,14 @@ export default {
     modelValue: Number,
     options: Object,
     customClass: String,
+    placeholder: {
+      type: String,
+      default: 'Nominal',
+    },
+    isRequired: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
     const { inputRef, formattedValue } = useCurrencyInput(props.options)

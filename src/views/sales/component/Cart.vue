@@ -1,8 +1,8 @@
 <template>
   <section class="w-full flex flex-col relative justify-between">
-    <div class="flex sm:flex-row flex-col sm:space-x-6 space-y-6 sm:space-y-0">
+    <div class="flex xl:flex-row flex-col xl:space-x-6 space-y-6 xl:space-y-0">
       <div
-        class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit"
+        class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit w-fit"
       >
         <div class="flex flex-row items-center justify-between p-4 space-y-4">
           <div>
@@ -146,7 +146,7 @@ import {
 } from '@heroicons/vue/24/outline'
 
 import { ref, reactive, computed, onUnmounted } from 'vue'
-import { useItemStore } from '../../../stores/persediaan'
+import { useItemStore } from '../../../stores/items'
 import { IDRCurrency } from '../../../utilities/formatter'
 import { useToast } from 'vue-toastification'
 

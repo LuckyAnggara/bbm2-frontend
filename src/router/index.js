@@ -1,7 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 import HelloWorld from '../components/HelloWorld.vue'
-import DaftarPersediaan from '../views/persediaan/DaftarPersediaan.vue'
+import DaftarProduk from '../views/persediaan/DaftarProduk.vue'
+import MutationProduk from '../views/persediaan/MutationProduk.vue'
 import WizardSale from '../views/sales/WizardSale.vue'
 import DaftarPenjualan from '../views/sales/DaftarPenjualan.vue'
 import Login from '../views/Login/Login.vue'
@@ -55,13 +56,24 @@ const routes = [
     },
   },
   {
-    path: '/persediaan',
-    name: 'persediaan',
-    component: DaftarPersediaan,
+    path: '/persediaan/daftar-produk',
+    name: 'produk',
+    component: DaftarProduk,
     meta: {
       transition: 'slide-left',
       requiresAuth: true,
-      title: 'Daftar Persediaan',
+      title: 'Daftar Produk',
+      layout: 'layout-content',
+    },
+  },
+  {
+    path: '/persediaan/mutasi-produk',
+    name: 'produk-mutasi',
+    component: MutationProduk,
+    meta: {
+      transition: 'slide-left',
+      requiresAuth: true,
+      title: 'Mutasi Produk',
       layout: 'layout-content',
     },
   },

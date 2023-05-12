@@ -170,7 +170,7 @@ import {
 import { inject, defineAsyncComponent, ref, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
-import { useItemStore } from '../../../stores/persediaan'
+import { useItemStore } from '../../../stores/items'
 import { useSalesStore } from '../../../stores/sales'
 import { IDRCurrency } from '../../../utilities/formatter'
 

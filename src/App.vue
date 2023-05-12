@@ -9,6 +9,9 @@ import LayoutFull from './layouts/LayoutFull.vue'
 import LayoutContent from './layouts/LayoutContent.vue'
 import Logo from './components/Logo.vue'
 import { TransitionSlide } from '@morev/vue-transitions'
+import { onMounted } from 'vue'
+
+// initialize components based on data attribute selectors
 
 export default {
   data() {

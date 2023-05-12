@@ -36,13 +36,13 @@ export const menu = [
     child: [
       {
         id: 0,
-        name: 'Daftar Persediaan',
-        to: 'persediaan',
+        name: 'Daftar Produk',
+        to: 'produk',
       },
       {
         id: 1,
-        name: 'Penjualan Baru',
-        to: 'new-sale',
+        name: 'Mutasi Produk',
+        to: 'produk-mutasi',
       },
     ],
   },

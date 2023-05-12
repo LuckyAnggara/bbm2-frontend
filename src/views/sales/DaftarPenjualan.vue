@@ -6,13 +6,22 @@
     :data="formattedTableData"
     :pagginate="pagginate"
     :item-store="salesStore"
-    :use-filter="true"
     v-model:current-limit="salesStore.currentLimit"
     @next-page="salesStore.getData(nextPage)"
     @previous-page="salesStore.getData(previousPage)"
     @on-enter="salesStore.getData()"
+    :on-hover-event="
+      () => {
+        showDrawer = true
+      }
+    "
+    :on-leave-event="
+      () => {
+        showDrawer = false
+      }
+    "
   >
-    <template #action="{ id, status }">
+    <template #action="{ id }">
       <!-- <div>
         <Menu as="div" class="relative inline-block text-left">
           <div>
@@ -71,13 +80,6 @@
         /></a>
 
         <a
-          v-if="status == 'KREDIT'"
-          @click="invoice(id)"
-          class="cursor-pointer font-medium text-green-600 dark:text-green-500 hover:dark:text-white hover:text-red-500 hover:-translate-y-2 duration-300 ease-in-out"
-          ><CreditCardIcon class="h-7 w-7"
-        /></a>
-
-        <a
           @click="edit(id)"
           class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:dark:text-white hover:text-red-500 hover:-translate-y-2 duration-300 ease-in-out"
           ><PencilSquareIcon class="h-7 w-7"
@@ -91,21 +93,54 @@
       </div>
     </template>
 
-    <template #status="{ label }">
-      <span
-        v-if="label == 'LUNAS'"
-        class="bg-blue-100 text-blue-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-500 dark:text-white"
-        >{{ label }}</span
+    <template #status="{ label, index, id }">
+      <div v-if="label.status == 'LUNAS'">
+        <span
+          @click="paymentCreditView(id)"
+          @mouseover="initDrawer(index)"
+          @mouseleave="showDrawer = false"
+          v-if="label.credit == true"
+          class="cursor-pointer bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
+          >KREDIT
+        </span>
+        <span
+          @mouseover="initDrawer(index)"
+          @mouseleave="showDrawer = false"
+          class="bg-blue-100 text-blue-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-500 dark:text-white"
+          >{{ label.status }}</span
+        >
+      </div>
+      <div v-else>
+        <span
+          @click="paymentCreditView(id)"
+          @mouseover="initDrawer(index)"
+          @mouseleave="showDrawer = false"
+          v-if="label.credit == true"
+          class="cursor-alias bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
+          >KREDIT
+        </span>
+        <span
+          @mouseover="initDrawer(index)"
+          @mouseleave="showDrawer = false"
+          class="cursor-pointer bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
+          >{{ label.status }}</span
+        >
+      </div>
+    </template>
+
+    <template #extendButton>
+      <button
+        @click="showFilterDrawer = true"
+        type="button"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
       >
-      <span
-        v-else
-        class="bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
-        >{{ label }}</span
-      >
+        <AdjustmentsHorizontalIcon class="w-5 h-5" />
+      </button>
     </template>
   </TableComplex>
 
   <DetailPenjualanDrawer :show="showDrawer" />
+  <FilterDrawer :show="showFilterDrawer" @close="showFilterDrawer = false" />
 
   <!--Confirmation Modal -->
   <Teleport to="body">
@@ -133,6 +168,7 @@
 <script setup>
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import {
+  AdjustmentsHorizontalIcon,
   CreditCardIcon,
   EllipsisVerticalIcon,
   ChevronDownIcon,
@@ -161,12 +197,16 @@ const DetailPenjualanDrawer = defineAsyncComponent(() =>
 const LoadingModal = defineAsyncComponent(() =>
   import('../../components/modal/LoadingModal.vue')
 )
+const FilterDrawer = defineAsyncComponent(() =>
+  import('../../components/drawer/FilterDrawer.vue')
+)
 
 const router = useRouter()
 const salesStore = useSalesStore()
 const deleteId = ref(null)
 
 const showDrawer = ref(false)
+const showFilterDrawer = ref(false)
 
 const column = [
   { key: 'id', label: 'No', type: 'number', type: 'id' },
@@ -196,7 +236,10 @@ const formattedTableData = computed(() => {
       created_at: item.created_at,
       customer_name: item.customer?.name ?? '',
       maker_name: item.maker?.name ?? '',
-      status: item.receivable ? 'KREDIT' : 'LUNAS',
+      status: {
+        status: item.status,
+        credit: item.credit,
+      },
       grand_total: item.grand_total ?? 0,
     }
   })
@@ -215,6 +258,19 @@ salesStore.$subscribe((mutation, state) => {
     salesStore.getData()
   }
 })
+
+async function initDrawer(index) {
+  salesStore.getDrawerData(index)
+  await nextTick()
+  showDrawer.value = true
+}
+
+function paymentCreditView(id) {
+  router.push({
+    name: 'payment-credit',
+    params: { id: id },
+  })
+}
 
 function deleteData(id) {
   deleteId.value = id
