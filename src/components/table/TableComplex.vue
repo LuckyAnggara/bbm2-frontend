@@ -2,21 +2,13 @@
   <div class="flex items-center justify-between pb-4">
     <div>
       <div v-if="useLimit == true" class="flex items-center space-x-2">
-        <label
-          for="years"
-          class="block text-sm font-medium text-gray-900 dark:text-white"
-          >Show</label
-        >
+        <label for="years" class="block text-sm font-medium text-gray-900 dark:text-white">Show</label>
         <select
           :value="currentLimit"
           @input="$emit('update:currentLimit', $event.target.value)"
           class="shadow-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block sm:w-16 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-16"
         >
-          <option
-            :selected="currentLimit == length ? true : false"
-            v-for="length in lengths"
-            :key="length"
-          >
+          <option :selected="currentLimit == length ? true : false" v-for="length in lengths" :key="length">
             {{ length }}
           </option>
         </select>
@@ -25,16 +17,8 @@
     <label for="table-search" class="sr-only">Search</label>
     <div class="flex space-x-4">
       <div v-if="useSearch == true" class="relative">
-        <div
-          class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
-        >
-          <svg
-            class="w-5 h-5 text-gray-500 dark:text-gray-400"
-            aria-hidden="true"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path
               fill-rule="evenodd"
               d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
@@ -55,21 +39,11 @@
       <slot name="extendButton"> </slot>
     </div>
   </div>
-  <div
-    :class="useShadow ? 'shadow-md' : ''"
-    class="relative overflow-x-auto sm:rounded-lg"
-  >
+  <div :class="useShadow ? 'shadow-md' : ''" class="relative overflow-x-auto sm:rounded-lg">
     <table class="w-full text-sm text-left">
-      <thead
-        class="text-md text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-300"
-      >
+      <thead class="text-md text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-300">
         <tr>
-          <th
-            scope="col"
-            class="px-6 py-3"
-            v-for="column in props.columns"
-            :key="column.key"
-          >
+          <th scope="col" class="px-6 py-3" v-for="column in props.columns" :key="column.key">
             {{ column.label }}
           </th>
         </tr>
@@ -81,23 +55,12 @@
           </td>
         </tr>
         <tr v-else-if="!isLoading && data.length < 1">
-          <td :colspan="props.columns.length" class="text-center py-12">
-            No Data
-          </td>
+          <td :colspan="props.columns.length" class="text-center py-12">No Data</td>
         </tr>
-        <tr
-          v-else
-          v-for="(item, index) in data"
-          :key="item.id"
-          class="hover:bg-gray-100 dark:hover:bg-gray-600 border-b dark:border-gray-700"
-        >
+        <tr v-else v-for="(item, index) in data" :key="item.id" class="hover:bg-gray-100 dark:hover:bg-gray-600 border-b dark:border-gray-700">
           <td class="px-6 py-4" v-for="column in columns" :key="column.key">
             <span v-if="column.key == 'action'" :class="column.class">
-              <slot
-                name="action"
-                :id="item.id"
-                :status="item.status ?? null"
-              ></slot>
+              <slot name="action" :id="item.id" :status="item.status ?? null"></slot>
             </span>
             <span v-else-if="column.type == 'id'" :class="column.class">
               {{ ++index }}
@@ -109,42 +72,28 @@
               {{ moment(item[column.key]).format('DD MMMM YYYY') }}
             </span>
             <span v-else-if="column.type == 'slot'">
-              <slot
-                name="status"
-                :label="item[column.key]"
-                :id="item.id"
-                :index="--index"
-              ></slot>
+              <slot name="status" :label="item[column.key]" :id="item.id" :index="--index"></slot>
             </span>
             <span v-else-if="column.type == 'currency'" :class="column.class">
               {{ IDRCurrency.format(item[column.key]) }}
             </span>
             <span v-else>
-              {{ item[column.key].toUpperCase() }}
+              {{ item[column.key].toUpperCase() ?? '-' }}
             </span>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-  <div
-    v-if="usePagginate == true && !isLoading"
-    class="flex flex-col items-center mt-4"
-  >
+  <div v-if="usePagginate == true && !isLoading" class="flex flex-col items-center mt-4">
     <!-- Help text -->
     <span class="text-sm text-gray-700 dark:text-gray-400">
       Showing
-      <span class="font-semibold text-gray-900 dark:text-white">{{
-        pagginate.from ?? 0
-      }}</span>
+      <span class="font-semibold text-gray-900 dark:text-white">{{ pagginate.from ?? 0 }}</span>
       to
-      <span class="font-semibold text-gray-900 dark:text-white">{{
-        pagginate.to ?? 0
-      }}</span>
+      <span class="font-semibold text-gray-900 dark:text-white">{{ pagginate.to ?? 0 }}</span>
       of
-      <span class="font-semibold text-gray-900 dark:text-white">{{
-        pagginate.total ?? 0
-      }}</span>
+      <span class="font-semibold text-gray-900 dark:text-white">{{ pagginate.total ?? 0 }}</span>
       Entries
     </span>
     <!-- Buttons -->
@@ -163,9 +112,7 @@
           <li>
             <a
               @click="emit('nextPage')"
-              :disabled="
-                itemStore.lastPage == itemStore.currentPage ? true : false
-              "
+              :disabled="itemStore.lastPage == itemStore.currentPage ? true : false"
               class="w-32 cursor-pointer px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >Next</a
             >
@@ -251,13 +198,7 @@ const props = defineProps({
 
 const lengths = ref([5, 10, 20, 30, 40, 50])
 const showModal = ref(false)
-const emit = defineEmits([
-  'nextPage',
-  'previousPage',
-  'update:searchQuery',
-  'update:currentLimit',
-  'onEnter',
-])
+const emit = defineEmits(['nextPage', 'previousPage', 'update:searchQuery', 'update:currentLimit', 'onEnter'])
 
 // onMounted(() => {
 //   itemStore.getData()

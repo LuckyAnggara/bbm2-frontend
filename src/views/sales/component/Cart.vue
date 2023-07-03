@@ -1,9 +1,7 @@
 <template>
   <section class="w-full flex flex-col relative justify-between">
     <div class="flex lg:flex-row flex-col lg:space-x-6 space-y-6 lg:space-y-0">
-      <div
-        class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit"
-      >
+      <div class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit">
         <div class="flex flex-row items-center justify-between p-4 space-y-4">
           <div class="w-full">
             <Searchbar
@@ -21,35 +19,24 @@
       </div>
 
       <div class="flex flex-col space-y-4 items-end w-full">
-        <div
-          class="overflow-x-scroll shadow-md rounded-lg w-full h-fit scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700"
-        >
-          <table
-            class="w-full text-sm text-left text-gray-500 dark:text-gray-400 px-2 py-4 table-fixed"
-          >
-            <thead
-              class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400"
-            >
+        <div class="overflow-x-scroll shadow-md rounded-lg w-full h-fit scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
+          <table class="w-full text-xs text-left text-gray-500 dark:text-gray-400 px-2 py-4 table-fixed">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th scope="col" class="py-3 w-16 text-center">No</th>
-                <th scope="col" class="px-2 py-3 w-48">Nama Produk</th>
-                <th scope="col" class="px-2 py-3 w-36">Harga</th>
-                <th scope="col" class="px-2 py-3 w-14">Qty</th>
+                <th scope="col" class="py-3 w-4 text-center">No</th>
+                <th scope="col" class="px-2 py-3 w-36">Nama Produk</th>
+                <th scope="col" class="px-2 py-3 w-16">Harga</th>
+                <th scope="col" class="px-2 py-3 w-8">Qty</th>
                 <th scope="col" class="px-2 py-3 w-12">Satuan</th>
-                <th scope="col" class="px-2 py-3 w-32">Diskon</th>
-                <th scope="col" class="px-2 py-3 w-32">Subtotal</th>
-                <th scope="col" class="px-2 py-3 w-16">Action</th>
+                <th scope="col" class="px-2 py-3 w-12">Diskon</th>
+                <th scope="col" class="px-2 py-3 w-12">Subtotal</th>
+                <th scope="col" class="px-2 py-3 w-8">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-if="salesStore.currentData.currentCart.length < 1"
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-              >
+              <tr v-if="salesStore.currentData.currentCart.length < 1" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <td colspan="8" class="px-6 py-4 text-center">
-                  <span class="text-xl dark:text-gray-200 text-black"
-                    >Tidak ada data</span
-                  >
+                  <span class="text-xl dark:text-gray-200 text-black">Tidak ada data</span>
                 </td>
               </tr>
               <tr
@@ -76,13 +63,12 @@
                   <input
                     min="0"
                     type="number"
-                    class="sm:w-full w-20 dark:bg-gray-700 bg-gray-100 text-black dark:text-white border border-gray-800 text-md rounded-lg p-2 font-medium"
+                    :class="[item.qty > item.stock ? 'dark:bg-red-400 bg-red-300' : 'dark:bg-gray-700 bg-gray-100']"
+                    class="sm:w-full w-20 text-black dark:text-white border border-gray-800 text-md rounded-lg p-2 font-medium"
                     v-model="item.qty"
                   />
                 </td>
-                <td
-                  class="px-2 py-4 text-sm text-gray-900 whitespace-nowrap dark:text-white"
-                >
+                <td class="px-2 py-4 text-sm text-gray-900 dark:text-white">
                   {{ item.unit?.toUpperCase() }}
                 </td>
                 <td class="px-2 py-4">
@@ -92,16 +78,11 @@
                     v-model="item.disc"
                   />
                 </td>
-                <td
-                  class="px-2 py-4 text-gray-900 whitespace-nowrap dark:text-white"
-                >
+                <td class="px-2 py-4 text-gray-900 dark:text-white">
                   {{ IDRCurrency.format(item.qty * item.price - item.disc) }}
                 </td>
                 <td class="px-2 py-4">
-                  <TrashIcon
-                    @click="removeItem(index)"
-                    class="h-6 w-6 hover:text-red-500 cursor-pointer hover:animate-bounce"
-                  />
+                  <TrashIcon @click="removeItem(index)" class="h-6 w-6 hover:text-red-500 cursor-pointer hover:animate-bounce" />
                 </td>
               </tr>
             </tbody>
@@ -135,11 +116,7 @@
 </template>
 
 <script setup>
-import {
-  TrashIcon,
-  PaperAirplaneIcon,
-  ArrowUturnLeftIcon,
-} from '@heroicons/vue/24/outline'
+import { TrashIcon, PaperAirplaneIcon, ArrowUturnLeftIcon } from '@heroicons/vue/24/outline'
 
 import { ref, reactive, computed, onUnmounted } from 'vue'
 import { useItemStore } from '../../../stores/items'
@@ -176,6 +153,7 @@ function addItem(item) {
       name: item.name,
       unit: item.unit.name,
       price: item.price ? item.price.price : 0,
+      stock: item.ending_stock,
       qty: 1,
       disc: 0,
     })

@@ -35,9 +35,7 @@
     <template #extendButton>
       <button
         :disabled="showCreateDrawer"
-        :class="
-          showCreateDrawer ? '' : 'hover:translate-x-2 duration-300 ease-in-out'
-        "
+        :class="showCreateDrawer ? '' : 'hover:translate-x-2 duration-300 ease-in-out'"
         @click="newProduct()"
         type="button"
         class="shadow-md text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -52,11 +50,7 @@
 </template>
 
 <script setup>
-import {
-  MagnifyingGlassIcon,
-  PencilSquareIcon,
-  TrashIcon,
-} from '@heroicons/vue/24/outline'
+import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { onMounted, computed, onUnmounted, ref, nextTick, inject } from 'vue'
 import TableComplex from '../../components/table/TableComplex.vue'
 import { useItemStore } from '../../stores/items'
@@ -71,8 +65,8 @@ const column = [
   { key: 'name', label: 'Nama Produk', class: 'uppercase' },
   { key: 'brand_name', label: 'Merek', class: 'uppercase' },
   { key: 'unit_name', label: 'Satuan', class: 'uppercase' },
-  { key: 'price', label: 'Harga Terakhir', type: 'currency' },
-  { key: 'balance', label: 'Saldo', type: 'number' },
+  { key: 'price', label: 'Harga Jual Terakhir', type: 'currency' },
+  { key: 'ending_stock', label: 'Saldo Terakhir', type: 'number' },
   { key: 'action', label: 'Action' },
 ]
 const swal = inject('$swal')
@@ -98,7 +92,7 @@ const formattedTableData = computed(() => {
       unit_name: item.unit?.name ?? '',
       name: item.name ?? '',
       price: item.price ? item.price.price : 0,
-      balance: item.balance ?? 0,
+      ending_stock: item.ending_stock ?? 0,
     }
   })
 })
