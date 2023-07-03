@@ -122,14 +122,14 @@
           <tr>
             <th
               scope="col"
-              class="px-4 py-3 border border-slate-400 dark:border-slate-600"
+              class="px-4 py-3 w-64 border border-slate-400 dark:border-slate-600"
               rowspan="2"
             >
               Nama
             </th>
             <th
               scope="col"
-              class="px-4 py-3 border border-slate-400 dark:border-slate-600"
+              class="px-4 py-3 w-24 border border-slate-400 dark:border-slate-600"
               rowspan="2"
             >
               Satuan
@@ -224,65 +224,21 @@
           >
             <th
               scope="row"
-              class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="px-4 py-3 font-medium text-gray-900 dark:text-white"
             >
               {{ item.name.toUpperCase() }}
             </th>
             <td class="px-4 py-3">{{ item.unit.name.toUpperCase() }}</td>
-            <td class="px-4 py-3">Apple</td>
-            <td class="px-4 py-3">4578</td>
-            <td class="px-4 py-3">$1199</td>
-            <td class="px-4 py-3 flex items-center justify-end">
-              <button
-                id="apple-imac-27-dropdown-button"
-                data-dropdown-toggle="apple-imac-27-dropdown"
-                class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
-                type="button"
-              >
-                <svg
-                  class="w-5 h-5"
-                  aria-hidden="true"
-                  fill="currentColor"
-                  viewbox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"
-                  />
-                </svg>
-              </button>
-              <div
-                id="apple-imac-27-dropdown"
-                class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
-              >
-                <ul
-                  class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                  aria-labelledby="apple-imac-27-dropdown-button"
-                >
-                  <li>
-                    <a
-                      href="#"
-                      class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >Show</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >Edit</a
-                    >
-                  </li>
-                </ul>
-                <div class="py-1">
-                  <a
-                    href="#"
-                    class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                    >Delete</a
-                  >
-                </div>
-              </div>
+            <td class="px-4 py-3">{{ item.beginning_stock }}</td>
+            <td class="px-4 py-3">{{ item.in_stock }}</td>
+            <td class="px-4 py-3">{{ item.out_stock }}</td>
+            <td class="px-4 py-3">{{ item.ending_stock }}</td>
+            <td class="px-4 py-3">
+              {{ IDRCurrency.format(item.beginning_balance) }}
             </td>
+            <td class="px-4 py-3">masuk</td>
+            <td class="px-4 py-3">keluar</td>
+            <td class="px-4 py-3">akhir</td>
           </tr>
         </tbody>
       </table>
@@ -345,6 +301,7 @@ import {
 import { onMounted, computed, onUnmounted, ref, nextTick, inject } from 'vue'
 import TableComplex from '../../components/table/TableComplex.vue'
 import CircleLoading from '../../components/loading/CircleLoading.vue'
+import { IDRCurrency } from '../../utilities/formatter'
 import { useItemStore } from '../../stores/items'
 import { initDropdowns } from 'flowbite'
 

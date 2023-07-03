@@ -18,6 +18,7 @@ export default {
     return {
       isLoading: true,
       isDark: JSON.parse(localStorage.getItem('isDark')),
+      openSideBar: JSON.parse(localStorage.getItem('openSideBar')),
     }
   },
   components: {

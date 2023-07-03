@@ -141,7 +141,6 @@
 
   <DetailPenjualanDrawer :show="showDrawer" />
   <FilterDrawer :show="showFilterDrawer" @close="showFilterDrawer = false" />
-
   <!--Confirmation Modal -->
   <Teleport to="body">
     <!-- use the modal component, pass in the prop -->

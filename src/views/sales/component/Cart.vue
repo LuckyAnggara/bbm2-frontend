@@ -1,11 +1,11 @@
 <template>
   <section class="w-full flex flex-col relative justify-between">
-    <div class="flex xl:flex-row flex-col xl:space-x-6 space-y-6 xl:space-y-0">
+    <div class="flex lg:flex-row flex-col lg:space-x-6 space-y-6 lg:space-y-0">
       <div
-        class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit w-fit"
+        class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit"
       >
         <div class="flex flex-row items-center justify-between p-4 space-y-4">
-          <div>
+          <div class="w-full">
             <Searchbar
               @cari-data="cariData()"
               v-model="itemStore.searchName"
@@ -15,33 +15,30 @@
               :aria-result="false"
               @add-data="addItem"
             >
-              <template v-slot:button>
-                <span class="ml-1">Add product</span>
-              </template>
             </Searchbar>
           </div>
         </div>
       </div>
 
       <div class="flex flex-col space-y-4 items-end w-full">
-        <div class="overflow-x-auto shadow-md rounded-lg w-full h-fit">
+        <div
+          class="overflow-x-scroll shadow-md rounded-lg w-full h-fit scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700"
+        >
           <table
-            class="w-full text-sm text-left text-gray-500 dark:text-gray-400 px-2 py-4"
+            class="w-full text-sm text-left text-gray-500 dark:text-gray-400 px-2 py-4 table-fixed"
           >
             <thead
               class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400"
             >
               <tr>
                 <th scope="col" class="py-3 w-16 text-center">No</th>
-                <th scope="col" class="px-2 py-3 md:w-52 w-full">
-                  Nama Produk
-                </th>
-                <th scope="col" class="px-2 py-3 md:w-48 w-full">Harga</th>
-                <th scope="col" class="px-2 py-3 md:w-20 w-full">Qty</th>
-                <th scope="col" class="px-2 py-3 md:w-20 w-full">Satuan</th>
-                <th scope="col" class="px-2 py-3 md:w-24 w-full">Diskon</th>
-                <th scope="col" class="px-2 py-3 md:w-32 w-full">Subtotal</th>
-                <th scope="col" class="px-2 py-3 md:w-16 w-full">Action</th>
+                <th scope="col" class="px-2 py-3 w-48">Nama Produk</th>
+                <th scope="col" class="px-2 py-3 w-36">Harga</th>
+                <th scope="col" class="px-2 py-3 w-14">Qty</th>
+                <th scope="col" class="px-2 py-3 w-12">Satuan</th>
+                <th scope="col" class="px-2 py-3 w-32">Diskon</th>
+                <th scope="col" class="px-2 py-3 w-32">Subtotal</th>
+                <th scope="col" class="px-2 py-3 w-16">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -59,21 +56,20 @@
                 v-else
                 v-for="(item, index) in salesStore.currentData.currentCart"
                 :key="item.id"
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-md"
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-sm"
               >
                 <td class="px-3 py-4 text-center">{{ 1 + index }}</td>
-                <th
-                  scope="row"
-                  class="py-4 px-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  {{ item.name.toUpperCase() }}
-                </th>
+                <td class="py-4 px-2 text-gray-900 dark:text-white">
+                  <span class="text-ellipsis">
+                    {{ item.name.toUpperCase() }}
+                  </span>
+                </td>
 
                 <td class="px-2 py-4">
                   <InputCurrency
                     :options="{ currency: 'IDR' }"
                     v-model="item.price"
-                    :custom-class="'sm:w-full w-36 dark:bg-gray-700 bg-gray-100 text-black dark:text-white border border-gray-800 text-md rounded-lg p-2 font-medium'"
+                    :custom-class="'sm:w-full w-36 dark:bg-gray-700 bg-gray-100 text-black dark:text-white border border-gray-800 text-md rounded-lg p-2 '"
                   />
                 </td>
                 <td class="px-2 py-4">
@@ -179,7 +175,7 @@ function addItem(item) {
       id: item.id,
       name: item.name,
       unit: item.unit.name,
-      price: 0,
+      price: item.price ? item.price.price : 0,
       qty: 1,
       disc: 0,
     })

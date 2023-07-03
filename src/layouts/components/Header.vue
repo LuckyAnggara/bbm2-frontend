@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+    class="fixed top-0 z-50 w-full h-16 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"
   >
     <!-- :class="[
       !versionStore.isOnline
@@ -15,7 +15,7 @@
             data-drawer-toggle="logo-sidebar"
             aria-controls="logo-sidebar"
             type="button"
-            class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            class="inline-flex xl:hidden items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
           >
             <span class="sr-only">Open sidebar</span>
             <svg
@@ -98,6 +98,7 @@ const router = useRouter()
 const authStore = useAuthStore()
 // const versionStore = useVersionStore()
 const isDark = ref(localStorage.getItem('isDark') || false)
+const openSideBar = ref(localStorage.getItem('openSideBar') || true)
 // const isDark = computed(() => {
 //   return localStorage.getItem('isDark')
 // })
@@ -108,6 +109,10 @@ watch(isDark, (newX) => {
     'dark',
     JSON.parse(localStorage.getItem('isDark'))
   )
+})
+
+watch(openSideBar, (newX) => {
+  localStorage.setItem('openSideBar', JSON.stringify(newX))
 })
 
 async function logout() {

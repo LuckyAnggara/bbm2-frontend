@@ -3,11 +3,11 @@
     @mouseenter="
       ariaResult == true ? (disabledAdd == true ? '' : (showResult = true)) : ''
     "
-    class="w-96 space-y-4 relative"
+    class="w-full space-y-4 relative"
   >
     <form class="flex items-center" autocomplete="off" @submit.prevent>
       <label for="simple-search" class="sr-only">{{ placeholder }}</label>
-      <div class="relative w-full">
+      <div class="relative xl:w-80 w-full">
         <div
           class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
         >
@@ -96,7 +96,7 @@
 
   <div
     v-show="ariaResult == false"
-    class="h-fit w-full border-t-2 mt-6 dark:border-gray-700 border-gray-200"
+    class="h-fit xl:w-80 w-full border-t-2 mt-6 dark:border-gray-700 border-gray-200"
   >
     <ul class="relative h-full w-full p-4 space-y-2">
       <template v-if="isLoading == true">
@@ -113,10 +113,12 @@
           <span class="text-gray-400"> Tidak ada data </span>
         </li>
         <li
+          :disabled="disabledAdd"
           v-else
           v-for="item in resultItems"
           :key="item.id"
-          class="group/edit px-2 py-3 flex justify-between hover:bg-slate-500 rounded-md dark:text-white hover:text-white hover:font-bold dark:hover:text-white items-center"
+          @click="add(item)"
+          class="cursor-pointer group/edit px-2 py-3 flex justify-between hover:bg-slate-500 rounded-md dark:text-white hover:text-white hover:font-bold dark:hover:text-white items-center"
         >
           <span
             class="group-hover/edit:translate-x-2 duration-300 ease-in-out transition"
@@ -124,15 +126,15 @@
             {{ item.name?.toUpperCase() }}
           </span>
 
-          <button
+          <!-- <button
             :disabled="disabledAdd"
             @click="add(item)"
             type="button"
-            class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 duration-300 ease-in-out transition transform hover:-translate-x-2"
+            class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 duration-300 ease-in-out transition transform"
           >
             <PlusIcon class="h-5 w-5" />
             <slot name="button"></slot>
-          </button>
+          </button> -->
         </li>
       </template>
     </ul>

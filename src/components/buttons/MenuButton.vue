@@ -12,12 +12,16 @@
         <div aria-hidden="true" class="w-6 h-6">
           <slot name="leftIcon"></slot>
         </div>
-        <span class="ml-3">
+        <span class="ml-3 hidden sm:flex">
           <slot name="text"></slot>
         </span>
       </div>
 
-      <ChevronDownIcon v-if="hasChild" aria-hidden="true" class="w-6 h-6">
+      <ChevronDownIcon
+        v-if="hasChild"
+        aria-hidden="true"
+        class="w-6 h-6 hidden sm:flex"
+      >
       </ChevronDownIcon>
     </a>
   </router-link>

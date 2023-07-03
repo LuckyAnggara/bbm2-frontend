@@ -119,7 +119,7 @@
                 <div
                   class="flex justify-between dark:text-gray-400 text-gray-600 w-64"
                 >
-                  <ul class="space-y-1 text-left">
+                  <ul class="space-y-1 text-left font-semibold">
                     <li>SUBTOTAL</li>
                     <li v-if="salesStore.singleResponses.discount > 0">
                       DISKON
@@ -141,9 +141,9 @@
                       v-if="salesStore.singleResponses.discount > 0"
                       class="text-red-500"
                     >
-                      {{
+                      ({{
                         IDRCurrency.format(salesStore.singleResponses.discount)
-                      }}
+                      }})
                     </li>
                     <li v-if="salesStore.singleResponses.tax > 0">
                       {{ IDRCurrency.format(salesStore.singleResponses.tax) }}
@@ -166,12 +166,14 @@
                   </ul>
                 </div>
                 <div
-                  v-if="salesStore.singleResponses.credit !== 'LUNAS'"
-                  class="flex justify-between dark:text-gray-400 text-gray-600 w-60"
+                  v-if="salesStore.singleResponses.credit == 1"
+                  class="ml-4 flex justify-between dark:text-gray-400 text-gray-600 w-60"
                 >
                   <ul class="space-y-1 text-left">
-                    <li>JT. TEMPO</li>
-                    <li class="dark:text-white text-black text-md font-medium">
+                    <li class="font-semibold">JT. TEMPO</li>
+                    <li
+                      class="dark:text-white text-black text-md font-semibold"
+                    >
                       SISA
                     </li>
                   </ul>
@@ -188,7 +190,7 @@
                     <li class="dark:text-white text-black text-lg font-medium">
                       {{
                         IDRCurrency.format(
-                          salesStore.singleResponses.remaining_receivable
+                          salesStore.singleResponses.remaining_credit
                         )
                       }}
                     </li>

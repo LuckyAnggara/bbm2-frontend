@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="show == true ? '' : 'translate-x-full'"
+    :class="show == true ? '' : 'translate-x-full flex'"
     class="py-20 fixed top-0 right-0 z-40 w-full h-screen max-w-sm p-4 overflow-y-auto transition-transform duration-500 ease-in-out bg-white dark:bg-gray-800 shadow-md"
   >
     <div class="w-full justify-between flex items-start mb-4">

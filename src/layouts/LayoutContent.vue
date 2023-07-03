@@ -14,6 +14,6 @@ export default {
     <Sidebar />
     <Header />
     <Main />
-    <Footer />
+    <!-- <Footer /> -->
   </div>
 </template>

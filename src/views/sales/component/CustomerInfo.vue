@@ -1,9 +1,11 @@
 <template>
   <section class="w-full flex flex-col relative justify-between">
-    <div class="flex sm:flex-row flex-col sm:space-x-6 space-y-6 sm:space-y-0">
+    <div
+      class="flex lg:flex-row flex-col lg:space-x-6 space-y-6 lg:space-y-0 ease-in-out transform duration-300"
+    >
       <div class="bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit">
         <div class="flex flex-row items-center justify-between p-4 space-y-4">
-          <div>
+          <div class="w-full">
             <Searchbar
               v-model="customerStore.searchName"
               @cari-data="cariData()"

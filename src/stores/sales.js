@@ -6,6 +6,8 @@ import { useAuthStore } from './auth'
 const toast = useToast()
 const userData = JSON.parse(localStorage.getItem('userData'))
 
+console.info(userData)
+
 // ITEM STORE
 export const useSalesStore = defineStore('salesStore', {
   state: () => {

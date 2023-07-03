@@ -71,6 +71,7 @@ const column = [
   { key: 'name', label: 'Nama Produk', class: 'uppercase' },
   { key: 'brand_name', label: 'Merek', class: 'uppercase' },
   { key: 'unit_name', label: 'Satuan', class: 'uppercase' },
+  { key: 'price', label: 'Harga Terakhir', type: 'currency' },
   { key: 'balance', label: 'Saldo', type: 'number' },
   { key: 'action', label: 'Action' },
 ]
@@ -96,6 +97,7 @@ const formattedTableData = computed(() => {
       brand_name: item.brand?.name ?? '',
       unit_name: item.unit?.name ?? '',
       name: item.name ?? '',
+      price: item.price ? item.price.price : 0,
       balance: item.balance ?? 0,
     }
   })
