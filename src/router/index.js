@@ -8,6 +8,7 @@ import DaftarPenjualan from '../views/sales/DaftarPenjualan.vue'
 import Login from '../views/Login/Login.vue'
 import Invoice from '../views/invoice/SaleInvoice.vue'
 import PaymentCredit from '../views/sales/PaymentCredit.vue'
+import IncomeStatement from '../views/report/IncomeStatement.vue'
 import { useAuthStore } from '../stores/auth'
 import { useVersionStore } from '../stores/version'
 
@@ -96,6 +97,17 @@ const routes = [
       transition: 'slide-left',
       requiresAuth: true,
       title: 'Detail Pembayaran Kredit',
+      layout: 'layout-content',
+    },
+  },
+  {
+    path: '/report/income-statement',
+    name: 'income-statement',
+    component: IncomeStatement,
+    meta: {
+      transition: 'slide-left',
+      requiresAuth: true,
+      title: 'Laba Rugi',
       layout: 'layout-content',
     },
   },

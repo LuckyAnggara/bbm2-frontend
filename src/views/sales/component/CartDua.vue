@@ -23,7 +23,7 @@
     </div>
 
     <div class="flex lg:flex-row flex-col lg:space-x-6 space-y-6 lg:space-y-0">
-      <div class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit">
+      <!-- <div class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit">
         <div class="flex flex-row items-center justify-between p-4 space-y-4">
           <div class="w-full">
             <Searchbar
@@ -38,7 +38,7 @@
             </Searchbar>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="flex flex-col space-y-4 items-end w-full">
         <div class="overflow-x-scroll shadow-md rounded-lg w-full h-fit scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
@@ -55,7 +55,8 @@
                 <th scope="col" class="px-2 py-3 w-8">Action</th>
               </tr>
             </thead>
-            <tbody>
+            <TransitionGroup name="list" tag="tbody">
+              <!-- <tbody tag="tbody" name="list" is="transition-group"> -->
               <tr v-if="salesStore.currentData.currentCart.length < 1" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <td colspan="8" class="px-6 py-4 text-center">
                   <span class="text-xl dark:text-gray-200 text-black">Tidak ada data</span>
@@ -67,18 +68,22 @@
                 :key="item.id"
                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-sm"
               >
-                <td class="px-3 py-4">
-                  <span>{{ 1 + index }}</span>
-                </td>
+                <td class="px-3 py-4 text-center">{{ 1 + index }}</td>
                 <td class="py-4 px-2 text-gray-900 dark:text-white">
-                  <span class="text-ellipsis">
-                    {{ item.name.toUpperCase() }}
-                  </span>
+                  <Searchbar
+                    @cari-data="cariData()"
+                    v-model="item.name"
+                    :is-loading="itemStore.isLoading"
+                    :result-items="itemStore.items"
+                    :placeholder="'Cari Item'"
+                    :aria-result="true"
+                    @add-data="setItem(item)"
+                  >
+                  </Searchbar>
                 </td>
 
                 <td class="px-2 py-4">
                   <InputCurrency
-                    @dblclick="showPrice(item, index)"
                     :options="{ currency: 'IDR' }"
                     v-model="item.price"
                     :custom-class="'sm:w-full w-36 dark:bg-gray-700 bg-gray-100 text-black dark:text-white border border-gray-800 text-md rounded-lg p-2 '"
@@ -110,22 +115,29 @@
                   <TrashIcon @click="removeItem(index)" class="h-6 w-6 hover:text-red-500 cursor-pointer hover:animate-bounce" />
                 </td>
               </tr>
-            </tbody>
+              <!-- </tbody> -->
+            </TransitionGroup>
           </table>
         </div>
       </div>
     </div>
 
-    <Teleport to="body">
-      <PriceModal :show="showPriceModal" @close="showPriceModal = false" @set-item="setPrice" :item-title="itemTitle" />
-    </Teleport>
+    <div class="flex items-center justify-between w-full mt-4">
+      <button
+        @click="addItem2()"
+        type="button"
+        class="text-green-600 inline-flex items-center hover:text-white border hover:-translate-y-2 ease-in-out duration-300 border-green-600 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-900"
+      >
+        Tambah
+      </button>
+    </div>
   </section>
 </template>
 
 <script setup>
 import { TrashIcon, PaperAirplaneIcon, ArrowUturnLeftIcon } from '@heroicons/vue/24/outline'
 
-import { ref, reactive, computed, onUnmounted, defineAsyncComponent } from 'vue'
+import { ref, reactive, computed, onUnmounted, onMounted } from 'vue'
 import { useItemStore } from '../../../stores/items'
 import { IDRCurrency } from '../../../utilities/formatter'
 import { useToast } from 'vue-toastification'
@@ -133,18 +145,12 @@ import { useToast } from 'vue-toastification'
 import Searchbar from '../../../components/input/Searchbar.vue'
 import InputCurrency from '../../../components/input/InputCurrency.vue'
 import { useSalesStore } from '../../../stores/sales'
-import { useItemPriceStore } from '../../../stores/itemPrice'
 
 const emit = defineEmits(['next', 'previous'])
 
 const toast = useToast()
 const itemStore = useItemStore()
 const salesStore = useSalesStore()
-const itemPriceStore = useItemPriceStore()
-
-const showPriceModal = ref(false)
-const itemTitle = ref('')
-const itemIndex = ref(0)
 
 const canSubmit = computed(() => {
   if (salesStore.currentData.currentCart.length > 0) {
@@ -153,35 +159,46 @@ const canSubmit = computed(() => {
   return false
 })
 
-const PriceModal = defineAsyncComponent(() => import('../modal/PriceModal.vue'))
-
 // Function
 function cariData() {
   itemStore.currentLimit = 5
   itemStore.getData()
 }
 
-function addItem(item) {
-  if (!checkItem(item.id)) {
-    salesStore.currentData.currentCart.push({
-      id: item.id,
-      name: item.name,
-      unit: item.unit.name,
-      price: item.price ? item.price.price : 0,
-      stock: item.ending_stock,
-      qty: 1,
-      disc: 0,
-    })
-    toast.success('Item baru di tambahkan', {
-      timeout: 1000,
-      position: 'bottom-left',
-    })
-  } else {
-    toast.error('Item sudah ada', {
-      timeout: 1000,
-      position: 'bottom-left',
-    })
-  }
+function setItem(item) {
+  console.info(item)
+  // if (!checkItem(item.id)) {
+  //   salesStore.currentData.currentCart.push({
+  //     id: item.id,
+  //     name: item.name,
+  //     unit: item.unit.name,
+  //     price: item.price ? item.price.price : 0,
+  //     stock: item.ending_stock,
+  //     qty: 1,
+  //     disc: 0,
+  //   })
+  //   toast.success('Item baru di tambahkan', {
+  //     timeout: 1000,
+  //     position: 'bottom-left',
+  //   })
+  // } else {
+  //   toast.error('Item sudah ada', {
+  //     timeout: 1000,
+  //     position: 'bottom-left',
+  //   })
+  // }
+}
+
+function addItem2(item) {
+  salesStore.currentData.currentCart.push({
+    id: 1,
+    name: '',
+    unit: '',
+    price: 0,
+    stock: 0,
+    qty: 1,
+    disc: 0,
+  })
 }
 
 function removeItem(index) {
@@ -200,19 +217,31 @@ function checkItem(id) {
   return false
 }
 
-function setPrice(x) {
-  salesStore.currentData.currentCart[itemIndex.value].price = x
-  showPriceModal.value = false
-}
-
-function showPrice(item, index) {
-  showPriceModal.value = true
-  itemPriceStore.getData(item.id)
-  itemTitle.value = item.name
-  itemIndex.value = index
-}
-
 onUnmounted(() => {
   itemStore.$reset()
 })
+
+onMounted(() => {
+  salesStore.currentData.currentCart.push({
+    id: 0,
+    name: '',
+    unit: '',
+    price: 0,
+    stock: 0,
+    qty: 1,
+    disc: 0,
+  })
+})
 </script>
+
+<style>
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+</style>

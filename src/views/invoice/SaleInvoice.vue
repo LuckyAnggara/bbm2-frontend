@@ -1,58 +1,30 @@
 <template>
-  <div
-    class="w-full flex flex-col justify-center sm:px-56 px-12 py-6 space-y-6"
-  >
+  <div class="w-full flex flex-col xl:flex-row justify-between xl:justify-center xl:px-32 py-6 space-y-12 transition duration-300 ease-in-out">
     <template v-if="salesStore.singleResponses">
-      <div class="relative w-full overflow-hidden">
-        <div
-          class="rounded-xl py-20 px-20 shadow-md flex flex-col space-y-12 bg-white dark:bg-gray-800 dark:text-white"
-        >
+      <div class="xl:relative w-full overflow-x-scroll xl:overflow-hidden">
+        <div class="xl:w-full w-max rounded-xl py-20 px-20 shadow-md flex flex-col space-y-12 dark:bg-gray-800 bg-white dark:text-white">
           <!-- Header -->
           <section>
             <div class="flex justify-between mb-4">
               <div class="flex flex-col">
-                <span class="dark:text-white text-black text-3xl font-bold"
-                  >Invoice #{{ salesStore.singleResponses.invoice }}
-                </span>
-                <span class="dark:text-gray-400 text-gray-800 mt-2">{{
-                  moment(salesStore.singleResponses.created_at).format(
-                    'DD MMMM YYYY'
-                  )
-                }}</span>
+                <span class="dark:text-white text-black text-3xl font-bold">Invoice #{{ salesStore.singleResponses.invoice }} </span>
+                <span class="dark:text-gray-400 text-gray-800 mt-2">{{ moment(salesStore.singleResponses.created_at).format('DD MMMM YYYY') }}</span>
               </div>
               <div class="flex flex-col text-right">
-                <span
-                  class="dark:text-white text-black text-3xl font-medium mb-2"
-                  >Berkah Baja Makmur</span
-                >
-                <span
-                  class="dark:text-gray-400 text-gray-800 w-96 text-ellipsis break-words italic"
+                <span class="dark:text-white text-black text-3xl font-medium mb-2">Berkah Baja Makmur</span>
+                <span class="dark:text-gray-400 text-gray-800 w-96 text-ellipsis break-words italic"
                   >Jl Raya Limbangan asdkjaskdjaksd aksjdaksjd askdjaksjd</span
                 >
-                <span
-                  class="dark:text-gray-400 text-gray-800 w-96 text-ellipsis italic"
-                  >Telepon : 0213012030</span
-                >
+                <span class="dark:text-gray-400 text-gray-800 w-96 text-ellipsis italic">Telepon : 0213012030</span>
               </div>
             </div>
 
             <div class="flex justify-between w-72">
               <div class="flex flex-col">
-                <span class="dark:text-white text-blacktext-xl font-bold"
-                  >Kepada
-                </span>
-                <span
-                  class="dark:text-gray-400 text-gray-800 mt-2 text-ellipsis break-words italic"
-                  >{{ salesStore.singleResponses.customer.name }}</span
-                >
-                <span
-                  class="dark:text-gray-400 text-gray-800 text-ellipsis break-words italic"
-                  >{{ salesStore.singleResponses.customer.address }}</span
-                >
-                <span
-                  class="dark:text-gray-400 text-gray-800 text-ellipsis break-words italic"
-                  >{{ salesStore.singleResponses.customer.phone_number }}</span
-                >
+                <span class="dark:text-white text-blacktext-xl font-bold">Kepada </span>
+                <span class="dark:text-gray-400 text-gray-800 mt-2 text-ellipsis break-words italic">{{ salesStore.singleResponses.customer.name }}</span>
+                <span class="dark:text-gray-400 text-gray-800 text-ellipsis break-words italic">{{ salesStore.singleResponses.customer.address }}</span>
+                <span class="dark:text-gray-400 text-gray-800 text-ellipsis break-words italic">{{ salesStore.singleResponses.customer.phone_number }}</span>
               </div>
             </div>
           </section>
@@ -61,12 +33,8 @@
 
           <section class="py-8 dark:border-gray-100 border-gray-400">
             <div class="relative overflow-x-auto rounded-lg">
-              <table
-                class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
-              >
-                <thead
-                  class="text-gray-800 uppercase bg-gray-300 dark:bg-gray-700 dark:text-white font-normal"
-                >
+              <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-gray-800 uppercase bg-gray-300 dark:bg-gray-700 dark:text-white font-normal">
                   <tr>
                     <th scope="col" class="px-6 py-4">Item</th>
                     <th scope="col" class="px-6 py-4">Quantity</th>
@@ -104,95 +72,48 @@
           <section>
             <div class="flex justify-between">
               <div class="flex flex-col w-96">
-                <span class="dark:text-gray-400 text-gray-800 break-words"
-                  >asdasdasdasdkasjdka sdkajshdkajhs dkajshd aksjdh askdj</span
-                >
+                <span class="dark:text-gray-400 text-gray-800 break-words">asdasdasdasdkasjdka sdkajshdkajhs dkajshd aksjdh askdj</span>
               </div>
-              <div
-                :class="
-                  salesStore.singleResponses.status !== 'LUNAS'
-                    ? 'space-x-5'
-                    : ''
-                "
-                class="flex flex-row"
-              >
-                <div
-                  class="flex justify-between dark:text-gray-400 text-gray-600 w-64"
-                >
+              <div :class="salesStore.singleResponses.status !== 'LUNAS' ? 'space-x-5' : ''" class="flex flex-row">
+                <div class="flex justify-between dark:text-gray-400 text-gray-600 w-64">
                   <ul class="space-y-1 text-left font-semibold">
                     <li>SUBTOTAL</li>
-                    <li v-if="salesStore.singleResponses.discount > 0">
-                      DISKON
-                    </li>
-                    <li v-if="salesStore.singleResponses.tax > 0">
-                      PAJAK (11%)
-                    </li>
+                    <li v-if="salesStore.singleResponses.discount > 0">DISKON</li>
+                    <li v-if="salesStore.singleResponses.tax > 0">PAJAK (11%)</li>
                     <li>ONGKOS KIRIM</li>
-                    <li class="dark:text-white text-black text-lg font-medium">
-                      TOTAL
-                    </li>
+                    <li class="dark:text-white text-black text-lg font-medium">TOTAL</li>
                   </ul>
 
                   <ul class="space-y-1 text-right">
                     <li class="font-semibold">
                       {{ IDRCurrency.format(salesStore.singleResponses.total) }}
                     </li>
-                    <li
-                      v-if="salesStore.singleResponses.discount > 0"
-                      class="text-red-500"
-                    >
-                      ({{
-                        IDRCurrency.format(salesStore.singleResponses.discount)
-                      }})
-                    </li>
+                    <li v-if="salesStore.singleResponses.discount > 0" class="text-red-500">({{ IDRCurrency.format(salesStore.singleResponses.discount) }})</li>
                     <li v-if="salesStore.singleResponses.tax > 0">
                       {{ IDRCurrency.format(salesStore.singleResponses.tax) }}
                     </li>
                     <li>
-                      {{
-                        IDRCurrency.format(
-                          salesStore.singleResponses.shipping_cost
-                        )
-                      }}
+                      {{ IDRCurrency.format(salesStore.singleResponses.shipping_cost) }}
                     </li>
 
                     <li class="dark:text-white text-black text-lg font-medium">
-                      {{
-                        IDRCurrency.format(
-                          salesStore.singleResponses.grand_total
-                        )
-                      }}
+                      {{ IDRCurrency.format(salesStore.singleResponses.grand_total) }}
                     </li>
                   </ul>
                 </div>
-                <div
-                  v-if="salesStore.singleResponses.credit == 1"
-                  class="ml-4 flex justify-between dark:text-gray-400 text-gray-600 w-60"
-                >
+                <div v-if="salesStore.singleResponses.credit == 1" class="ml-4 flex justify-between dark:text-gray-400 text-gray-600 w-60">
                   <ul class="space-y-1 text-left">
                     <li class="font-semibold">JT. TEMPO</li>
-                    <li
-                      class="dark:text-white text-black text-md font-semibold"
-                    >
-                      SISA
-                    </li>
+                    <li class="dark:text-white text-black text-md font-semibold">SISA</li>
                   </ul>
 
                   <ul class="space-y-1 text-right">
                     <li class="font-semibold text-md">
-                      {{
-                        moment(salesStore.singleResponses.due_date).format(
-                          'DD MMMM YYYY'
-                        )
-                      }}
+                      {{ moment(salesStore.singleResponses.due_date).format('DD MMMM YYYY') }}
                     </li>
 
                     <li class="dark:text-white text-black text-lg font-medium">
-                      {{
-                        IDRCurrency.format(
-                          salesStore.singleResponses.remaining_credit
-                        )
-                      }}
+                      {{ IDRCurrency.format(salesStore.singleResponses.remaining_credit) }}
                     </li>
                   </ul>
                 </div>
@@ -200,9 +121,7 @@
             </div>
           </section>
         </div>
-        <div
-          class="absolute top-0 right-0 transform overflow-hidden rounded-bl-lg"
-        >
+        <div class="absolute top-0 right-0 transform rounded-bl-lg">
           <span
             v-if="salesStore.singleResponses.status !== 'LUNAS'"
             class="bg-red-100 text-red-600 font-medium px-2.5 py-0.5 dark:bg-red-500 dark:text-white uppercase text-lg text-center w-60 h-12 flex items-center justify-center"
@@ -217,30 +136,19 @@
       </div>
 
       <!-- FLOATING MENU -->
-      <div class="fixed top-1/2 right-10 transform -translate-y-1/2 z-50">
-        <div
-          class="bg-white shadow-lg dark:bg-gray-800 dark:text-white py-4 px-4 text-gray-800 rounded-lg flex flex-col space-y-4"
-        >
+      <div class="xl:fixed xl:top-1/2 xl:right-10 transform xl:-translate-y-1/2 z-50">
+        <div class="bg-white shadow-lg dark:bg-gray-800 dark:text-white py-4 px-4 text-gray-800 rounded-lg flex flex-col space-y-4">
           <span class="px-4 text-center text-lg font-medium"> ACTION </span>
           <hr />
-          <a
-            href="#"
-            class="text-lg flex px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white items-center hover:translate-x-2 duration-300 ease-in-out"
-          >
+          <a href="#" class="text-lg flex px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white items-center hover:translate-x-2 duration-300 ease-in-out">
             <PrinterIcon class="w-6 h-6 mr-2" />
             Print
           </a>
-          <a
-            href="#"
-            class="text-lg flex px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white items-center hover:translate-x-2 duration-300 ease-in-out"
-          >
+          <a href="#" class="text-lg flex px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white items-center hover:translate-x-2 duration-300 ease-in-out">
             <PrinterIcon class="w-6 h-6 mr-2" />
             LX Print
           </a>
-          <a
-            href="#"
-            class="text-lg flex px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white items-center hover:translate-x-2 duration-300 ease-in-out"
-          >
+          <a href="#" class="text-lg flex px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white items-center hover:translate-x-2 duration-300 ease-in-out">
             <PaperAirplaneIcon class="w-6 h-6 mr-2" />
             Whatsapp
           </a>
@@ -266,15 +174,9 @@
       <div class="mx-auto">
         <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
           <div class="mx-auto max-w-screen-sm text-center">
-            <h1
-              class="mb-4 text-2xl tracking-tight font-extrabold lg:text-5xl text-blue-600 dark:text-blue-500"
-            >
-              Opss!!
-            </h1>
+            <h1 class="mb-4 text-2xl tracking-tight font-extrabold lg:text-5xl text-blue-600 dark:text-blue-500">Opss!!</h1>
 
-            <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
-              Data yang diminta tidak ada.
-            </p>
+            <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">Data yang diminta tidak ada.</p>
           </div>
         </div>
       </div>
@@ -283,11 +185,7 @@
 </template>
 
 <script setup>
-import {
-  PrinterIcon,
-  PaperAirplaneIcon,
-  CreditCardIcon,
-} from '@heroicons/vue/24/outline'
+import { PrinterIcon, PaperAirplaneIcon, CreditCardIcon } from '@heroicons/vue/24/outline'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useSalesStore } from '../../stores/sales'
