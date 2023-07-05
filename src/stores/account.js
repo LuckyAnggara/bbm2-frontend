@@ -16,12 +16,15 @@ export const useAccountStore = defineStore('accountStore', {
     items: (state) => {
       return state.responses ?? []
     },
+    accounts: (state) => {
+      return state.responses ?? []
+    },
   },
   actions: {
     async getData() {
       this.isLoading = true
       try {
-        const response = await axiosIns.get(`/account`)
+        const response = await axiosIns.get(`/account-generate`)
         this.responses = response.data.data
       } catch (error) {
         alert(error)

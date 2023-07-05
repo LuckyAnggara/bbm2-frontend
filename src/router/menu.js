@@ -44,16 +44,9 @@ export const menu = [
   },
   {
     id: 3,
-    name: 'Laporan',
+    name: 'Laba Rugi',
     icon: BriefcaseIcon,
-    // to: 'persediaan',
-    child: [
-      {
-        id: 0,
-        name: 'Laba Rugi',
-        to: 'income-statement',
-      },
-    ],
+    to: 'income-statement',
   },
   // {
   //   id: 3,
