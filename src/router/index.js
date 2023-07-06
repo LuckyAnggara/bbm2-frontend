@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 import HelloWorld from '../components/HelloWorld.vue'
 import DaftarProduk from '../views/persediaan/DaftarProduk.vue'
+import DetailProduk from '../views/persediaan/DetailProduk.vue'
 import MutationProduk from '../views/persediaan/MutationProduk.vue'
 import WizardSale from '../views/sales/WizardSale.vue'
 import DaftarPenjualan from '../views/sales/DaftarPenjualan.vue'
@@ -64,6 +65,17 @@ const routes = [
       transition: 'slide-left',
       requiresAuth: true,
       title: 'Daftar Produk',
+      layout: 'layout-content',
+    },
+  },
+  {
+    path: '/persediaan/detail-product/:id',
+    name: 'detail-product',
+    component: DetailProduk,
+    meta: {
+      transition: 'slide-left',
+      requiresAuth: true,
+      title: 'Detail Produk',
       layout: 'layout-content',
     },
   },

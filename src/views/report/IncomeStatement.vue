@@ -72,7 +72,7 @@
               {{ item.name.toUpperCase() }}
             </td>
             <td class="px-4 py-3 text-left">{{ IDRCurrency.format(item.today?.balance ?? 0) }}</td>
-            <td class="px-4 py-3 text-left">{{ item.yesterday?.balance ?? 0 }}</td>
+            <td class="px-4 py-3 text-left">{{ IDRCurrency.format(item.yesterday?.balance ?? 0) }}</td>
             <td class="px-4 py-3 text-left">0</td>
           </tr>
         </tbody>

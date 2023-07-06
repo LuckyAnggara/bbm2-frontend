@@ -9,6 +9,7 @@ export const useItemStore = defineStore('itemStore', {
   state: () => {
     return {
       responses: {},
+      singleResponses: null,
       fromDate: '',
       toDate: '',
       isLoading: false,
@@ -23,7 +24,6 @@ export const useItemStore = defineStore('itemStore', {
         brand_id: 0,
         unit_id: 0,
         warehouse_id: 0,
-        balance: 0,
         created_by: userData.id,
       },
       searchName: '',
@@ -65,13 +65,23 @@ export const useItemStore = defineStore('itemStore', {
     async getData(page = '') {
       this.isLoading = true
       try {
-        const response = await axiosIns.get(
-          `/items?limit=${this.currentLimit}${this.searchQuery}${page}`
-        )
+        const response = await axiosIns.get(`/items?limit=${this.currentLimit}${this.searchQuery}${page}`)
         this.responses = response.data.data
       } catch (error) {
         toast.error(error.message, {
           timeout: 3000,
+        })
+      }
+      this.isLoading = false
+    },
+    async showData(id = '') {
+      this.isLoading = true
+      try {
+        const response = await axiosIns.get(`/items/${id}`)
+        this.singleResponses = response.data.data
+      } catch (error) {
+        toast.error('Data not found', {
+          position: 'bottom-right',
         })
       }
       this.isLoading = false
@@ -95,10 +105,7 @@ export const useItemStore = defineStore('itemStore', {
     async update() {
       this.isEditLoading = true
       try {
-        const response = await axiosIns.put(
-          `/items/${this.editCurrentData.id}`,
-          this.editCurrentData
-        )
+        const response = await axiosIns.put(`/items/${this.editCurrentData.id}`, this.editCurrentData)
         toast.success('Produk berhasil diperbaharui!', {
           timeout: 3000,
         })
