@@ -79,21 +79,17 @@
       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-fixed">
         <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
           <tr>
-            <th scope="col" class="px-4 py-3 w-32 border border-slate-400 dark:border-slate-600" rowspan="2">Nama</th>
-            <th scope="col" class="px-4 py-3 w-6 border border-slate-400 dark:border-slate-600" rowspan="2">Satuan</th>
-            <th scope="col" class="px-4 py-3 w-24 border border-slate-400 dark:border-slate-600" colspan="4">Stok</th>
-            <!-- <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600" colspan="4">Saldo</th> -->
-            <th scope="col" class="px-4 py-3 w-6 border border-slate-400 dark:border-slate-600" rowspan="2">Actions</th>
+            <th scope="col" class="px-4 py-1 w-32 border border-slate-400 dark:border-slate-600" rowspan="2">Nama</th>
+            <th scope="col" class="px-4 py-1 w-6 border border-slate-400 dark:border-slate-600" rowspan="2">Satuan</th>
+            <th scope="col" class="px-4 py-1 w-24 border border-slate-400 dark:border-slate-600" colspan="4">Stok</th>
+            <!-- <th scope="col" class="px-4 py-1 border border-slate-400 dark:border-slate-600" colspan="4">Saldo</th> -->
+            <th scope="col" class="px-4 py-1 w-6 border border-slate-400 dark:border-slate-600" rowspan="2">Actions</th>
           </tr>
           <tr>
-            <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">Awal</th>
-            <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">Masuk</th>
-            <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">Keluar</th>
-            <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">Akhir</th>
-            <!-- <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">Awal</th>
-            <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">Masuk</th>
-            <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">Keluar</th>
-            <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">Akhir</th> -->
+            <th scope="col" class="px-4 py-1 border border-slate-400 dark:border-slate-600">Awal</th>
+            <th scope="col" class="px-4 py-1 border border-slate-400 dark:border-slate-600">Masuk</th>
+            <th scope="col" class="px-4 py-1 border border-slate-400 dark:border-slate-600">Keluar</th>
+            <th scope="col" class="px-4 py-1 border border-slate-400 dark:border-slate-600">Akhir</th>
           </tr>
         </thead>
         <tbody>
@@ -105,28 +101,28 @@
           <tr v-else-if="!itemStore.isLoading && itemStore.items.length < 1">
             <td colspan="7" class="text-center py-6">No Data</td>
           </tr>
-          <tr v-else v-for="item in itemStore.items" :key="item.id" class="border-b dark:border-gray-700 text-sm">
-            <th scope="row" class="px-4 py-3 font-medium text-gray-900 dark:text-white">
+          <tr
+            v-else
+            v-for="(item, index) in itemStore.items"
+            :key="item.id"
+            :class="(index + 1) % 2 !== 0 ? 'bg-white dark:bg-gray-900 dark:border-gray-700' : 'bg-gray-50 dark:bg-gray-800 dark:border-gray-700'"
+            class="border-b text-sm"
+          >
+            <th scope="row" class="px-4 py-1 font-medium text-gray-900 dark:text-white">
               {{ item.name.toUpperCase() }}
             </th>
-            <td class="px-4 py-3">{{ item.unit.name.toUpperCase() }}</td>
-            <td class="px-4 py-3">{{ item.beg_balance.stock }}</td>
-            <td class="px-4 py-3">{{ item.in_stock }}</td>
-            <td class="px-4 py-3">{{ item.out_stock }}</td>
-            <td class="px-4 py-3">{{ item.ending_stock }}</td>
-            <td class="px-4 py-3">
+            <td class="px-4 py-1">{{ item.unit.name.toUpperCase() }}</td>
+            <td class="px-4 py-1">{{ item.beg_balance.stock }}</td>
+            <td class="px-4 py-1">{{ item.in_stock }}</td>
+            <td class="px-4 py-1">{{ item.out_stock }}</td>
+            <td class="px-4 py-1">{{ item.ending_stock }}</td>
+            <td class="px-4 py-1">
               <a
                 @click="invoice(id)"
                 class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:dark:text-white hover:text-red-500 hover:-translate-y-2 duration-300 ease-in-out"
                 ><MagnifyingGlassIcon class="h-7 w-7"
               /></a>
             </td>
-            <!-- <td class="px-4 py-3">
-              {{ IDRCurrency.format(item.beg_balance.balance) }}
-            </td>
-            <td class="px-4 py-3">masuk</td>
-            <td class="px-4 py-3">keluar</td>
-            <td class="px-4 py-3">akhir</td> -->
           </tr>
         </tbody>
       </table>

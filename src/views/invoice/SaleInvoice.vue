@@ -137,23 +137,23 @@
 
       <!-- FLOATING MENU -->
       <div class="xl:fixed xl:top-1/2 xl:right-10 transform xl:-translate-y-1/2 z-50">
-        <div class="bg-white shadow-lg dark:bg-gray-800 dark:text-white py-4 px-4 text-gray-800 rounded-lg flex flex-col space-y-4">
-          <span class="px-4 text-center text-lg font-medium"> ACTION </span>
+        <div class="bg-white shadow-lg dark:bg-gray-700 dark:text-white py-3 px-4 text-gray-800 rounded-lg flex flex-col space-y-2">
+          <span class="px-4 text-center text-lg font-medium"> Action </span>
           <hr />
-          <a href="#" class="text-lg flex px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white items-center hover:translate-x-2 duration-300 ease-in-out">
+          <a href="#" class="text-lg flex px-4 py-1 rounded-md hover:bg-blue-500 hover:text-white items-center hover:scale-105 duration-300 ease-in-out">
             <PrinterIcon class="w-6 h-6 mr-2" />
             Print
           </a>
-          <a href="#" class="text-lg flex px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white items-center hover:translate-x-2 duration-300 ease-in-out">
+          <a href="#" class="text-lg flex px-4 py-1 rounded-md hover:bg-blue-500 hover:text-white items-center hover:scale-105 duration-300 ease-in-out">
             <PrinterIcon class="w-6 h-6 mr-2" />
             LX Print
           </a>
-          <a href="#" class="text-lg flex px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white items-center hover:translate-x-2 duration-300 ease-in-out">
+          <a href="#" class="text-lg flex px-4 py-1 rounded-md hover:bg-blue-500 hover:text-white items-center hover:scale-105 duration-300 ease-in-out">
             <PaperAirplaneIcon class="w-6 h-6 mr-2" />
             Whatsapp
           </a>
 
-          <hr />
+          <hr v-if="salesStore.singleResponses.credit == true" />
           <button
             @click="paymentCreditView()"
             v-if="salesStore.singleResponses.credit == true"

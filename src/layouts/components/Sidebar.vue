@@ -42,7 +42,7 @@
         </li>
       </ul>
       <Transition name="slide-fade">
-        <div id="dropdown-cta" class="p-4 mt-6 rounded-lg bg-blue-50 dark:bg-blue-900 mb-4" role="alert" v-show="showTips">
+        <div id="dropdown-cta" class="p-4 mt-6 rounded-lg bg-blue-50 dark:bg-blue-700 mb-4" role="alert" v-show="showTips">
           <div class="flex items-center mb-3">
             <span class="bg-orange-100 text-orange-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-orange-200 dark:text-orange-900">Info</span>
             <button
