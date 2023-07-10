@@ -1,155 +1,337 @@
 <template>
-  <TableComplex
-    v-model:search-query="salesStore.searchName"
-    :columns="column"
-    :is-loading="salesStore.isLoading"
-    :data="formattedTableData"
-    :pagginate="pagginate"
-    :item-store="salesStore"
-    v-model:current-limit="salesStore.currentLimit"
-    @next-page="salesStore.getData(nextPage)"
-    @previous-page="salesStore.getData(previousPage)"
-    @on-enter="salesStore.getData()"
-    :on-hover-event="
-      () => {
-        showDrawer = true
-      }
-    "
-    :on-leave-event="
-      () => {
-        showDrawer = false
-      }
-    "
-  >
-    <template #action="{ id }">
-      <!-- <div>
-        <Menu as="div" class="relative inline-block text-left">
-          <div>
-            <MenuButton
-              class="hover:scale-125 ease-in-out duration-300 flex w-full rounded-md font-medium text-black dark:text-white"
-            >
-              <EllipsisVerticalIcon
-                class="h-5 w-5 text-black dark:text-white"
-                aria-hidden="true"
-              />
-            </MenuButton>
-          </div>
-
-          <transition
-            enter-active-class="transition duration-100 ease-out"
-            enter-from-class="transform scale-95 opacity-0"
-            enter-to-class="transform scale-100 opacity-100"
-            leave-active-class="transition duration-75 ease-in"
-            leave-from-class="transform scale-100 opacity-100"
-            leave-to-class="transform scale-95 opacity-0"
+  <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-visible">
+    <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+      <div class="w-full md:w-1/2 flex space-x-3">
+        <div class="flex items-center">
+          <label for="years" class="block text-sm font-medium text-gray-900 dark:text-white mr-2">Show</label>
+          <select
+            v-model="salesStore.currentLimit"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block sm:w-16 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-16"
           >
-            <MenuItems
-              class="z-50 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-            >
-              <div class="px-1 py-1">
-                <MenuItem v-slot="{ active }">
-                  <button
-                    :class="[
-                      active ? 'bg-blue-500 text-white' : 'text-gray-900',
-                      'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                    ]"
-                  >
-                    Edit {{ id }}
-                  </button>
-                </MenuItem>
-                <MenuItem v-slot="{ active }">
-                  <button
-                    :class="[
-                      active ? 'bg-blue-500 text-white' : 'text-gray-900',
-                      'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                    ]"
-                  >
-                    Duplicate
-                  </button>
-                </MenuItem>
+            <option :selected="salesStore.currentLimit == length ? true : false" v-for="length in lengths" :key="length">
+              {{ length }}
+            </option>
+          </select>
+        </div>
+
+        <form class="flex items-center w-full" autocomplete="off">
+          <label for="simple-search" class="sr-only">Search</label>
+          <div class="relative w-full">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                fill="currentColor"
+                viewbox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+            <input
+              @keyup.enter="salesStore.getData()"
+              v-model="salesStore.searchName"
+              type="text"
+              id="simple-search"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Tekan enter untuk mencari"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+        <div class="flex items-center space-x-4 w-full md:w-auto">
+          <button
+            @click="filterDraw()"
+            class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            type="button"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="h-4 w-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">
+              <path
+                fill-rule="evenodd"
+                d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            Filter
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
+      <table class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 table-fixed">
+        <thead class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
+          <tr>
+            <th scope="col" class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600">No</th>
+            <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Tanggal</th>
+            <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">Invoice</th>
+            <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">Nama Pelanggan</th>
+            <th scope="col" class="px-4 py-2 w-16 border border-slate-400 dark:border-slate-600">Total</th>
+            <th scope="col" class="px-4 py-2 w-20 border border-slate-400 dark:border-slate-600">Status</th>
+            <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Dibuat Oleh</th>
+            <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="salesStore.isLoading">
+            <td colspan="8" class="text-center py-6">
+              <CircleLoading>Prosesing ... </CircleLoading>
+            </td>
+          </tr>
+          <tr v-else-if="!salesStore.isLoading && salesStore.items.length < 1">
+            <td colspan="8" class="text-center py-6">No Data</td>
+          </tr>
+          <tr
+            v-else
+            v-for="(item, index) in salesStore.items"
+            :key="item.id"
+            :class="
+              (index + 1) % 2 !== 0 ? 'bg-white border-b dark:bg-gray-900 dark:border-gray-700' : 'border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700'
+            "
+          >
+            <td class="px-4 py-1 text-center">{{ salesStore.from + index }}</td>
+            <td class="px-4 py-1">{{ moment(item.created_at).format('DD MMMM YYYY') }}</td>
+
+            <th class="px-4 py-1">
+              {{ item.invoice }}
+            </th>
+            <td class="px-4 py-1">{{ item.customer?.name ?? '-' }}</td>
+            <td class="px-4 py-1">{{ IDRCurrency.format(item.total ?? 0) }}</td>
+            <td class="px-4 py-1">
+              <div v-if="item.status == 'LUNAS'" class="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0">
+                <span
+                  @click="paymentCreditView(id)"
+                  @mouseover="initDrawer(index)"
+                  @mouseleave="showDrawer = false"
+                  v-if="item.credit == true"
+                  class="cursor-pointer bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
+                  >KREDIT
+                </span>
+                <span
+                  @mouseover="initDrawer(index)"
+                  @mouseleave="showDrawer = false"
+                  class="bg-blue-100 cursor-alias text-blue-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-500 dark:text-white"
+                  >{{ item.status }}</span
+                >
               </div>
-            </MenuItems>
-          </transition>
-        </Menu>
-      </div> -->
-      <div class="flex space-x-3">
-        <a
-          @click="invoice(id)"
-          class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:dark:text-white hover:text-red-500 hover:-translate-y-2 duration-300 ease-in-out"
-          ><DocumentTextIcon class="h-7 w-7"
-        /></a>
+              <div v-else class="flex flex-row items-center space-x-2">
+                <span
+                  @click="paymentCreditView(id)"
+                  @mouseover="initDrawer(index)"
+                  @mouseleave="showDrawer = false"
+                  v-if="item.credit == true"
+                  class="h-fit cursor-pointer bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
+                  >KREDIT
+                </span>
+                <span
+                  @mouseover="initDrawer(index)"
+                  @mouseleave="showDrawer = false"
+                  class="h-fit bg-red-100 text-red-600 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
+                  >{{ item.status }}</span
+                >
+              </div>
+            </td>
+            <td class="px-4 py-1">{{ item.maker?.name ?? '' }}</td>
+            <td class="px-4 py-1">
+              <div>
+                <Menu as="div" class="relative inline-block text-left">
+                  <div>
+                    <MenuButton class="hover:scale-125 ease-in-out duration-300 flex w-full rounded-md font-medium text-black dark:text-white">
+                      <EllipsisVerticalIcon class="h-5 w-5 text-black dark:text-white" aria-hidden="true" />
+                    </MenuButton>
+                  </div>
 
-        <a
-          @click="edit(id)"
-          class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:dark:text-white hover:text-red-500 hover:-translate-y-2 duration-300 ease-in-out"
-          ><PencilSquareIcon class="h-7 w-7"
-        /></a>
+                  <transition
+                    enter-active-class="transition duration-100 ease-out"
+                    enter-from-class="transform scale-95 opacity-0"
+                    enter-to-class="transform scale-100 opacity-100"
+                    leave-active-class="transition duration-75 ease-in"
+                    leave-from-class="transform scale-100 opacity-100"
+                    leave-to-class="transform scale-95 opacity-0"
+                  >
+                    <MenuItems
+                      class="z-50 py-1 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white dark:bg-gray-800 dark:text-gray-100 shadow-lg ring-1 ring-black dark:ring-gray-700 ring-opacity-5 focus:outline-none"
+                    >
+                      <div class="px-2 py-1">
+                        <MenuItem v-slot="{ active }">
+                          <button
+                            @click="invoice(item.id)"
+                            :class="[
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
+                              'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                            ]"
+                          >
+                            <MagnifyingGlassIcon class="w-5 h-5 mr-2" />
+                            Detail
+                          </button>
+                        </MenuItem>
 
-        <a
-          @click="deleteData(id)"
-          class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:dark:text-white hover:text-red-500 hover:-translate-y-2 duration-300 ease-in-out"
-          ><TrashIcon class="h-7 w-7"
-        /></a>
-      </div>
-    </template>
+                        <MenuItem v-slot="{ active }">
+                          <button
+                            @click="deleteData(item.id)"
+                            :class="[
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
+                              'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                            ]"
+                          >
+                            <TrashIcon class="w-5 h-5 mr-2" />
 
-    <template #status="{ label, index, id }">
-      <div v-if="label.status == 'LUNAS'">
+                            Delete
+                          </button>
+                        </MenuItem>
+                      </div>
+                    </MenuItems>
+                  </transition>
+                </Menu>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="p-4">
+      <label for="name" class="mb-2 text-sm font-medium text-gray-900 dark:text-white block">Active Filter</label>
+      <div class="space-y-2">
         <span
-          @click="paymentCreditView(id)"
-          @mouseover="initDrawer(index)"
-          @mouseleave="showDrawer = false"
-          v-if="label.credit == true"
-          class="cursor-pointer bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
-          >KREDIT
-        </span>
-        <span
-          @mouseover="initDrawer(index)"
-          @mouseleave="showDrawer = false"
-          class="bg-blue-100 text-blue-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-500 dark:text-white"
-          >{{ label.status }}</span
+          v-for="filter in filters"
+          :key="filter"
+          class="inline-flex items-center px-2 py-1 mr-2 text-sm font-medium text-blue-800 bg-blue-100 rounded dark:bg-blue-900 dark:text-blue-300"
         >
-      </div>
-      <div v-else>
-        <span
-          @click="paymentCreditView(id)"
-          @mouseover="initDrawer(index)"
-          @mouseleave="showDrawer = false"
-          v-if="label.credit == true"
-          class="cursor-alias bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
-          >KREDIT
+          {{ filter }}
+          <button
+            type="button"
+            class="inline-flex items-center p-0.5 ml-2 text-sm text-blue-400 bg-transparent rounded-sm hover:bg-blue-200 hover:text-blue-900 dark:hover:bg-blue-800 dark:hover:text-blue-300"
+          >
+            <svg aria-hidden="true" class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path
+                fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+            <span class="sr-only">{{ filter }}</span>
+          </button>
         </span>
-        <span
-          @mouseover="initDrawer(index)"
-          @mouseleave="showDrawer = false"
-          class="cursor-pointer bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
-          >{{ label.status }}</span
-        >
       </div>
-    </template>
+    </div>
 
-    <template #extendButton>
-      <button
-        @click="showFilterDrawer = true"
-        type="button"
-        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-      >
-        <AdjustmentsHorizontalIcon class="w-5 h-5" />
-      </button>
-    </template>
-  </TableComplex>
+    <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
+      <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+        Showing
+        <span class="font-semibold text-gray-900 dark:text-white">{{ salesStore.from }} - {{ salesStore.to }}</span>
+        of
+        <span class="font-semibold text-gray-900 dark:text-white">{{ salesStore.total }}</span>
+      </span>
+      <ul class="inline-flex items-stretch -space-x-px">
+        <li>
+          <a
+            @click="salesStore.currentPage == 1 ? '' : salesStore.getData(previousPage)"
+            :disabled="salesStore.currentPage == 1 ? true : false"
+            :class="
+              salesStore.currentPage == 1
+                ? 'cursor-not-allowed'
+                : 'cursor-pointer dark:hover:bg-blue-700 dark:hover:text-white hover:bg-blue-100 hover:text-gray-700'
+            "
+            class="w-32 px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
+            >Previous</a
+          >
+        </li>
+
+        <li>
+          <a
+            @click="salesStore.lastPage == salesStore.currentPage ? '' : salesStore.getData(nextPage)"
+            :class="
+              salesStore.lastPage == salesStore.currentPage
+                ? 'cursor-not-allowed'
+                : 'cursor-pointer dark:hover:bg-blue-700 dark:hover:text-white hover:bg-blue-100 hover:text-gray-700'
+            "
+            class="w-32 px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
+            >Next {{
+          }}</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 
   <DetailPenjualanDrawer :show="showDrawer" />
-  <FilterDrawer :show="showFilterDrawer" @close="showFilterDrawer = false" />
+  <FilterDrawer :show="showFilterDrawer" @close="showFilterDrawer = false" @submit="submitFilter()" :is-loading="salesStore.isLoading">
+    <div class="w-full justify-between flex items-start mb-4">
+      <h5 class="inline-flex items-center mb-6 text-base font-semibold text-gray-500 uppercase dark:text-gray-400">
+        <FunnelIcon class="h-5 w-5 mr-2" />Filter Data
+      </h5>
+      <button
+        @click="showFilterDrawer = !showFilterDrawer"
+        class="text-black dark:text-white hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 top-2.5 right-2.5 inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
+      >
+        <XMarkIcon class="h-5 w-5" />
+        <span class="sr-only">Close menu</span>
+      </button>
+    </div>
+
+    <div class="space-y-6 flex flex-col mb-8">
+      <div>
+        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal</label>
+        <vue-tailwind-datepicker
+          :auto-apply="false"
+          :shortcuts="false"
+          :formatter="formatter"
+          v-model="salesStore.filter.date"
+          placeholder="Dari tanggal - Hingga tanggal"
+          as-single
+          use-range
+          input-classes="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        />
+      </div>
+
+      <div>
+        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Min Grand Total</label>
+        <InputCurrency
+          :options="{ currency: 'IDR' }"
+          v-model="salesStore.filter.minTotal"
+          :custom-class="'block p-2.5 w-full text-sm bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'"
+        />
+      </div>
+
+      <div>
+        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
+        <ul class="w-full grid grid-flow-row-dense grid-cols-2 gap-2">
+          <li v-for="i in salesStore.status" :key="i">
+            <input name="status" type="radio" :id="i" :value="i" v-model="salesStore.filter.status" class="hidden peer" />
+            <label
+              :for="i"
+              class="inline-flex text-xs text-center items-center justify-between w-full py-2 px-4 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-white dark:border-gray-700 peer-checked:bg-red-500 hover:text-gray-600 peer-checked:border-red-500 dark:peer-checked:text-white peer-checked:text-white hover:bg-green-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-red-500"
+            >
+              {{ i }}
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kredit</label>
+        <ul class="w-full grid grid-flow-row-dense grid-cols-2 gap-2">
+          <li v-for="x in salesStore.pembayaran" :key="x">
+            <input name="pembayaran" type="radio" :id="`pembayaran-${x}`" :value="x" v-model="salesStore.filter.pembayaran" class="hidden peer" />
+            <label
+              :for="`pembayaran-${x}`"
+              class="inline-flex text-xs text-center items-center justify-between w-full py-2 px-4 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-white dark:border-gray-700 peer-checked:bg-red-500 hover:text-gray-600 peer-checked:border-red-500 dark:peer-checked:text-white peer-checked:text-white hover:bg-green-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-red-500"
+            >
+              {{ x }}
+            </label>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </FilterDrawer>
   <!--Confirmation Modal -->
   <Teleport to="body">
     <!-- use the modal component, pass in the prop -->
-    <ConfirmationModal
-      :show="showConfirmationModal"
-      @close="showConfirmationModal = false"
-      @submit="destroyData"
-      @cancel="showConfirmationModal = false"
-    >
+    <ConfirmationModal :show="showConfirmationModal" @close="showConfirmationModal = false" @submit="destroyData" @cancel="showConfirmationModal = false">
       <template #title>Hapus data ?</template>
       <template #submit>Hapus !</template>
       <template #cancel>Cancel</template>
@@ -158,9 +340,7 @@
 
   <!-- Loading Modal -->
   <Teleport to="body">
-    <LoadingModal :show="salesStore.isDestroyLoading"
-      >Processing transaction</LoadingModal
-    >
+    <LoadingModal :show="salesStore.isDestroyLoading">Processing transaction</LoadingModal>
   </Teleport>
 </template>
 
@@ -174,31 +354,24 @@ import {
   PencilSquareIcon,
   TrashIcon,
   DocumentTextIcon,
+  MagnifyingGlassIcon,
+  FunnelIcon,
 } from '@heroicons/vue/24/outline'
-import {
-  computed,
-  onUnmounted,
-  onBeforeMount,
-  defineAsyncComponent,
-  ref,
-  nextTick,
-} from 'vue'
-import { useRouter } from 'vue-router'
-import TableComplex from '../../components/table/TableComplex.vue'
-import { useSalesStore } from '../../stores/sales'
 
-const ConfirmationModal = defineAsyncComponent(() =>
-  import('../../components/modal/ConfirmationModal.vue')
-)
-const DetailPenjualanDrawer = defineAsyncComponent(() =>
-  import('./drawer/DetailPenjualanDrawer.vue')
-)
-const LoadingModal = defineAsyncComponent(() =>
-  import('../../components/modal/LoadingModal.vue')
-)
-const FilterDrawer = defineAsyncComponent(() =>
-  import('../../components/drawer/FilterDrawer.vue')
-)
+import { XMarkIcon } from '@heroicons/vue/24/solid'
+
+import { computed, onUnmounted, onBeforeMount, defineAsyncComponent, ref, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
+import { IDRCurrency } from '../../utilities/formatter'
+import { useSalesStore } from '../../stores/sales'
+import CircleLoading from '../../components/loading/CircleLoading.vue'
+import VueTailwindDatepicker from 'vue-tailwind-datepicker'
+import InputCurrency from '../../components/input/InputCurrency.vue'
+
+const ConfirmationModal = defineAsyncComponent(() => import('../../components/modal/ConfirmationModal.vue'))
+const DetailPenjualanDrawer = defineAsyncComponent(() => import('./drawer/DetailPenjualanDrawer.vue'))
+const LoadingModal = defineAsyncComponent(() => import('../../components/modal/LoadingModal.vue'))
+const FilterDrawer = defineAsyncComponent(() => import('../../components/drawer/FilterDrawer.vue'))
 
 const router = useRouter()
 const salesStore = useSalesStore()
@@ -207,42 +380,9 @@ const deleteId = ref(null)
 const showDrawer = ref(false)
 const showFilterDrawer = ref(false)
 
-const column = [
-  { key: 'id', label: 'No', type: 'number', type: 'id' },
-  { key: 'created_at', label: 'Tanggal', class: 'uppercase', type: 'date' },
-  { key: 'invoice', label: 'Invoice', class: 'uppercase' },
-  { key: 'customer_name', label: 'Nama Pelanggan', class: 'uppercase' },
-  { key: 'grand_total', label: 'Total', class: 'uppercase', type: 'currency' },
-  { key: 'status', label: 'Status', type: 'slot' },
-  { key: 'maker_name', label: 'Maker' },
-  { key: 'action', label: 'Action' },
-]
-
 const showConfirmationModal = ref(false)
 
-const pagginate = computed(() => {
-  return {
-    from: salesStore.from ?? 0,
-    to: salesStore.to ?? 0,
-    total: salesStore.total ?? 0,
-  }
-})
-const formattedTableData = computed(() => {
-  return salesStore.items?.map((item) => {
-    return {
-      id: item.id,
-      invoice: item.invoice,
-      created_at: item.created_at,
-      customer_name: item.customer?.name ?? '',
-      maker_name: item.maker?.name ?? '',
-      status: {
-        status: item.status,
-        credit: item.credit,
-      },
-      grand_total: item.grand_total ?? 0,
-    }
-  })
-})
+const lengths = ref([5, 10, 20, 30, 40, 50])
 
 const previousPage = computed(() => {
   return '&page=' + (salesStore.currentPage - 1)
@@ -264,6 +404,20 @@ async function initDrawer(index) {
   showDrawer.value = true
 }
 
+async function filterDraw() {
+  await nextTick()
+  showFilterDrawer.value = true
+}
+
+async function submitFilter() {
+  salesStore.getData()
+}
+
+const formatter = ref({
+  date: 'DD MMM YYYY',
+  month: 'MMM',
+})
+
 function paymentCreditView(id) {
   router.push({
     name: 'payment-credit',
@@ -271,12 +425,9 @@ function paymentCreditView(id) {
   })
 }
 
-function deleteData(id) {
-  deleteId.value = id
-  showConfirmationModal.value = true
-}
-
-function edit(id) {}
+const filters = computed(() => {
+  return salesStore.filter
+})
 
 async function destroyData(id) {
   showConfirmationModal.value = false
@@ -286,6 +437,11 @@ async function destroyData(id) {
 
 function invoice(id) {
   router.push({ name: 'invoice', params: { id } })
+}
+
+function deleteData(id) {
+  deleteId.value = id
+  showConfirmationModal.value = true
 }
 
 onBeforeMount(() => {

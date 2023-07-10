@@ -33,14 +33,14 @@
 
           <section class="py-8 dark:border-gray-100 border-gray-400">
             <div class="relative overflow-x-auto rounded-lg">
-              <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-fixed">
                 <thead class="text-gray-800 uppercase bg-gray-300 dark:bg-gray-700 dark:text-white font-normal">
                   <tr>
-                    <th scope="col" class="px-6 py-4">Item</th>
-                    <th scope="col" class="px-6 py-4">Quantity</th>
-                    <th scope="col" class="px-6 py-4">Harga</th>
-                    <th scope="col" class="px-6 py-4">Discount</th>
-                    <th scope="col" class="px-6 py-4">Total</th>
+                    <th scope="col" class="px-6 py-3 w-40">Item</th>
+                    <th scope="col" class="px-6 py-3 w-20">Quantity</th>
+                    <th scope="col" class="px-6 py-3 w-20">Harga</th>
+                    <th scope="col" class="px-6 py-3 w-16">Discount</th>
+                    <th scope="col" class="px-6 py-3 w-24">Total</th>
                   </tr>
                 </thead>
                 <tbody class="mt-2">
@@ -124,31 +124,31 @@
         <div class="absolute top-0 right-0 transform rounded-bl-lg">
           <span
             v-if="salesStore.singleResponses.status !== 'LUNAS'"
-            class="bg-red-100 text-red-600 font-medium px-2.5 py-0.5 dark:bg-red-500 dark:text-white uppercase text-lg text-center w-60 h-12 flex items-center justify-center"
+            class="rounded-tr-xl bg-red-100 text-red-600 font-medium px-2.5 py-0.5 dark:bg-red-500 dark:text-white uppercase text-lg text-center w-60 h-12 flex items-center justify-center"
             >BELUM LUNAS</span
           >
           <span
             v-else
-            class="bg-blue-100 text-blue-600 font-medium px-2.5 py-0.5 dark:bg-blue-500 dark:text-white uppercase text-lg text-center w-60 h-12 flex items-center justify-center"
+            class="rounded-tr-xl bg-blue-100 text-blue-600 font-medium px-2.5 py-0.5 dark:bg-blue-500 dark:text-white uppercase text-lg text-center w-60 h-12 flex items-center justify-center"
             >LUNAS</span
           >
         </div>
       </div>
 
       <!-- FLOATING MENU -->
-      <div class="xl:fixed xl:top-1/2 xl:right-10 transform xl:-translate-y-1/2 z-50">
+      <div class="xl:fixed xl:top-1/2 xl:right-10 transform xl:-translate-y-1/2 z-50 ring-1 ring-gray-200 rounded-md">
         <div class="bg-white shadow-lg dark:bg-gray-700 dark:text-white py-3 px-4 text-gray-800 rounded-lg flex flex-col space-y-2">
-          <span class="px-4 text-center text-lg font-medium"> Action </span>
+          <span class="px-4 text-center text-md font-medium"> Action </span>
           <hr />
-          <a href="#" class="text-lg flex px-4 py-1 rounded-md hover:bg-blue-500 hover:text-white items-center hover:scale-105 duration-300 ease-in-out">
+          <a href="#" class="text-md flex px-4 py-1 rounded-md hover:bg-blue-500 hover:text-white items-center hover:scale-105 duration-300 ease-in-out">
             <PrinterIcon class="w-6 h-6 mr-2" />
             Print
           </a>
-          <a href="#" class="text-lg flex px-4 py-1 rounded-md hover:bg-blue-500 hover:text-white items-center hover:scale-105 duration-300 ease-in-out">
+          <a href="#" class="text-md flex px-4 py-1 rounded-md hover:bg-blue-500 hover:text-white items-center hover:scale-105 duration-300 ease-in-out">
             <PrinterIcon class="w-6 h-6 mr-2" />
             LX Print
           </a>
-          <a href="#" class="text-lg flex px-4 py-1 rounded-md hover:bg-blue-500 hover:text-white items-center hover:scale-105 duration-300 ease-in-out">
+          <a href="#" class="text-md flex px-4 py-1 rounded-md hover:bg-blue-500 hover:text-white items-center hover:scale-105 duration-300 ease-in-out">
             <PaperAirplaneIcon class="w-6 h-6 mr-2" />
             Whatsapp
           </a>
@@ -157,7 +157,7 @@
           <button
             @click="paymentCreditView()"
             v-if="salesStore.singleResponses.credit == true"
-            class="text-lg flex px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white items-center hover:translate-x-2 duration-300 ease-in-out"
+            class="text-md flex px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white items-center hover:scale-105 duration-300 ease-in-out"
           >
             <CreditCardIcon class="w-6 h-6 mr-2" />
             Pembayaran

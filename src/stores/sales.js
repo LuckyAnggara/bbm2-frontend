@@ -23,6 +23,7 @@ export const useSalesStore = defineStore('salesStore', {
       currentLimit: 10,
       searchName: '',
       status: ['SEMUA', 'LUNAS', 'BELUM LUNAS'],
+      pembayaran: ['SEMUA', 'TUNAI', 'KREDIT'],
       currentData: {
         customerData: {
           id: '',
@@ -43,6 +44,7 @@ export const useSalesStore = defineStore('salesStore', {
       filter: {
         date: [],
         status: 'SEMUA',
+        pembayaran: 'SEMUA',
         minTotal: 0,
       },
       isLoading: false,
@@ -77,11 +79,7 @@ export const useSalesStore = defineStore('salesStore', {
       return '&name=' + state.searchName
     },
     minTotalQuery(state) {
-      if (
-        state.filter.minTotal == 0 ||
-        state.filter.minTotal == '' ||
-        state.filter.minTotal == null
-      ) {
+      if (state.filter.minTotal == 0 || state.filter.minTotal == '' || state.filter.minTotal == null) {
         return ''
       }
       return '&min-total=' + state.filter.minTotal
@@ -90,12 +88,7 @@ export const useSalesStore = defineStore('salesStore', {
       if (state.filter.date.length == 0 || state.filter.date.length == null) {
         return ''
       }
-      return (
-        '&start-date=' +
-        state.filter.date[0] +
-        '&end-date=' +
-        state.filter.date[1]
-      )
+      return '&start-date=' + state.filter.date[0] + '&end-date=' + state.filter.date[1]
     },
     statusQuery(state) {
       switch (state.filter.status) {
@@ -110,6 +103,19 @@ export const useSalesStore = defineStore('salesStore', {
           return '&status=belum_lunas'
       }
     },
+    pembayaranQuery(state) {
+      switch (state.filter.pembayaran) {
+        case '':
+        case null:
+          return ''
+        case 'SEMUA':
+          return ''
+        case 'TUNAI':
+          return '&credit=0'
+        case 'KREDIT':
+          return '&credit=1'
+      }
+    },
     branchQuery() {
       const authStore = useAuthStore()
       return '&branch=' + authStore.userData.branch_id
@@ -120,7 +126,7 @@ export const useSalesStore = defineStore('salesStore', {
       this.isLoading = true
       try {
         const response = await axiosIns.get(
-          `/sales?limit=${this.currentLimit}${this.branchQuery}${this.searchQuery}${page}${this.statusQuery}${this.dateQuery}${this.minTotalQuery}`
+          `/sales?limit=${this.currentLimit}${this.branchQuery}${this.searchQuery}${page}${this.statusQuery}${this.pembayaranQuery}${this.dateQuery}${this.minTotalQuery}`
         )
         this.responses = response.data.data
       } catch (error) {
@@ -209,9 +215,7 @@ export const useSalesStore = defineStore('salesStore', {
         toast.success('Data berhasil di hapus', {
           timeout: 2000,
         })
-        const index = this.singleResponses.payment.findIndex(
-          (item) => item.id === id
-        )
+        const index = this.singleResponses.payment.findIndex((item) => item.id === id)
         this.singleResponses.payment.splice(index, 1)
       } catch (error) {
         toast.error(error.response.data.message, {
