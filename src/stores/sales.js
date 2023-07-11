@@ -120,6 +120,14 @@ export const useSalesStore = defineStore('salesStore', {
       const authStore = useAuthStore()
       return '&branch=' + authStore.userData.branch_id
     },
+    activeFilter(state) {
+      return {
+        tanggal: state.filter.date ?? '-',
+        status: state.filter.status ?? '-',
+        kredit: state.filter.kredit ?? '-',
+        minTotal: state.filter.minTotal ?? '-',
+      }
+    },
   },
   actions: {
     async getData(page = '') {

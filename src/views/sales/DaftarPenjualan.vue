@@ -3,7 +3,7 @@
     <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
       <div class="w-full md:w-1/2 flex space-x-3">
         <div class="flex items-center">
-          <label for="years" class="block text-sm font-medium text-gray-900 dark:text-white mr-2">Show</label>
+          <label class="block text-sm font-medium text-gray-900 dark:text-white mr-2">Show</label>
           <select
             v-model="salesStore.currentLimit"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block sm:w-16 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-16"
@@ -105,15 +105,15 @@
               <div v-if="item.status == 'LUNAS'" class="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0">
                 <span
                   @click="paymentCreditView(id)"
-                  @mouseover="initDrawer(index)"
-                  @mouseleave="showDrawer = false"
+                  @mouseover="initRightDrawer(index)"
+                  @mouseleave="layoutStore.isRightDrawShow = false"
                   v-if="item.credit == true"
                   class="cursor-pointer bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
                   >KREDIT
                 </span>
                 <span
-                  @mouseover="initDrawer(index)"
-                  @mouseleave="showDrawer = false"
+                  @mouseover="initRightDrawer(index)"
+                  @mouseleave="layoutStore.isRightDrawShow = false"
                   class="bg-blue-100 cursor-alias text-blue-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-500 dark:text-white"
                   >{{ item.status }}</span
                 >
@@ -121,15 +121,15 @@
               <div v-else class="flex flex-row items-center space-x-2">
                 <span
                   @click="paymentCreditView(id)"
-                  @mouseover="initDrawer(index)"
-                  @mouseleave="showDrawer = false"
+                  @mouseover="initRightDrawer(index)"
+                  @mouseleave="layoutStore.isRightDrawShow = false"
                   v-if="item.credit == true"
                   class="h-fit cursor-pointer bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
                   >KREDIT
                 </span>
                 <span
-                  @mouseover="initDrawer(index)"
-                  @mouseleave="showDrawer = false"
+                  @mouseover="initRightDrawer(index)"
+                  @mouseleave="layoutStore.isRightDrawShow = false"
                   class="h-fit bg-red-100 text-red-600 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
                   >{{ item.status }}</span
                 >
@@ -195,14 +195,14 @@
     </div>
 
     <div class="p-4">
-      <label for="name" class="mb-2 text-sm font-medium text-gray-900 dark:text-white block">Active Filter</label>
+      <label class="mb-2 text-sm font-medium text-gray-900 dark:text-white block">Active Filter</label>
       <div class="space-y-2">
         <span
-          v-for="filter in filters"
+          v-for="(filter, index) in salesStore.filter"
           :key="filter"
           class="inline-flex items-center px-2 py-1 mr-2 text-sm font-medium text-blue-800 bg-blue-100 rounded dark:bg-blue-900 dark:text-blue-300"
         >
-          {{ filter }}
+          {{ filter[index] }}
           <button
             type="button"
             class="inline-flex items-center p-0.5 ml-2 text-sm text-blue-400 bg-transparent rounded-sm hover:bg-blue-200 hover:text-blue-900 dark:hover:bg-blue-800 dark:hover:text-blue-300"
@@ -241,7 +241,6 @@
             >Previous</a
           >
         </li>
-
         <li>
           <a
             @click="salesStore.lastPage == salesStore.currentPage ? '' : salesStore.getData(nextPage)"
@@ -258,79 +257,8 @@
     </nav>
   </div>
 
-  <DetailPenjualanDrawer :show="showDrawer" />
-  <FilterDrawer :show="showFilterDrawer" @close="showFilterDrawer = false" @submit="submitFilter()" :is-loading="salesStore.isLoading">
-    <div class="w-full justify-between flex items-start mb-4">
-      <h5 class="inline-flex items-center mb-6 text-base font-semibold text-gray-500 uppercase dark:text-gray-400">
-        <FunnelIcon class="h-5 w-5 mr-2" />Filter Data
-      </h5>
-      <button
-        @click="showFilterDrawer = !showFilterDrawer"
-        class="text-black dark:text-white hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 top-2.5 right-2.5 inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
-      >
-        <XMarkIcon class="h-5 w-5" />
-        <span class="sr-only">Close menu</span>
-      </button>
-    </div>
-
-    <div class="space-y-6 flex flex-col mb-8">
-      <div>
-        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal</label>
-        <vue-tailwind-datepicker
-          :auto-apply="false"
-          :shortcuts="false"
-          :formatter="formatter"
-          v-model="salesStore.filter.date"
-          placeholder="Dari tanggal - Hingga tanggal"
-          as-single
-          use-range
-          input-classes="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        />
-      </div>
-
-      <div>
-        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Min Grand Total</label>
-        <InputCurrency
-          :options="{ currency: 'IDR' }"
-          v-model="salesStore.filter.minTotal"
-          :custom-class="'block p-2.5 w-full text-sm bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'"
-        />
-      </div>
-
-      <div>
-        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
-        <ul class="w-full grid grid-flow-row-dense grid-cols-2 gap-2">
-          <li v-for="i in salesStore.status" :key="i">
-            <input name="status" type="radio" :id="i" :value="i" v-model="salesStore.filter.status" class="hidden peer" />
-            <label
-              :for="i"
-              class="inline-flex text-xs text-center items-center justify-between w-full py-2 px-4 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-white dark:border-gray-700 peer-checked:bg-red-500 hover:text-gray-600 peer-checked:border-red-500 dark:peer-checked:text-white peer-checked:text-white hover:bg-green-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-red-500"
-            >
-              {{ i }}
-            </label>
-          </li>
-        </ul>
-      </div>
-
-      <div>
-        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kredit</label>
-        <ul class="w-full grid grid-flow-row-dense grid-cols-2 gap-2">
-          <li v-for="x in salesStore.pembayaran" :key="x">
-            <input name="pembayaran" type="radio" :id="`pembayaran-${x}`" :value="x" v-model="salesStore.filter.pembayaran" class="hidden peer" />
-            <label
-              :for="`pembayaran-${x}`"
-              class="inline-flex text-xs text-center items-center justify-between w-full py-2 px-4 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-white dark:border-gray-700 peer-checked:bg-red-500 hover:text-gray-600 peer-checked:border-red-500 dark:peer-checked:text-white peer-checked:text-white hover:bg-green-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-red-500"
-            >
-              {{ x }}
-            </label>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </FilterDrawer>
   <!--Confirmation Modal -->
   <Teleport to="body">
-    <!-- use the modal component, pass in the prop -->
     <ConfirmationModal :show="showConfirmationModal" @close="showConfirmationModal = false" @submit="destroyData" @cancel="showConfirmationModal = false">
       <template #title>Hapus data ?</template>
       <template #submit>Hapus !</template>
@@ -360,34 +288,29 @@ import {
 
 import { XMarkIcon } from '@heroicons/vue/24/solid'
 
-import { computed, onUnmounted, onBeforeMount, defineAsyncComponent, ref, nextTick } from 'vue'
+import { computed, onUnmounted, onBeforeMount, defineAsyncComponent, ref, nextTick, shallowRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { IDRCurrency } from '../../utilities/formatter'
 import { useSalesStore } from '../../stores/sales'
-import CircleLoading from '../../components/loading/CircleLoading.vue'
-import VueTailwindDatepicker from 'vue-tailwind-datepicker'
-import InputCurrency from '../../components/input/InputCurrency.vue'
+import { useLayoutStore } from '../../stores/layout'
 
+const CircleLoading = defineAsyncComponent(() => import('../../components/loading/CircleLoading.vue'))
 const ConfirmationModal = defineAsyncComponent(() => import('../../components/modal/ConfirmationModal.vue'))
-const DetailPenjualanDrawer = defineAsyncComponent(() => import('./drawer/DetailPenjualanDrawer.vue'))
 const LoadingModal = defineAsyncComponent(() => import('../../components/modal/LoadingModal.vue'))
-const FilterDrawer = defineAsyncComponent(() => import('../../components/drawer/FilterDrawer.vue'))
+const DetailPenjualanDrawer = defineAsyncComponent(() => import('../../views/sales/drawer/DetailPenjualanDrawer.vue'))
+const FilterDrawer = defineAsyncComponent(() => import('./drawer/FilterDrawer.vue'))
 
 const router = useRouter()
 const salesStore = useSalesStore()
+const layoutStore = useLayoutStore()
+
 const deleteId = ref(null)
-
-const showDrawer = ref(false)
-const showFilterDrawer = ref(false)
-
 const showConfirmationModal = ref(false)
-
 const lengths = ref([5, 10, 20, 30, 40, 50])
 
 const previousPage = computed(() => {
   return '&page=' + (salesStore.currentPage - 1)
 })
-
 const nextPage = computed(() => {
   return '&page=' + (salesStore.currentPage + 1)
 })
@@ -398,25 +321,26 @@ salesStore.$subscribe((mutation, state) => {
   }
 })
 
-async function initDrawer(index) {
+async function initRightDrawer(index) {
+  layoutStore.title = 'Detail Penjualan'
+  layoutStore.component = shallowRef(DetailPenjualanDrawer)
   salesStore.getDrawerData(index)
   await nextTick()
-  showDrawer.value = true
+  layoutStore.isRightDrawShow = true
 }
-
 async function filterDraw() {
   await nextTick()
-  showFilterDrawer.value = true
-}
+  layoutStore.component = shallowRef(FilterDrawer)
+  layoutStore.title = 'Filter Data'
+  layoutStore.event = {
+    submit: salesStore.getData(),
+  }
 
+  layoutStore.isRightDrawShow = true
+}
 async function submitFilter() {
   salesStore.getData()
 }
-
-const formatter = ref({
-  date: 'DD MMM YYYY',
-  month: 'MMM',
-})
 
 function paymentCreditView(id) {
   router.push({
@@ -424,10 +348,6 @@ function paymentCreditView(id) {
     params: { id: id },
   })
 }
-
-const filters = computed(() => {
-  return salesStore.filter
-})
 
 async function destroyData(id) {
   showConfirmationModal.value = false

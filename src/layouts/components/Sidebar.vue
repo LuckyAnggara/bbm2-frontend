@@ -89,11 +89,6 @@ const openSideBar = JSON.parse(localStorage.getItem('openSideBar'))
 
 const showTips = ref(true)
 
-console.info(openSideBar)
-// const index = computed(() => {
-//   return listMenu.findIndex((d) => d.to == route.name)
-// })
-
 const currentMenu = ref(0)
 const currentChildMenu = ref(99)
 

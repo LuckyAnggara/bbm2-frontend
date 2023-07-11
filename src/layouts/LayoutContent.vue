@@ -1,11 +1,12 @@
 <script>
+import Rightbar from './components/Rightbar.vue'
 import Sidebar from './components/Sidebar.vue'
 import Header from './components/Header.vue'
 import Main from './components/Main.vue'
 import Footer from './components/Footer.vue'
 
 export default {
-  components: { Sidebar, Header, Main, Footer },
+  components: { Rightbar, Sidebar, Header, Main, Footer },
 }
 </script>
 
@@ -14,6 +15,6 @@ export default {
     <Sidebar />
     <Header />
     <Main />
-    <!-- <Footer /> -->
+    <Rightbar />
   </div>
 </template>
