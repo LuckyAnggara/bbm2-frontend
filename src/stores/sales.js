@@ -52,7 +52,7 @@ export const useSalesStore = defineStore('salesStore', {
   },
   getters: {
     items: (state) => {
-      return state.responses?.data
+      return state.responses?.data ?? []
     },
     currentPage(state) {
       return state.responses?.current_page
@@ -232,6 +232,11 @@ export const useSalesStore = defineStore('salesStore', {
       } finally {
         this.isDestroyLoading = false
       }
+    },
+
+    //Fungsi Biasa
+    changeDateFilter(payload) {
+      this.filter.date = payload
     },
   },
 })

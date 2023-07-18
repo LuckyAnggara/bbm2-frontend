@@ -68,7 +68,15 @@
           <tr>
             <th scope="col" class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600">No</th>
             <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Tanggal</th>
-            <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">Invoice</th>
+            <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">
+              <div class="flex flex-row justify-between items-center">
+                <span> Invoice </span>
+                <button type="button" class="inline-flex items-center p-0.5 ml-2">
+                  <BarsArrowUpIcon v-if="(sort = true)" class="h-5 w-5" />
+                  <BarsArrowDownIcon v-else class="h-5 w-5" />
+                </button>
+              </div>
+            </th>
             <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">Nama Pelanggan</th>
             <th scope="col" class="px-4 py-2 w-16 border border-slate-400 dark:border-slate-600">Total</th>
             <th scope="col" class="px-4 py-2 w-20 border border-slate-400 dark:border-slate-600">Status</th>
@@ -194,15 +202,14 @@
       </table>
     </div>
 
-    <div class="p-4">
+    <!-- <div class="p-4">
       <label class="mb-2 text-sm font-medium text-gray-900 dark:text-white block">Active Filter</label>
-      <div class="space-y-2">
+      <div v-for="(filter, key) in salesStore.filter" :key="filter" class="space-x-2 flex w-full bg-red-500">
         <span
-          v-for="(filter, index) in salesStore.filter"
-          :key="filter"
-          class="inline-flex items-center px-2 py-1 mr-2 text-sm font-medium text-blue-800 bg-blue-100 rounded dark:bg-blue-900 dark:text-blue-300"
+          v-if="filter.length != 0"
+          class="items-center px-2 py-1 mr-2 text-sm font-medium text-blue-800 bg-blue-100 rounded dark:bg-blue-900 dark:text-blue-300"
         >
-          {{ filter[index] }}
+          {{ key }} : {{ filter }}
           <button
             type="button"
             class="inline-flex items-center p-0.5 ml-2 text-sm text-blue-400 bg-transparent rounded-sm hover:bg-blue-200 hover:text-blue-900 dark:hover:bg-blue-800 dark:hover:text-blue-300"
@@ -218,7 +225,7 @@
           </button>
         </span>
       </div>
-    </div>
+    </div> -->
 
     <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
       <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
@@ -284,6 +291,8 @@ import {
   DocumentTextIcon,
   MagnifyingGlassIcon,
   FunnelIcon,
+  BarsArrowUpIcon,
+  BarsArrowDownIcon,
 } from '@heroicons/vue/24/outline'
 
 import { XMarkIcon } from '@heroicons/vue/24/solid'
@@ -332,9 +341,9 @@ async function filterDraw() {
   await nextTick()
   layoutStore.component = shallowRef(FilterDrawer)
   layoutStore.title = 'Filter Data'
-  layoutStore.event = {
-    submit: salesStore.getData(),
-  }
+  // layoutStore.event = {
+  //   submit: salesStore.getData(),
+  // }
 
   layoutStore.isRightDrawShow = true
 }
@@ -362,6 +371,19 @@ function invoice(id) {
 function deleteData(id) {
   deleteId.value = id
   showConfirmationModal.value = true
+}
+
+function sortBy(array, key, ascending) {
+  if (ascending === true) {
+    array.sort(function (a, b) {
+      return a[key] > b[key] ? 1 : -1
+    })
+  } else {
+    array.sort(function (a, b) {
+      return a[key] < b[key] ? 1 : -1
+    })
+  }
+  return array
 }
 
 onBeforeMount(() => {

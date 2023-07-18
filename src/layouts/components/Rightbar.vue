@@ -2,7 +2,7 @@
   <aside
     id="logo-sidebar"
     :class="showRightBar == true ? '' : 'translate-x-full'"
-    class="fixed py-20 top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform duration-500 ease-in-out bg-white dark:bg-gray-800 shadow-md"
+    class="fixed py-20 top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow-visible transition-transform duration-500 ease-in-out bg-white dark:bg-gray-800 shadow-md"
     aria-label="Sidebar"
   >
     <div class="w-full justify-between flex items-start mb-4">
