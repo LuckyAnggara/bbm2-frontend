@@ -44,9 +44,7 @@ export const useCustomerStore = defineStore('customerStore', {
     async getData(page = '') {
       this.isLoading = true
       try {
-        const response = await axiosIns.get(
-          `/customers?limit=${this.currentLimit}${this.searchQuery}${this.branchQuery}`
-        )
+        const response = await axiosIns.get(`/customers?limit=${this.currentLimit}${this.searchQuery}${this.branchQuery}`)
         this.responses = response.data.data
       } catch (error) {
         alert(error)
@@ -54,7 +52,7 @@ export const useCustomerStore = defineStore('customerStore', {
       this.isLoading = false
     },
     async updateCustomer(data) {
-      console.info('edit')
+      console.info(data)
       this.isEditLoading = true
       try {
         const response = await axiosIns.put(`/customers/${data.id}`, data)

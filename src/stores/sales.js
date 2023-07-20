@@ -20,6 +20,8 @@ export const useSalesStore = defineStore('salesStore', {
       isPaymentLoading: false,
       isDrawerLoading: false,
       isTransactionSuccess: false,
+      sortBy: 'created_at',
+      isAscending: false,
       currentLimit: 10,
       searchName: '',
       status: ['SEMUA', 'LUNAS', 'BELUM LUNAS'],
@@ -53,6 +55,18 @@ export const useSalesStore = defineStore('salesStore', {
   getters: {
     items: (state) => {
       return state.responses?.data ?? []
+    },
+    sortItem: (state) => {
+      if (state.isAscending === true) {
+        state.items.sort(function (a, b) {
+          return a[state.sortBy] > b[state.sortBy] ? 1 : -1
+        })
+      } else {
+        state.items.sort(function (a, b) {
+          return a[state.sortBy] < b[state.sortBy] ? 1 : -1
+        })
+      }
+      return state.items
     },
     currentPage(state) {
       return state.responses?.current_page
@@ -138,7 +152,11 @@ export const useSalesStore = defineStore('salesStore', {
         )
         this.responses = response.data.data
       } catch (error) {
-        alert(error)
+        if ((error.code = 'ERR_BAD_RESPONSE')) {
+          toast.error('Database Offline', {
+            position: 'bottom-right',
+          })
+        }
       }
       this.isLoading = false
     },
@@ -237,6 +255,11 @@ export const useSalesStore = defineStore('salesStore', {
     //Fungsi Biasa
     changeDateFilter(payload) {
       this.filter.date = payload
+    },
+
+    changeSortBy(key) {
+      this.sortBy = key
+      this.isAscending = !this.isAscending
     },
   },
 })

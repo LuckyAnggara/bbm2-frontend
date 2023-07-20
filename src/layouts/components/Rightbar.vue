@@ -2,11 +2,11 @@
   <aside
     id="logo-sidebar"
     :class="showRightBar == true ? '' : 'translate-x-full'"
-    class="fixed py-20 top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow-visible transition-transform duration-500 ease-in-out bg-white dark:bg-gray-800 shadow-md"
+    class="fixed py-20 top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow- overflow-y-auto scrollbar-thin scrollbar-track-slate-500 scrollbar-thumb-neutral-800 transition-transform duration-500 ease-in-out bg-white dark:bg-gray-800 shadow-md"
     aria-label="Sidebar"
   >
-    <div class="w-full justify-between flex items-start mb-4">
-      <h5 class="inline-flex items-center text-base font-semibold text-gray-500 uppercase dark:text-gray-400">
+    <div class="w-full justify-between flex items-center mb-2">
+      <h5 class="inline-flex items-center text-md font-semibold text-gray-500 uppercase dark:text-gray-400">
         {{ layoutStore.title }}
       </h5>
       <button

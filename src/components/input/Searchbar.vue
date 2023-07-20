@@ -1,9 +1,9 @@
 <template>
-  <div @mouseleave="showResult = false" class="">
+  <div @mouseleave="showResult = false" class="w-full">
     <div @mouseenter="ariaResult == true ? (disabledAdd == true ? '' : (showResult = true)) : ''" class="w-full space-y-4 relative">
       <form class="flex items-center" autocomplete="off" @submit.prevent>
         <label for="simple-search" class="sr-only">{{ placeholder }}</label>
-        <div class="relative lg:w-96 w-full">
+        <div class="relative w-full">
           <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -55,8 +55,8 @@
       </div>
     </div>
 
-    <div v-show="ariaResult == false" class="min-h-fit max-h-96 xl:w-96 w-full border-t-2 mt-6 dark:border-gray-700 border-gray-200 overflow-y-auto">
-      <ul class="relative h-full w-full p-4 space-y-2">
+    <div v-show="ariaResult == false" class="min-h-fit max-h-96 w-full border-t-2 mt-6 py-2 dark:border-gray-700 border-gray-200 overflow-y-auto">
+      <ul class="relative h-full w-full space-y-2">
         <template v-if="isLoading == true">
           <li class="group/text px-2 py-3 rounded-md dark:text-white text-center">
             <CircleLoading />
@@ -73,7 +73,7 @@
             v-for="item in resultItems"
             :key="item.id"
             @click="add(item)"
-            class="cursor-pointer group/edit px-2 py-3 flex justify-between hover:bg-slate-500 rounded-md dark:text-white hover:text-white hover:font-bold dark:hover:text-white items-center"
+            class="cursor-pointer group/edit px-2 py-1 flex justify-between hover:bg-slate-500 rounded-md dark:text-white hover:text-white hover:font-bold dark:hover:text-white items-center"
           >
             <span class="group-hover/edit:translate-x-2 duration-300 ease-in-out transition">
               {{ item.name?.toUpperCase() }}

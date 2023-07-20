@@ -45,41 +45,72 @@
       </div>
       <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
         <div class="flex items-center space-x-4 w-full md:w-auto">
+          <router-link
+            :to="{ name: 'new-sale', params: {} }"
+            class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            type="button"
+          >
+            <PlusIcon class="mr-1 w-4 h-4" />
+            Sales
+          </router-link>
+        </div>
+
+        <div class="flex items-center space-x-4 w-full md:w-auto">
           <button
             @click="filterDraw()"
             class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
             type="button"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="h-4 w-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">
-              <path
-                fill-rule="evenodd"
-                d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
-                clip-rule="evenodd"
-              />
-            </svg>
+            <FunnelIcon class="h-4 w-4 mr-2" />
             Filter
           </button>
         </div>
       </div>
     </div>
-    <div class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
-      <table class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 table-fixed">
+    <div class="overflow-auto w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
+      <table class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 xl:table-fixed">
         <thead class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
           <tr>
             <th scope="col" class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600">No</th>
-            <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Tanggal</th>
-            <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">
+            <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">
               <div class="flex flex-row justify-between items-center">
-                <span> Invoice </span>
-                <button type="button" class="inline-flex items-center p-0.5 ml-2">
-                  <BarsArrowUpIcon v-if="(sort = true)" class="h-5 w-5" />
+                <span> Tanggal </span>
+                <button type="button" class="inline-flex items-center p-0.5 ml-2" @click="salesStore.changeSortBy('created_at')">
+                  <BarsArrowUpIcon v-if="salesStore.sortBy == 'created_at' && salesStore.isAscending == true" class="h-5 w-5" />
                   <BarsArrowDownIcon v-else class="h-5 w-5" />
                 </button>
               </div>
             </th>
-            <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">Nama Pelanggan</th>
-            <th scope="col" class="px-4 py-2 w-16 border border-slate-400 dark:border-slate-600">Total</th>
-            <th scope="col" class="px-4 py-2 w-20 border border-slate-400 dark:border-slate-600">Status</th>
+            <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">
+              <div class="flex flex-row justify-between items-center">
+                <span> Invoice </span>
+                <button type="button" class="inline-flex items-center p-0.5 ml-2" @click="salesStore.changeSortBy('invoice')">
+                  <BarsArrowUpIcon v-if="salesStore.sortBy == 'invoice' && salesStore.isAscending == true" class="h-5 w-5" />
+                  <BarsArrowDownIcon v-else class="h-5 w-5" />
+                </button>
+              </div>
+            </th>
+            <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">
+              <span> Nama Pelanggan </span>
+            </th>
+            <th scope="col" class="px-4 py-2 w-16 border border-slate-400 dark:border-slate-600">
+              <div class="flex flex-row justify-between items-center">
+                <span> Grand Total </span>
+                <button type="button" class="inline-flex items-center p-0.5 ml-2" @click="salesStore.changeSortBy('grand_total')">
+                  <BarsArrowUpIcon v-if="salesStore.sortBy == 'grand_total' && salesStore.isAscending == true" class="h-5 w-5" />
+                  <BarsArrowDownIcon v-else class="h-5 w-5" />
+                </button>
+              </div>
+            </th>
+            <th scope="col" class="px-4 py-2 w-20 border border-slate-400 dark:border-slate-600">
+              <div class="flex flex-row justify-between items-center">
+                <span> Status </span>
+                <button type="button" class="inline-flex items-center p-0.5 ml-2" @click="salesStore.changeSortBy('status')">
+                  <BarsArrowUpIcon v-if="salesStore.sortBy == 'status' && salesStore.isAscending == true" class="h-5 w-5" />
+                  <BarsArrowDownIcon v-else class="h-5 w-5" />
+                </button>
+              </div>
+            </th>
             <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Dibuat Oleh</th>
             <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Action</th>
           </tr>
@@ -95,7 +126,7 @@
           </tr>
           <tr
             v-else
-            v-for="(item, index) in salesStore.items"
+            v-for="(item, index) in salesStore.sortItem"
             :key="item.id"
             :class="
               (index + 1) % 2 !== 0 ? 'bg-white border-b dark:bg-gray-900 dark:border-gray-700' : 'border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700'
@@ -108,37 +139,31 @@
               {{ item.invoice }}
             </th>
             <td class="px-4 py-1">{{ item.customer?.name ?? '-' }}</td>
-            <td class="px-4 py-1">{{ IDRCurrency.format(item.total ?? 0) }}</td>
+            <td class="px-4 py-1">{{ IDRCurrency.format(item.grand_total ?? 0) }}</td>
             <td class="px-4 py-1">
               <div v-if="item.status == 'LUNAS'" class="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0">
                 <span
-                  @click="paymentCreditView(id)"
-                  @mouseover="initRightDrawer(index)"
-                  @mouseleave="layoutStore.isRightDrawShow = false"
+                  @click="paymentCreditView(item.id)"
                   v-if="item.credit == true"
                   class="cursor-pointer bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
                   >KREDIT
                 </span>
                 <span
-                  @mouseover="initRightDrawer(index)"
-                  @mouseleave="layoutStore.isRightDrawShow = false"
-                  class="bg-blue-100 cursor-alias text-blue-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-500 dark:text-white"
+                  @click="initRightDrawer(index)"
+                  class="bg-blue-100 cursor-pointer text-blue-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-500 dark:text-white"
                   >{{ item.status }}</span
                 >
               </div>
               <div v-else class="flex flex-row items-center space-x-2">
                 <span
-                  @click="paymentCreditView(id)"
-                  @mouseover="initRightDrawer(index)"
-                  @mouseleave="layoutStore.isRightDrawShow = false"
+                  @click="paymentCreditView(item.id)"
                   v-if="item.credit == true"
                   class="h-fit cursor-pointer bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
                   >KREDIT
                 </span>
                 <span
-                  @mouseover="initRightDrawer(index)"
-                  @mouseleave="layoutStore.isRightDrawShow = false"
-                  class="h-fit bg-red-100 text-red-600 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
+                  @click="initRightDrawer(index)"
+                  class="h-fit cursor-pointer bg-red-100 text-red-600 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
                   >{{ item.status }}</span
                 >
               </div>
@@ -293,6 +318,7 @@ import {
   FunnelIcon,
   BarsArrowUpIcon,
   BarsArrowDownIcon,
+  PlusIcon,
 } from '@heroicons/vue/24/outline'
 
 import { XMarkIcon } from '@heroicons/vue/24/solid'
@@ -341,17 +367,12 @@ async function filterDraw() {
   await nextTick()
   layoutStore.component = shallowRef(FilterDrawer)
   layoutStore.title = 'Filter Data'
-  // layoutStore.event = {
-  //   submit: salesStore.getData(),
-  // }
-
   layoutStore.isRightDrawShow = true
 }
-async function submitFilter() {
-  salesStore.getData()
-}
 
-function paymentCreditView(id) {
+async function paymentCreditView(id) {
+  layoutStore.isRightDrawShow = false
+  await nextTick()
   router.push({
     name: 'payment-credit',
     params: { id: id },
@@ -371,19 +392,6 @@ function invoice(id) {
 function deleteData(id) {
   deleteId.value = id
   showConfirmationModal.value = true
-}
-
-function sortBy(array, key, ascending) {
-  if (ascending === true) {
-    array.sort(function (a, b) {
-      return a[key] > b[key] ? 1 : -1
-    })
-  } else {
-    array.sort(function (a, b) {
-      return a[key] < b[key] ? 1 : -1
-    })
-  }
-  return array
 }
 
 onBeforeMount(() => {
