@@ -67,7 +67,7 @@
         </div>
       </div>
     </div>
-    <div class="overflow-auto w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
+    <div class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
       <table class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 xl:table-fixed">
         <thead class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
           <tr>
@@ -187,7 +187,7 @@
                     leave-to-class="transform scale-95 opacity-0"
                   >
                     <MenuItems
-                      class="z-50 py-1 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white dark:bg-gray-800 dark:text-gray-100 shadow-lg ring-1 ring-black dark:ring-gray-700 ring-opacity-5 focus:outline-none"
+                      class="z-50 py-1 absolute right-0 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white dark:bg-gray-800 dark:text-gray-100 shadow-lg ring-1 ring-black dark:ring-gray-700 ring-opacity-5 focus:outline-none"
                     >
                       <div class="px-2 py-1">
                         <MenuItem v-slot="{ active }">
@@ -198,8 +198,22 @@
                               'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                             ]"
                           >
-                            <MagnifyingGlassIcon class="w-5 h-5 mr-2" />
-                            Detail
+                            <DocumentTextIcon class="w-5 h-5 mr-3" />
+                            Invoice
+                          </button>
+                        </MenuItem>
+
+                        <MenuItem v-slot="{ active }">
+                          <button
+                            @click="editData(item.id)"
+                            :class="[
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
+                              'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                            ]"
+                          >
+                            <PencilSquareIcon class="w-5 h-5 mr-3" />
+
+                            Edit
                           </button>
                         </MenuItem>
 
@@ -211,7 +225,7 @@
                               'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                             ]"
                           >
-                            <TrashIcon class="w-5 h-5 mr-2" />
+                            <TrashIcon class="w-5 h-5 mr-3" />
 
                             Delete
                           </button>
@@ -387,6 +401,10 @@ async function destroyData(id) {
 
 function invoice(id) {
   router.push({ name: 'invoice', params: { id } })
+}
+
+function editData(id) {
+  router.push({ name: 'edit-sale', params: { id } })
 }
 
 function deleteData(id) {

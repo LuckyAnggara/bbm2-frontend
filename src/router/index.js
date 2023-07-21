@@ -5,6 +5,7 @@ import DaftarProduk from '../views/persediaan/DaftarProduk.vue'
 import DetailProduk from '../views/persediaan/DetailProduk.vue'
 import MutationProduk from '../views/persediaan/MutationProduk.vue'
 import WizardSale from '../views/sales/WizardSale.vue'
+import WizardEditSale from '../views/sales/WizardEditSale.vue'
 import DaftarPenjualan from '../views/sales/DaftarPenjualan.vue'
 import Login from '../views/Login/Login.vue'
 import Invoice from '../views/invoice/SaleInvoice.vue'
@@ -42,7 +43,18 @@ const routes = [
     meta: {
       transition: 'slide-left',
       requiresAuth: true,
-      title: 'Penjualan Baru',
+      title: 'New Sale',
+      layout: 'layout-content',
+    },
+  },
+  {
+    path: '/sale/:id/edit-sale',
+    name: 'edit-sale',
+    component: WizardEditSale,
+    meta: {
+      transition: 'slide-left',
+      requiresAuth: true,
+      title: 'Edit Sale',
       layout: 'layout-content',
     },
   },
@@ -53,7 +65,7 @@ const routes = [
     meta: {
       transition: 'slide-left',
       requiresAuth: true,
-      title: 'Daftar Penjualan',
+      title: 'List of Sales',
       layout: 'layout-content',
     },
   },
@@ -91,7 +103,7 @@ const routes = [
     },
   },
   {
-    path: '/sales/invoice/:id',
+    path: '/sales/:id/invoice',
     name: 'invoice',
     component: Invoice,
     meta: {
