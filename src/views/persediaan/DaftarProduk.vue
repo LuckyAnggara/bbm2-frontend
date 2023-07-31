@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+  <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-visible">
     <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
       <div class="w-full md:w-1/2 flex space-x-3">
         <div class="flex items-center">
@@ -79,7 +79,7 @@
         </div>
       </div>
     </div>
-    <div class="overflow-x-auto">
+    <div class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
       <table class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 table-fixed table-striped">
         <thead class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
           <tr>
@@ -118,7 +118,73 @@
             <td class="px-4 py-1">{{ IDRCurrency.format(item.price?.price ?? 0) }}</td>
             <td class="px-4 py-1">{{ item.ending_stock ?? 0 }}</td>
             <td class="px-4 py-1">
-              <div class="flex space-x-3">
+              <div>
+                <Menu as="div" class="relative inline-block text-left">
+                  <div>
+                    <MenuButton class="hover:scale-125 ease-in-out duration-300 flex w-full rounded-md font-medium text-black dark:text-white">
+                      <EllipsisVerticalIcon class="h-5 w-5 text-black dark:text-white" aria-hidden="true" />
+                    </MenuButton>
+                  </div>
+
+                  <transition
+                    enter-active-class="transition duration-100 ease-out"
+                    enter-from-class="transform scale-95 opacity-0"
+                    enter-to-class="transform scale-100 opacity-100"
+                    leave-active-class="transition duration-75 ease-in"
+                    leave-from-class="transform scale-100 opacity-100"
+                    leave-to-class="transform scale-95 opacity-0"
+                  >
+                    <MenuItems
+                      class="z-50 py-1 absolute right-0 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white dark:bg-gray-800 dark:text-gray-100 shadow-lg ring-1 ring-black dark:ring-gray-700 ring-opacity-5 focus:outline-none"
+                    >
+                      <div class="px-2 py-1">
+                        <MenuItem v-slot="{ active }">
+                          <button
+                            @click="detail(item.id)"
+                            :class="[
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
+                              'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                            ]"
+                          >
+                            <DocumentTextIcon class="w-5 h-5 mr-3" />
+                            Detail
+                          </button>
+                        </MenuItem>
+
+                        <MenuItem v-slot="{ active }">
+                          <button
+                            @click="edit(item.id)"
+                            :class="[
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
+                              'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                            ]"
+                          >
+                            <PencilSquareIcon class="w-5 h-5 mr-3" />
+
+                            Edit
+                          </button>
+                        </MenuItem>
+
+                        <MenuItem v-slot="{ active }">
+                          <button
+                            @click="deleteData(item.id)"
+                            :class="[
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
+                              'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                            ]"
+                          >
+                            <TrashIcon class="w-5 h-5 mr-3" />
+
+                            Delete
+                          </button>
+                        </MenuItem>
+                      </div>
+                    </MenuItems>
+                  </transition>
+                </Menu>
+              </div>
+
+              <!-- <div class="flex space-x-3">
                 <a
                   @click="detail(item.id)"
                   class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:dark:text-white hover:text-red-500 hover:scale-105 duration-300 ease-in-out"
@@ -136,7 +202,7 @@
                   class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:dark:text-white hover:text-red-500 hover:scale-105 duration-300 ease-in-out"
                   ><TrashIcon class="h-7 w-7"
                 /></a>
-              </div>
+              </div> -->
             </td>
           </tr>
         </tbody>
@@ -185,7 +251,9 @@
 </template>
 
 <script setup>
-import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+
+import { EllipsisVerticalIcon, DocumentTextIcon, PencilSquareIcon, TrashIcon, PlusIcon } from '@heroicons/vue/24/outline'
 import { onMounted, computed, onUnmounted, ref, nextTick, inject } from 'vue'
 import TableComplex from '../../components/table/TableComplex.vue'
 import { IDRCurrency } from '../../utilities/formatter'
