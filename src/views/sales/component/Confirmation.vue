@@ -2,48 +2,78 @@
   <section class="flex w-full">
     <div class="lg:w-3/6 w-full mx-auto">
       <div class="flex flex-col space-y-5 w-full">
-        <div class="relative h-fit bg-white shadow-md dark:bg-gray-800 md:rounded-lg py-5 px-2">
+        <div
+          class="relative h-fit bg-white shadow-md dark:bg-gray-800 md:rounded-lg py-5 px-2"
+        >
           <div class="flex flex-col space-y-2 px-6">
             <div class="">
-              <div class="pt-6 dark:text-white text-black flex justify-between flex-row font-thin">
+              <div
+                class="pt-6 dark:text-white text-black flex justify-between flex-row font-thin"
+              >
                 <span class="text-lg w-1/3">Nama</span>
-                <span class="text-lg font-normal cursor-pointer break-words flex-wrap w-2/3 text-right" @click="showModal = true">{{
-                  salesStore.currentData.customerData?.name?.toUpperCase()
-                }}</span>
+                <span
+                  class="text-lg font-normal cursor-pointer break-words flex-wrap w-2/3 text-right"
+                  @click="showModal = true"
+                  >{{
+                    salesStore.currentData.customerData?.name?.toUpperCase()
+                  }}</span
+                >
               </div>
             </div>
             <div class="">
-              <div class="dark:text-white text-black flex justify-between flex-row font-thin">
+              <div
+                class="dark:text-white text-black flex justify-between flex-row font-thin"
+              >
                 <span class="text-lg w-1/3">Alamat</span>
-                <span class="text-lg font-normal cursor-pointer break-words flex-wrap w-2/3 text-right" @click="showModal = true">{{
-                  salesStore.currentData.customerData?.address
-                }}</span>
+                <span
+                  class="text-lg font-normal cursor-pointer break-words flex-wrap w-2/3 text-right"
+                  @click="showModal = true"
+                  >{{ salesStore.currentData.customerData?.address }}</span
+                >
               </div>
             </div>
             <div class="">
-              <div class="border-b-2 dark:border-gray-600 border-gray-400 dark:text-white text-black flex justify-between flex-row font-thin">
+              <div
+                class="border-b-2 dark:border-gray-600 border-gray-400 dark:text-white text-black flex justify-between flex-row font-thin"
+              >
                 <span class="text-lg w-1/3">Nomor Telepon</span>
-                <span class="text-lg font-normal cursor-pointer break-words flex-wrap w-2/3 text-right" @click="showModal = true">{{
-                  salesStore.currentData.customerData?.phone_number?.toUpperCase()
+                <span
+                  class="text-lg font-normal cursor-pointer break-words flex-wrap w-2/3 text-right"
+                  @click="showModal = true"
+                  >{{
+                    salesStore.currentData.customerData?.phone_number?.toUpperCase()
+                  }}</span
+                >
+              </div>
+            </div>
+            <div class="">
+              <div
+                class="dark:border-gray-600 border-gray-400 dark:text-white text-black flex justify-between flex-row font-thin"
+              >
+                <span class="text-lg">Subtotal</span>
+                <span class="text-lg font-normal">{{
+                  IDRCurrency.format(subTotal)
                 }}</span>
               </div>
             </div>
             <div class="">
-              <div class="dark:border-gray-600 border-gray-400 dark:text-white text-black flex justify-between flex-row font-thin">
-                <span class="text-lg">Subtotal</span>
-                <span class="text-lg font-normal">{{ IDRCurrency.format(subTotal) }}</span>
-              </div>
-            </div>
-            <div class="">
-              <div class="border-b-2 dark:border-gray-600 border-gray-400 dark:text-white text-black flex justify-between flex-row font-thin">
+              <div
+                class="border-b-2 dark:border-gray-600 border-gray-400 dark:text-white text-black flex justify-between flex-row font-thin"
+              >
                 <span class="text-lg">Diskon</span>
-                <span class="text-lg text-red-600 font-normal">{{ IDRCurrency.format(discount) }}</span>
+                <span class="text-lg text-red-600 font-normal">{{
+                  IDRCurrency.format(discount)
+                }}</span>
               </div>
             </div>
             <div class="">
-              <div class="border-b-2 dark:border-gray-600 border-gray-400 py-3 dark:text-white text-black flex justify-between flex-row font-medium">
+              <div
+                class="border-b-2 dark:border-gray-600 border-gray-400 py-3 dark:text-white text-black flex justify-between flex-row font-medium"
+              >
                 <span class="text-lg"></span>
-                <span class="text-lg">{{ IDRCurrency.format(totalBeforeTax) }}</span>
+                <span class="text-lg">{{
+                  IDRCurrency.format(totalBeforeTax)
+                }}</span>
               </div>
             </div>
             <!-- <div class="">
@@ -62,31 +92,52 @@
               </div>
             </div> -->
             <div class="border-b-2 dark:border-gray-600 border-gray-400 mb-2">
-              <div class="dark:text-white text-black flex justify-between flex-row font-thin w-full">
-                <div class="flex justify-center items-center space-x-2">
-                  <label for="brand" class="block text-lg text-gray-900 dark:text-white py-2.5">Pajak</label>
+              <div
+                class="dark:text-white text-black flex justify-between flex-row font-thin w-full mb-2"
+              >
+                <div class="flex justify-center items-center space-x-8">
+                  <label
+                    for="brand"
+                    class="block text-lg text-gray-900 dark:text-white py-2.5"
+                    >Pajak</label
+                  >
                   <DotLoading v-if="taxStore.isLoading" />
-                  <div v-else class="flex flex-row space-x-2">
+                  <div v-else class="flex flex-row">
                     <select
                       v-model="nomPajak"
                       class="w-48 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
-                      <option value="0" disabled>Pilih Pajak</option>
-                      <option v-for="item in taxStore.items" :key="item.id" :value="item.value">{{ item.name.toUpperCase() }} ({{ item.value * 100 }}%)</option>
+                      <option
+                        v-for="item in taxStore.items"
+                        :key="item.id"
+                        :value="item.value"
+                      >
+                        {{ item.name.toUpperCase() }} ({{ item.value * 100 }}%)
+                      </option>
                     </select>
                   </div>
                 </div>
-                <span class="text-red-600 font-normal py-2.5">{{ IDRCurrency.format(tax) }}</span>
+                <span class="text-red-600 font-normal py-2.5">{{
+                  IDRCurrency.format(tax)
+                }}</span>
               </div>
             </div>
             <div class="">
-              <div class="dark:border-gray-600 border-gray-400 py-3 dark:text-white text-black flex justify-between flex-row font-medium">
+              <div
+                class="dark:border-gray-600 border-gray-400 py-3 dark:text-white text-black flex justify-between flex-row font-medium"
+              >
                 <span class="text-lg">Total</span>
-                <span class="text-2xl" :class="[total < 0 ? 'text-red-500' : '']">{{ IDRCurrency.format(total) }}</span>
+                <span
+                  class="text-2xl"
+                  :class="[total < 0 ? 'text-red-500' : '']"
+                  >{{ IDRCurrency.format(total) }}</span
+                >
               </div>
             </div>
             <div class="">
-              <div class="dark:border-gray-600 border-gray-400 dark:text-white text-black flex justify-between flex-row font-thin">
+              <div
+                class="dark:border-gray-600 border-gray-400 dark:text-white text-black flex justify-between flex-row font-thin"
+              >
                 <span class="text-lg">Pengiriman</span>
               </div>
 
@@ -137,13 +188,22 @@
 
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
-      <ShippingModal :show="showShippingModal" @close="showShippingModal = false" @next="emit('next')"> </ShippingModal>
+      <ShippingModal
+        :show="showShippingModal"
+        @close="showShippingModal = false"
+        @next="emit('next')"
+      >
+      </ShippingModal>
     </Teleport>
   </section>
 </template>
 
 <script setup>
-import { PaperAirplaneIcon, ArrowUturnLeftIcon, TruckIcon } from '@heroicons/vue/24/outline'
+import {
+  PaperAirplaneIcon,
+  ArrowUturnLeftIcon,
+  TruckIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, computed, watch, nextTick, onMounted } from 'vue'
 import { useSalesStore } from '../../../stores/sales'

@@ -7,10 +7,16 @@
     >
       <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
         <!-- Modal content -->
-        <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+        <div
+          class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
+        >
           <!-- Modal header -->
-          <div class="flex justify-between items-center pb-4 rounded-t border-b dark:border-gray-600">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Shipping Detail</h3>
+          <div
+            class="flex justify-between items-center pb-4 rounded-t border-b dark:border-gray-600"
+          >
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+              Shipping Detail
+            </h3>
             <button
               @click="closeModal"
               type="button"
@@ -26,7 +32,9 @@
           <div>
             <!-- TABS HEADER -->
             <div class="border-b border-gray-200 dark:border-gray-700 mb-6">
-              <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+              <ul
+                class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400"
+              >
                 <li class="mr-2">
                   <a
                     @click="step = 1"
@@ -73,7 +81,11 @@
             <Transition>
               <div v-if="step == 1" class="flex flex-col space-y-4 mb-6">
                 <div>
-                  <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white mb-1">Shipping Vendor</label>
+                  <label
+                    for="name"
+                    class="block text-sm font-medium text-gray-900 dark:text-white mb-1"
+                    >Shipping Vendor</label
+                  >
                   <select
                     v-model="shippingData.vendor"
                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -83,7 +95,11 @@
                 </div>
 
                 <div>
-                  <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white mb-1">Fee Shipping</label>
+                  <label
+                    for="name"
+                    class="block text-sm font-medium text-gray-900 dark:text-white mb-1"
+                    >Fee Shipping</label
+                  >
                   <InputCurrency
                     :options="{ currency: 'IDR' }"
                     v-model="shippingData.fee"
@@ -92,69 +108,109 @@
                 </div>
               </div>
               <div v-else class="flex flex-col space-y-4 mb-6">
+                <div class="flex items-center">
+                  <input
+                    v-model="useCustomer"
+                    id="checkbox-2"
+                    type="checkbox"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label
+                    for="checkbox-2"
+                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >Sama dengan data costumer
+                  </label>
+                </div>
                 <div>
-                  <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white">Nama Penerima</label>
+                  <label
+                    for="name"
+                    class="block text-sm font-medium text-gray-900 dark:text-white"
+                    >Nama Penerima</label
+                  >
                   <input
                     v-model="shippingData.receiverName"
                     type="text"
-                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Nama lengkap"
                   />
                 </div>
                 <div>
-                  <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white">Nomor Telepon Penerima</label>
+                  <label
+                    for="name"
+                    class="block text-sm font-medium text-gray-900 dark:text-white"
+                    >Nomor Telepon Penerima</label
+                  >
                   <input
                     v-model="shippingData.receiverPhoneNumber"
                     type="text"
-                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Nomor telepon"
                   />
                 </div>
-
-                <div class="sm:col-span-2">
-                  <label for="description" class="block text-sm font-medium text-gray-900 dark:text-white">Alamat Penerima</label>
+                <div>
+                  <label
+                    for="description"
+                    class="block text-sm font-medium text-gray-900 dark:text-white"
+                    >Alamat Penerima</label
+                  >
                   <textarea
                     v-model="shippingData.receiverAddress"
                     rows="3"
-                    class="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Alamat lengkap customer"
                   ></textarea>
                 </div>
                 <div class="grid gap-4 sm:grid-cols-2">
                   <div class="w-full">
-                    <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white">Kelurahan</label>
+                    <label
+                      for="name"
+                      class="block text-sm font-medium text-gray-900 dark:text-white"
+                      >Kode Pos</label
+                    >
+                    <input
+                      v-model="shippingData.receiverPostalCode"
+                      type="text"
+                      class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      placeholder="Kode Pos"
+                    />
+                  </div>
+                  <div class="w-full">
+                    <label
+                      for="name"
+                      class="block text-sm font-medium text-gray-900 dark:text-white"
+                      >Kelurahan</label
+                    >
                     <input
                       v-model="shippingData.receiverKelurahan"
                       type="text"
-                      class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       placeholder="Kelurahan"
                     />
                   </div>
                   <div class="w-full">
-                    <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white">Kecamatan</label>
+                    <label
+                      for="name"
+                      class="block text-sm font-medium text-gray-900 dark:text-white"
+                      >Kecamatan</label
+                    >
                     <input
                       v-model="shippingData.receiverKecamatan"
                       type="text"
-                      class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       placeholder="Kecamatan"
                     />
                   </div>
                   <div class="w-full">
-                    <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white">Kota/Kabupaten</label>
+                    <label
+                      for="name"
+                      class="block text-sm font-medium text-gray-900 dark:text-white"
+                      >Kota/Kabupaten</label
+                    >
                     <input
                       v-model="shippingData.receiverKota"
                       type="text"
-                      class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       placeholder="Kota / Kabupaten"
-                    />
-                  </div>
-                  <div class="w-full">
-                    <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white">Kode Pos</label>
-                    <input
-                      v-model="shippingData.receiverPostalCode"
-                      type="text"
-                      class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="Kode Pos"
                     />
                   </div>
                 </div>
@@ -219,27 +275,37 @@
 </template>
 
 <script setup>
-import { PaperAirplaneIcon, TrashIcon, PencilSquareIcon, XMarkIcon, TruckIcon, UserCircleIcon, ArrowLeftIcon, ArrowRightIcon } from '@heroicons/vue/24/outline'
-import { nextTick, onMounted, ref, computed } from 'vue'
+import {
+  PaperAirplaneIcon,
+  TrashIcon,
+  PencilSquareIcon,
+  XMarkIcon,
+  TruckIcon,
+  UserCircleIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+} from '@heroicons/vue/24/outline'
+import { nextTick, onMounted, ref, computed, watch } from 'vue'
 
-import Searchbar from '../../../components/input/Searchbar.vue'
 import CircleLoading from '../../../components/loading/CircleLoading.vue'
 import { IDRCurrency } from '../../../utilities/formatter'
 import InputCurrency from '../../../components/input/InputCurrency.vue'
 
 import { useSalesStore } from '../../../stores/sales'
+import { usePostalCodeStore } from '../../../stores/postalCode'
 
 const props = defineProps({
   show: Boolean,
 })
 const emit = defineEmits(['close', 'next'])
 
-const namaLengkap = ref(null)
+const useCustomer = ref(false)
 const shippingData = ref({
   vendor: 0,
   fee: 0,
 })
 const salesStore = useSalesStore()
+const postalCodeStore = usePostalCodeStore()
 
 async function submit() {
   salesStore.$patch((state) => {
@@ -251,6 +317,33 @@ async function submit() {
   emit('next')
 }
 const step = ref(1)
+
+watch(
+  () => useCustomer.value,
+  (newValue, oldValue) => {
+    if (newValue == true) {
+      shippingData.value.receiverName = salesStore.currentData.customerData.name
+      shippingData.value.receiverAddress =
+        salesStore.currentData.customerData.address
+      shippingData.value.receiverPhoneNumber =
+        salesStore.currentData.customerData.phone_number
+      // salesStore.$patch((state) => {
+      //   const b = state.currentData.shipping
+      //   const a = {
+      //     receiverName: state.currentData.customerData.name,
+      //     receiverAddress: state.currentData.customerData.address,
+      //     receiverPhoneNumber: state.currentData.customerData.phone_number,
+      //     receiverKelurahan: '',
+      //     receiverKecamatan: '',
+      //     receiverKota: '',
+      //     receiverKota: '',
+      //   }
+      //   state.currentData.shipping = { ...b, ...a }
+      // })
+    }
+  },
+  { deep: true }
+)
 </script>
 
 <style>
