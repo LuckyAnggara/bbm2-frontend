@@ -104,9 +104,18 @@
             </th>
             <th scope="col" class="px-4 py-2 w-20 border border-slate-400 dark:border-slate-600">
               <div class="flex flex-row justify-between items-center">
-                <span> Status </span>
+                <span> Payment Status </span>
                 <button type="button" class="inline-flex items-center p-0.5 ml-2" @click="salesStore.changeSortBy('status')">
                   <BarsArrowUpIcon v-if="salesStore.sortBy == 'status' && salesStore.isAscending == true" class="h-5 w-5" />
+                  <BarsArrowDownIcon v-else class="h-5 w-5" />
+                </button>
+              </div>
+            </th>
+            <th scope="col" class="px-4 py-2 w-20 border border-slate-400 dark:border-slate-600">
+              <div class="flex flex-row justify-between items-center">
+                <span> Delivery Status </span>
+                <button type="button" class="inline-flex items-center p-0.5 ml-2" @click="salesStore.changeSortBy('shipping_type')">
+                  <BarsArrowUpIcon v-if="salesStore.sortBy == 'shipping_type' && salesStore.isAscending == true" class="h-5 w-5" />
                   <BarsArrowDownIcon v-else class="h-5 w-5" />
                 </button>
               </div>
@@ -167,6 +176,11 @@
                   >{{ item.status }}</span
                 >
               </div>
+            </td>
+            <td class="px-4 py-1">
+              <span class="bg-red-100 text-red-400 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-300 dark:text-red-600"
+                >{{ item.shipping_type }}
+              </span>
             </td>
             <td class="px-4 py-1">{{ item.maker?.name ?? '' }}</td>
             <td class="px-4 py-1">

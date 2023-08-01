@@ -82,12 +82,12 @@
       </div>
 
       <div>
-        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
+        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Payment Status</label>
         <ul class="w-full grid grid-flow-row-dense grid-cols-2 gap-2">
-          <li v-for="i in salesStore.status" :key="i">
-            <input name="status" type="radio" :id="i" :value="i" v-model="salesStore.filter.status" class="hidden peer" />
+          <li v-for="i in salesStore.paymentStatus" :key="i">
+            <input name="payment" type="radio" :id="`payment-${i}`" :value="i" v-model="salesStore.filter.paymentStatus" class="hidden peer" />
             <label
-              :for="i"
+              :for="`payment-${i}`"
               class="inline-flex text-xs text-center items-center justify-between w-full py-2 px-4 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-white dark:border-gray-700 peer-checked:bg-red-500 hover:text-gray-600 peer-checked:border-red-500 dark:peer-checked:text-white peer-checked:text-white hover:bg-green-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-red-500"
             >
               {{ i }}
@@ -97,7 +97,7 @@
       </div>
 
       <div>
-        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kredit</label>
+        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Payment Type</label>
         <ul class="w-full grid grid-flow-row-dense grid-cols-2 gap-2">
           <li v-for="x in salesStore.pembayaran" :key="x">
             <input name="pembayaran" type="radio" :id="`pembayaran-${x}`" :value="x" v-model="salesStore.filter.pembayaran" class="hidden peer" />
@@ -106,6 +106,21 @@
               class="inline-flex text-xs text-center items-center justify-between w-full py-2 px-4 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-white dark:border-gray-700 peer-checked:bg-red-500 hover:text-gray-600 peer-checked:border-red-500 dark:peer-checked:text-white peer-checked:text-white hover:bg-green-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-red-500"
             >
               {{ x }}
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Delivery Status</label>
+        <ul class="w-full grid grid-flow-row-dense grid-cols-2 gap-2">
+          <li v-for="d in salesStore.deliveryStatus" :key="d">
+            <input name="delivery" type="radio" :id="`delivery-${d}`" :value="d" v-model="salesStore.filter.deliveryStatus" class="hidden peer" />
+            <label
+              :for="`delivery-${d}`"
+              class="inline-flex text-xs text-center items-center justify-between w-full py-2 px-4 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-white dark:border-gray-700 peer-checked:bg-red-500 hover:text-gray-600 peer-checked:border-red-500 dark:peer-checked:text-white peer-checked:text-white hover:bg-green-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-red-500"
+            >
+              {{ d }}
             </label>
           </li>
         </ul>

@@ -24,14 +24,15 @@ export const useSalesStore = defineStore('salesStore', {
       isAscending: false,
       currentLimit: 10,
       searchName: '',
-      status: ['SEMUA', 'LUNAS', 'BELUM LUNAS'],
+      paymentStatus: ['SEMUA', 'LUNAS', 'BELUM LUNAS'],
+      deliveryStatus: ['SEMUA', 'TAKE AWAY', 'DELIVERY'],
       pembayaran: ['SEMUA', 'TUNAI', 'KREDIT'],
       currentData: {
         customerData: {
-          id: '',
-          name: '',
-          address: '',
-          phone_number: '',
+          id: 1,
+          name: '-',
+          address: '-',
+          phone_number: '-',
           userId: userData.id,
           saveCustomer: false,
         },
@@ -42,10 +43,12 @@ export const useSalesStore = defineStore('salesStore', {
           due_date: null,
           notes: '',
         },
+        shipping: {},
       },
       filter: {
         date: [],
-        status: 'SEMUA',
+        paymentStatus: 'SEMUA',
+        deliveryStatus: 'SEMUA',
         pembayaran: 'SEMUA',
         minTotal: 0,
       },
@@ -104,17 +107,30 @@ export const useSalesStore = defineStore('salesStore', {
       }
       return '&start-date=' + state.filter.date[0] + '&end-date=' + state.filter.date[1]
     },
-    statusQuery(state) {
-      switch (state.filter.status) {
+    paymentStatusQuery(state) {
+      switch (state.filter.paymentStatus) {
         case '':
         case null:
           return ''
         case 'SEMUA':
           return ''
         case 'LUNAS':
-          return '&status=lunas'
+          return '&payment-status=LUNAS'
         case 'BELUM LUNAS':
-          return '&status=belum_lunas'
+          return '&payment-status=BELUM LUNAS'
+      }
+    },
+    deliveryStatusQuery(state) {
+      switch (state.filter.deliveryStatus) {
+        case '':
+        case null:
+          return ''
+        case 'SEMUA':
+          return ''
+        case 'TAKE AWAY':
+          return '&delivery-status=TAKE AWAY'
+        case 'DELIVERY':
+          return '&delivery-status=DELIVERY'
       }
     },
     pembayaranQuery(state) {
@@ -137,7 +153,8 @@ export const useSalesStore = defineStore('salesStore', {
     activeFilter(state) {
       return {
         tanggal: state.filter.date ?? '-',
-        status: state.filter.status ?? '-',
+        paymentStatus: state.filter.paymentStatus ?? '-',
+        deliveryStatus: state.filter.deliveryStatus ?? '-',
         kredit: state.filter.kredit ?? '-',
         minTotal: state.filter.minTotal ?? '-',
       }
@@ -148,7 +165,7 @@ export const useSalesStore = defineStore('salesStore', {
       this.isLoading = true
       try {
         const response = await axiosIns.get(
-          `/sales?limit=${this.currentLimit}${this.branchQuery}${this.searchQuery}${page}${this.statusQuery}${this.pembayaranQuery}${this.dateQuery}${this.minTotalQuery}`
+          `/sales?limit=${this.currentLimit}${this.branchQuery}${this.searchQuery}${page}${this.paymentStatusQuery}${this.deliveryStatusQuery}${this.pembayaranQuery}${this.dateQuery}${this.minTotalQuery}`
         )
         this.responses = response.data.data
       } catch (error) {
@@ -260,6 +277,10 @@ export const useSalesStore = defineStore('salesStore', {
     changeSortBy(key) {
       this.sortBy = key
       this.isAscending = !this.isAscending
+    },
+
+    addDataShipping(value) {
+      this.currentData.shipping = { ...value }
     },
   },
 })

@@ -57,8 +57,8 @@
             </thead>
             <tbody>
               <tr v-if="salesStore.currentData.currentCart.length < 1" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td colspan="8" class="px-6 text-center">
-                  <span class="text-xl dark:text-gray-200 text-black">Tidak ada data</span>
+                <td colspan="8" class="px-6 text-center py-4">
+                  <span class="text-lg dark:text-gray-300 text-black">Tidak ada data</span>
                 </td>
               </tr>
               <tr
@@ -93,7 +93,7 @@
                     v-model="item.qty"
                   />
                 </td>
-                <td class="text-xs text-gray-900 dark:text-white">
+                <td class="text-xs text-gray-900 dark:text-white px-2">
                   {{ item.unit?.toUpperCase() }}
                 </td>
                 <td class="">

@@ -5,6 +5,7 @@ import DaftarProduk from '../views/persediaan/DaftarProduk.vue'
 import DetailProduk from '../views/persediaan/DetailProduk.vue'
 import MutationProduk from '../views/persediaan/MutationProduk.vue'
 import WizardSale from '../views/sales/WizardSale.vue'
+import WizardPos from '../views/sales/WizardPos.vue'
 import WizardEditSale from '../views/sales/WizardEditSale.vue'
 import DaftarPenjualan from '../views/sales/DaftarPenjualan.vue'
 import Login from '../views/Login/Login.vue'
@@ -33,6 +34,17 @@ const routes = [
       transition: 'slide-left',
       requiresAuth: true,
       title: 'Hello World',
+      layout: 'layout-content',
+    },
+  },
+  {
+    path: '/sale/point-of-sales',
+    name: 'point-of-sale',
+    component: WizardPos,
+    meta: {
+      transition: 'slide-left',
+      requiresAuth: true,
+      title: 'Point of Sales',
       layout: 'layout-content',
     },
   },

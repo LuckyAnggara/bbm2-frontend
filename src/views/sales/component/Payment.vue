@@ -1,42 +1,60 @@
 <template>
-  <div
-    class="mt-12 w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700 mx-auto"
-  >
+  <div class="mt-12 w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700 mx-auto">
     <div class="w-full pt-1 pb-5">
-      <div
-        class="bg-indigo-500 text-white overflow-hidden rounded-full w-20 h-20 -mt-16 mx-auto shadow-lg flex justify-center items-center"
-      >
+      <div class="bg-indigo-500 text-white overflow-hidden rounded-full w-20 h-20 -mt-16 mx-auto shadow-lg flex justify-center items-center">
         <i class="mdi mdi-credit-card-outline text-3xl">
           <BanknotesIcon class="h-10" />
         </i>
       </div>
     </div>
-    <h5
-      class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white"
-    >
-      Pilih metode pembayaran
-    </h5>
-    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
-      Untuk metode kredit dipastikan bahwa pelanggan adalah Pelanggan Tetap
-    </p>
-    <div class="my-4 mb-5">
-      <h6
-        class="text-base font-semibold text-gray-900 md:text-xl dark:text-white"
-      >
-        Total
-      </h6>
+    <h5 class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white">Pilih metode pembayaran</h5>
+    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Untuk metode kredit dipastikan bahwa pelanggan adalah Pelanggan Tetap</p>
+    <div class="my-4">
+      <h6 class="text-base font-semibold text-gray-900 md:text-xl dark:text-white">Shipping Fee</h6>
       <p class="text-3xl font-normal text-gray-500 dark:text-gray-400">
-        {{ IDRCurrency.format(salesStore.currentData.total.total ?? 0) }}
+        {{ IDRCurrency.format(salesStore.currentData.shipping.fee ?? 0) }}
       </p>
     </div>
+    <div class="my-4 mb-5">
+      <h6 class="text-base font-semibold text-gray-900 md:text-xl dark:text-white">Grand Total</h6>
+      <p class="text-3xl font-normal text-gray-500 dark:text-gray-400">
+        {{ IDRCurrency.format(salesStore.currentData.total.total ?? 0 + salesStore.currentData.shipping.fee) }}
+      </p>
+    </div>
+    <Transition name="slide-up">
+      <ul class="my-4 space-y-4" v-if="stateShow == 'first'">
+        <li v-for="item in firstMenu" :key="item.id" @click="item.action" class="hover:-translate-y-2 ease-in-out duration-300 cursor-pointer">
+          <a
+            class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-700 text-white group hover:bg-gray-600 hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white"
+          >
+            <component :is="item.icon" class="h-5 w-5" />
+            <span class="flex-1 ml-4 whitespace-nowrap">{{ item.label }}</span>
+          </a>
+        </li>
+      </ul>
 
-    <ul class="my-4 space-y-4">
-      <li
-        v-for="item in menuItems"
-        :key="item.id"
-        @click="item.action"
-        class="hover:-translate-y-2 ease-in-out duration-300 cursor-pointer"
-      >
+      <ul class="my-4 space-y-4" v-else>
+        <li @click="stateShow = 'first'">
+          <a
+            class="hover:scale-105 ease-in-out duration-300 cursor-pointer flex items-center p-2 text-base font-bold rounded-lg bg-gray-700 text-white group hover:bg-gray-600 hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white w-fit"
+          >
+            <ArrowLeftIcon class="h-5" />
+          </a>
+        </li>
+        <li v-for="item in secondMenu" :key="item.id" @click="item.action" class="hover:-translate-y-2 ease-in-out duration-300 cursor-pointer">
+          <a
+            class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-700 text-white group hover:bg-gray-600 hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white"
+          >
+            <component :is="item.icon" class="h-5 w-5 text-white" />
+            <span class="flex-1 ml-4 whitespace-nowrap">{{ item.label }}</span>
+          </a>
+        </li>
+      </ul>
+    </Transition>
+
+    <!-- <ul class="my-4 space-y-4">
+
+      <li v-for="item in menuItems" :key="item.id" @click="item.action" class="hover:-translate-y-2 ease-in-out duration-300 cursor-pointer">
         <a
           class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-700 text-white group hover:bg-gray-600 hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white"
         >
@@ -44,7 +62,7 @@
           <span class="flex-1 ml-4 whitespace-nowrap">{{ item.label }}</span>
         </a>
       </li>
-    </ul>
+    </ul> -->
     <!-- <ul class="my-4 space-y-4">
       <li
         @click="showCashModal = true"
@@ -97,9 +115,7 @@
       </li>
     </ul> -->
     <div>
-      <a
-        class="inline-flex items-center text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
-      >
+      <a class="inline-flex items-center text-xs font-normal text-gray-500 hover:underline dark:text-gray-400">
         <svg
           class="w-3 h-3 mr-2"
           aria-hidden="true"
@@ -122,37 +138,32 @@
     <!-- Modal -->
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
-      <CashModal
-        :show="showCashModal"
-        @close="showCashModal = false"
-        @submitTransaction="submitTransaction(true, false)"
-      >
-      </CashModal>
+      <CashModal :show="showCashModal" @close="showCashModal = false" @submitTransaction="submitTransaction(true, false)"> </CashModal>
     </Teleport>
 
     <!-- Modal -->
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
-      <CreditModal
-        :show="showCreditModal"
-        @close="showCreditModal = false"
-        @submitTransaction="submitTransaction(false, true)"
-      >
-      </CreditModal>
+      <CreditModal :show="showCreditModal" @close="showCreditModal = false" @submitTransaction="submitTransaction(false, true)"> </CreditModal>
     </Teleport>
 
     <Teleport to="body">
-      <LoadingModal :show="salesStore.isStoreLoading"
-        >Processing transaction</LoadingModal
-      >
+      <LoadingModal :show="salesStore.isStoreLoading">Processing transaction</LoadingModal>
     </Teleport>
 
     <Teleport to="body">
-      <SuccessModal
-        :show="salesStore.isTransactionSuccess"
-        @submit="invoicePage"
+      <SuccessModal :show="salesStore.isTransactionSuccess" @submit="invoicePage"
         ><template #message> Transaction success </template>
-        <template #buttonText> Next </template>
+        <template #buttonText> Invoice </template>
+      </SuccessModal>
+    </Teleport>
+
+    <Teleport to="body">
+      <SuccessModal :show="errorModal" @submit="errorModal = false" :type="'error'">
+        <template #message>
+          <div class="flex flex-col"><span class="text-red-500"> Error</span> <span> Bukan pelanggan Tetap </span></div>
+        </template>
+        <template #buttonText> Close </template>
       </SuccessModal>
     </Teleport>
   </div>
@@ -166,6 +177,8 @@ import {
   BookOpenIcon,
   HomeModernIcon,
   RocketLaunchIcon,
+  BuildingLibraryIcon,
+  ArrowLeftIcon,
 } from '@heroicons/vue/24/outline'
 import { inject, defineAsyncComponent, ref, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
@@ -174,11 +187,17 @@ import { useItemStore } from '../../../stores/items'
 import { useSalesStore } from '../../../stores/sales'
 import { IDRCurrency } from '../../../utilities/formatter'
 
+import ErrorModal from '../../../components/modal/SuccessModal.vue'
+
+const errorModal = ref(false)
+
 const swal = inject('$swal')
 const salesStore = useSalesStore()
 const itemStore = useItemStore()
 const router = useRouter()
 const toast = useToast()
+
+const stateShow = ref('first')
 
 function noFeature() {
   swal.fire('Fitur belum dapat digunakan', '', 'info')
@@ -186,6 +205,70 @@ function noFeature() {
 
 const showCashModal = ref(false)
 const showCreditModal = ref(false)
+
+const firstMenu = ref([
+  {
+    id: 1,
+    label: 'Full Payment',
+    icon: BanknotesIcon,
+    action: () => {
+      stateShow.value = 'second'
+      salesStore.currentData.status_payment = 'LUNAS'
+      // showCashModal.value = true
+    },
+  },
+  {
+    id: 2,
+    label: 'Credit',
+    icon: CreditCardIcon,
+    action: () => {
+      if (salesStore.currentData.customerData.id == 1) {
+        errorModal.value = true
+      } else {
+        stateShow.value = 'second'
+        salesStore.currentData.status_payment = 'CREDIT'
+      }
+
+      // showCreditModal.value = true
+    },
+  },
+])
+
+const secondMenu = ref([
+  {
+    id: 1,
+    label: 'Cash',
+    icon: BanknotesIcon,
+    action: () => {
+      showCashModal.value = true
+      // showCashModal.value = true
+    },
+  },
+  {
+    id: 2,
+    label: 'Bank Transfer',
+    icon: BuildingLibraryIcon,
+    action: () => {
+      // showCreditModal.value = true
+    },
+  },
+  {
+    id: 3,
+    label: 'QRIS',
+    icon: CreditCardIcon,
+    action: () => {
+      // showCreditModal.value = true
+    },
+  },
+  {
+    id: 4,
+    label: 'Digital Payment',
+    icon: QrCodeIcon,
+    action: () => {
+      // showCreditModal.value = true
+    },
+  },
+])
 
 const menuItems = ref([
   {
@@ -223,16 +306,10 @@ const menuItems = ref([
 ])
 
 const CashModal = defineAsyncComponent(() => import('../modal/CashModal.vue'))
-const CreditModal = defineAsyncComponent(() =>
-  import('../modal/CreditModal.vue')
-)
+const CreditModal = defineAsyncComponent(() => import('../modal/CreditModal.vue'))
 
-const LoadingModal = defineAsyncComponent(() =>
-  import('../../../components/modal/LoadingModal.vue')
-)
-const SuccessModal = defineAsyncComponent(() =>
-  import('../../../components/modal/SuccessModal.vue')
-)
+const LoadingModal = defineAsyncComponent(() => import('../../../components/modal/LoadingModal.vue'))
+const SuccessModal = defineAsyncComponent(() => import('../../../components/modal/SuccessModal.vue'))
 
 async function submitTransaction(isCash = false, isCredit = false) {
   if (isCredit == true) {
@@ -253,9 +330,7 @@ async function submitTransaction(isCash = false, isCredit = false) {
   salesStore.currentData.transaction = {
     isCash: isCash,
     isCredit: isCredit,
-    amount: isCash
-      ? salesStore.currentData.total.total
-      : salesStore.currentData.total.dp,
+    amount: isCash ? salesStore.currentData.total.total : salesStore.currentData.total.dp,
     type: 'IN',
   }
 
