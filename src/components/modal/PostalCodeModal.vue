@@ -1,19 +1,34 @@
 <template>
   <Transition name="modal">
     <div>
-      <div v-if="show" class="h-96 fixed top-0 right-0 left-0 z-50 justify-center items-center md:inset-0 h-modal modal-mask">
+      <div
+        v-if="show"
+        class="h-96 fixed top-0 right-0 left-0 z-50 justify-center items-center md:inset-0 h-modal modal-mask"
+      >
         <div class="relative p-4">
           <!-- Modal content -->
-          <div class="relative p-4 w-full bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+          <div
+            class="relative p-4 w-full bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
+          >
             <!-- Modal header -->
-            <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Kode Pos</h3>
+            <div
+              class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600"
+            >
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                Kode Pos
+              </h3>
               <button
                 @click="close"
                 type="button"
                 class="text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
               >
-                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  aria-hidden="true"
+                  class="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     fill-rule="evenodd"
                     d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -30,21 +45,56 @@
                 <input
                   v-model="postalCodeStore.searchName"
                   @input="onInput"
+                  @keyup.enter="onEnter"
                   type="text"
                   class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="Cari kode pos/kecamatan/kelurahan"
                 />
               </div>
               <div class="overflow-x-auto max-h-60">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto">
-                  <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
+                <table
+                  class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto"
+                >
+                  <thead
+                    class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center"
+                  >
                     <tr>
-                      <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">No</th>
-                      <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">Kode Pos</th>
-                      <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">Kelurahan</th>
-                      <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">Kecamatan</th>
-                      <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">Kota</th>
-                      <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">Provinsi</th>
+                      <th
+                        scope="col"
+                        class="px-4 py-3 border border-slate-400 dark:border-slate-600"
+                      >
+                        No
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-4 py-3 border border-slate-400 dark:border-slate-600"
+                      >
+                        Kode Pos
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-4 py-3 border border-slate-400 dark:border-slate-600"
+                      >
+                        Kelurahan
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-4 py-3 border border-slate-400 dark:border-slate-600"
+                      >
+                        Kecamatan
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-4 py-3 border border-slate-400 dark:border-slate-600"
+                      >
+                        Kota
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-4 py-3 border border-slate-400 dark:border-slate-600"
+                      >
+                        Provinsi
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -53,8 +103,15 @@
                         <CircleLoading>Prosesing ... </CircleLoading>
                       </td>
                     </tr>
-                    <tr v-else-if="!postalCodeStore.isLoading && postalCodeStore.items.length < 1">
-                      <td colspan="11" class="text-center py-6">Cari data pada kolom pencarian</td>
+                    <tr
+                      v-else-if="
+                        !postalCodeStore.isLoading &&
+                        postalCodeStore.items.length < 1
+                      "
+                    >
+                      <td colspan="11" class="text-center py-6">
+                        Cari data pada kolom pencarian
+                      </td>
                     </tr>
                     <tr
                       v-else
@@ -73,8 +130,12 @@
                   </tbody>
                 </table>
               </div>
-              <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                <span class="font-semibold text-gray-900 dark:text-white">{{ postalCodeStore.items.length }} data found</span>
+              <span
+                class="text-sm font-normal text-gray-500 dark:text-gray-400"
+              >
+                <span class="font-semibold text-gray-900 dark:text-white"
+                  >{{ postalCodeStore.items.length }} data found</span
+                >
               </span>
               <!-- <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
                 <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
@@ -123,15 +184,18 @@
 
 <script setup>
 import { onMounted } from 'vue'
-import { usePostalCodeStore } from '../../../stores/postalCode'
-import { IDRCurrency } from '../../../utilities/formatter'
-import CircleLoading from '../../../components/loading/CircleLoading.vue'
+import { usePostalCodeStore } from '../../stores/postalCode'
+import CircleLoading from '../../components/loading/CircleLoading.vue'
 
 import { useDebounceFn } from '@vueuse/core'
 
 const onInput = useDebounceFn(() => {
   postalCodeStore.getData()
 }, 1000)
+
+function onEnter() {
+  postalCodeStore.getData()
+}
 
 const props = defineProps({
   show: Boolean,

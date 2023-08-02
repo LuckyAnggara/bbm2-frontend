@@ -8,9 +8,16 @@
     >
       <div class="relative p-4 w-full max-w-md h-full md:h-auto">
         <!-- Modal content -->
-        <div class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-          <div v-if="type == 'success'" class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5">
-            <CheckCircleIcon class="w-8 h-8 text-green-500 dark:text-green-400" />
+        <div
+          class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
+        >
+          <div
+            v-if="type == 'success'"
+            class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5"
+          >
+            <CheckCircleIcon
+              class="w-8 h-8 text-green-500 dark:text-green-400"
+            />
             <!-- <svg
               aria-hidden="true"
             
@@ -26,7 +33,10 @@
             </svg> -->
             <span class="sr-only">Success</span>
           </div>
-          <div v-else class="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900 p-2 flex items-center justify-center mx-auto mb-3.5">
+          <div
+            v-else
+            class="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900 p-2 flex items-center justify-center mx-auto mb-3.5"
+          >
             <ExclamationCircleIcon class="w-8 h-8 dark:text-white text-black" />
             <!-- <svg
               aria-hidden="true"
@@ -60,7 +70,10 @@
 </template>
 
 <script setup>
-import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline'
+import {
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+} from '@heroicons/vue/24/outline'
 const props = defineProps({
   show: Boolean,
   type: {

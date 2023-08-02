@@ -8,10 +8,16 @@
       >
         <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
           <!-- Modal content -->
-          <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+          <div
+            class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
+          >
             <!-- Modal header -->
-            <div class="flex justify-between items-center pb-4 rounded-t border-b dark:border-gray-600">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Shipping Detail</h3>
+            <div
+              class="flex justify-between items-center pb-4 rounded-t border-b dark:border-gray-600"
+            >
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                Shipping Detail
+              </h3>
               <button
                 @click="emit('close')"
                 type="button"
@@ -27,7 +33,9 @@
             <div>
               <!-- TABS HEADER -->
               <div class="border-b border-gray-200 dark:border-gray-700 mb-6">
-                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+                <ul
+                  class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400"
+                >
                   <li class="mr-2">
                     <a
                       @click="step = 1"
@@ -74,9 +82,13 @@
               <Transition>
                 <div v-if="step == 1" class="flex flex-col space-y-4 mb-6">
                   <div>
-                    <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white mb-1">Shipping Vendor</label>
+                    <label
+                      for="name"
+                      class="block text-sm font-medium text-gray-900 dark:text-white mb-1"
+                      >Shipping Vendor</label
+                    >
                     <select
-                      v-model="shippingData.vendor"
+                      v-model="salesStore.currentData.shipping.vendor"
                       class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
                       <option value="0">Default Shipping</option>
@@ -84,10 +96,14 @@
                   </div>
 
                   <div>
-                    <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white mb-1">Fee Shipping</label>
+                    <label
+                      for="name"
+                      class="block text-sm font-medium text-gray-900 dark:text-white mb-1"
+                      >Fee Shipping</label
+                    >
                     <InputCurrency
                       :options="{ currency: 'IDR' }"
-                      v-model="shippingData.fee"
+                      v-model="salesStore.currentData.shipping.fee"
                       :custom-class="'block p-2.5 w-full text-md bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'"
                     />
                   </div>
@@ -100,30 +116,48 @@
                       type="checkbox"
                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
                     />
-                    <label for="checkbox-2" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Sama dengan data costumer </label>
+                    <label
+                      for="checkbox-2"
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      >Sama dengan data costumer
+                    </label>
                   </div>
                   <div>
-                    <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white">Nama Penerima</label>
+                    <label
+                      for="name"
+                      class="block text-sm font-medium text-gray-900 dark:text-white"
+                      >Nama Penerima</label
+                    >
                     <input
-                      v-model="shippingData.receiverName"
+                      v-model="salesStore.currentData.shipping.receiverName"
                       type="text"
                       class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       placeholder="Nama lengkap"
                     />
                   </div>
                   <div>
-                    <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white">Nomor Telepon Penerima</label>
+                    <label
+                      for="name"
+                      class="block text-sm font-medium text-gray-900 dark:text-white"
+                      >Nomor Telepon Penerima</label
+                    >
                     <input
-                      v-model="shippingData.receiverPhoneNumber"
+                      v-model="
+                        salesStore.currentData.shipping.receiverPhoneNumber
+                      "
                       type="text"
                       class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       placeholder="Nomor telepon"
                     />
                   </div>
                   <div>
-                    <label for="description" class="block text-sm font-medium text-gray-900 dark:text-white">Alamat Penerima</label>
+                    <label
+                      for="description"
+                      class="block text-sm font-medium text-gray-900 dark:text-white"
+                      >Alamat Penerima</label
+                    >
                     <textarea
-                      v-model="shippingData.receiverAddress"
+                      v-model="salesStore.currentData.shipping.receiverAddress"
                       rows="3"
                       class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       placeholder="Alamat lengkap customer"
@@ -132,9 +166,15 @@
                   <div class="grid gap-4 sm:grid-cols-2">
                     <div class="flex space-x-2">
                       <div class="w-full">
-                        <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white">Kode Pos</label>
+                        <label
+                          for="name"
+                          class="block text-sm font-medium text-gray-900 dark:text-white"
+                          >Kode Pos</label
+                        >
                         <input
-                          v-model="shippingData.receiverPostalCode"
+                          v-model="
+                            salesStore.currentData.shipping.receiverPostalCode
+                          "
                           type="text"
                           class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Kode Pos"
@@ -142,7 +182,7 @@
                       </div>
                       <button
                         type="button"
-                        @click="showPostalCodeModal = true"
+                        @click="popPostalCodeModal"
                         class="h-fit place-self-end text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500"
                       >
                         <MagnifyingGlassIcon class="h-5 w-5" />
@@ -150,27 +190,43 @@
                       </button>
                     </div>
                     <div class="w-full">
-                      <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white">Kelurahan</label>
+                      <label
+                        for="name"
+                        class="block text-sm font-medium text-gray-900 dark:text-white"
+                        >Kelurahan</label
+                      >
                       <input
-                        v-model="shippingData.receiverKelurahan"
+                        v-model="
+                          salesStore.currentData.shipping.receiverKelurahan
+                        "
                         type="text"
                         class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Kelurahan"
                       />
                     </div>
                     <div class="w-full">
-                      <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white">Kecamatan</label>
+                      <label
+                        for="name"
+                        class="block text-sm font-medium text-gray-900 dark:text-white"
+                        >Kecamatan</label
+                      >
                       <input
-                        v-model="shippingData.receiverKecamatan"
+                        v-model="
+                          salesStore.currentData.shipping.receiverKecamatan
+                        "
                         type="text"
                         class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Kecamatan"
                       />
                     </div>
                     <div class="w-full">
-                      <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white">Kota/Kabupaten</label>
+                      <label
+                        for="name"
+                        class="block text-sm font-medium text-gray-900 dark:text-white"
+                        >Kota/Kabupaten</label
+                      >
                       <input
-                        v-model="shippingData.receiverKota"
+                        v-model="salesStore.currentData.shipping.receiverKota"
                         type="text"
                         class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Kota / Kabupaten"
@@ -238,7 +294,12 @@
 
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
-      <PostalCodeModal :show="showPostalCodeModal" @close="showPostalCodeModal = false" @submit="fromPostal"> </PostalCodeModal>
+      <PostalCodeModal
+        :show="showPostalCodeModal"
+        @close="showPostalCodeModal = false"
+        @submit="fromPostal"
+      >
+      </PostalCodeModal>
     </Teleport>
   </section>
 </template>
@@ -263,7 +324,7 @@ import InputCurrency from '../../../components/input/InputCurrency.vue'
 
 import { useSalesStore } from '../../../stores/sales'
 import { usePostalCodeStore } from '../../../stores/postalCode'
-import PostalCodeModal from './PostalCodeModal.vue'
+import PostalCodeModal from '../../../components/modal/PostalCodeModal.vue'
 import { useToast } from 'vue-toastification'
 
 const props = defineProps({
@@ -279,12 +340,13 @@ const shippingData = ref({
   fee: 0,
 })
 const salesStore = useSalesStore()
+const postalCodeStore = usePostalCodeStore()
 
 async function submit() {
-  salesStore.$patch((state) => {
-    const b = state.currentData.shipping
-    state.currentData.shipping = { ...b, ...shippingData.value }
-  })
+  // salesStore.$patch((state) => {
+  //   const b = state.currentData.shipping
+  //   state.currentData.shipping = { ...b, ...shippingData.value }
+  // })
 
   await nextTick()
   emit('next')
@@ -292,10 +354,20 @@ async function submit() {
 const step = ref(1)
 
 function fromPostal(item) {
-  shippingData.value.receiverKelurahan = item.urban
-  shippingData.value.receiverKecamatan = item.subdistrict
-  shippingData.value.receiverKota = item.city
-  shippingData.value.receiverPostalCode = item.postalcode
+  salesStore.currentData.shipping.receiverKelurahan = item.urban
+  salesStore.currentData.shipping.receiverKecamatan = item.subdistrict
+  salesStore.currentData.shipping.receiverKota = item.city
+  salesStore.currentData.shipping.receiverPostalCode = item.postalcode
+}
+
+async function popPostalCodeModal() {
+  postalCodeStore.searchName =
+    salesStore.currentData.shipping.receiverPostalCode
+  await nextTick()
+  if (postalCodeStore.searchName !== '') {
+    postalCodeStore.getData()
+  }
+  showPostalCodeModal.value = true
 }
 
 watch(
@@ -308,14 +380,13 @@ watch(
           position: 'bottom-center',
         })
       } else {
-        shippingData.value.receiverName = salesStore.currentData.customerData.name
-        shippingData.value.receiverAddress = salesStore.currentData.customerData.address
-        shippingData.value.receiverPhoneNumber = salesStore.currentData.customerData.phone_number
+        salesStore.currentData.shipping.receiverName =
+          salesStore.currentData.customerData.name
+        salesStore.currentData.shipping.receiverAddress =
+          salesStore.currentData.customerData.address
+        salesStore.currentData.shipping.receiverPhoneNumber =
+          salesStore.currentData.customerData.phone_number
       }
-    } else {
-      shippingData.value.receiverName = ''
-      shippingData.value.receiverAddress = ''
-      shippingData.value.receiverPhoneNumber = ''
     }
   },
   { deep: true }
