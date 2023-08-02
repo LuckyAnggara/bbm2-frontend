@@ -81,7 +81,7 @@
                 </button>
               </div>
             </th>
-            <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">
+            <th scope="col" class="px-4 py-2 w-14 border border-slate-400 dark:border-slate-600">
               <div class="flex flex-row justify-between items-center">
                 <span> Invoice </span>
                 <button type="button" class="inline-flex items-center p-0.5 ml-2" @click="salesStore.changeSortBy('invoice')">
@@ -105,8 +105,8 @@
             <th scope="col" class="px-4 py-2 w-20 border border-slate-400 dark:border-slate-600">
               <div class="flex flex-row justify-between items-center">
                 <span> Payment Status </span>
-                <button type="button" class="inline-flex items-center p-0.5 ml-2" @click="salesStore.changeSortBy('status')">
-                  <BarsArrowUpIcon v-if="salesStore.sortBy == 'status' && salesStore.isAscending == true" class="h-5 w-5" />
+                <button type="button" class="inline-flex items-center p-0.5 ml-2" @click="salesStore.changeSortBy('payment_status')">
+                  <BarsArrowUpIcon v-if="salesStore.sortBy == 'payment_status' && salesStore.isAscending == true" class="h-5 w-5" />
                   <BarsArrowDownIcon v-else class="h-5 w-5" />
                 </button>
               </div>
@@ -121,7 +121,7 @@
               </div>
             </th>
             <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Dibuat Oleh</th>
-            <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Action</th>
+            <th scope="col" class="px-2 py-2 w-8 border border-slate-400 dark:border-slate-600">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -150,7 +150,7 @@
             <td class="px-4 py-1">{{ item.customer?.name ?? '-' }}</td>
             <td class="px-4 py-1">{{ IDRCurrency.format(item.grand_total ?? 0) }}</td>
             <td class="px-4 py-1">
-              <div v-if="item.status == 'LUNAS'" class="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0">
+              <div v-if="item.payment_status == 'LUNAS'" class="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0">
                 <span
                   @click="paymentCreditView(item.id)"
                   v-if="item.credit == true"
@@ -160,7 +160,7 @@
                 <span
                   @click="initRightDrawer(index)"
                   class="bg-blue-100 cursor-pointer text-blue-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-500 dark:text-white"
-                  >{{ item.status }}</span
+                  >{{ item.payment_status }}</span
                 >
               </div>
               <div v-else class="flex flex-row items-center space-x-2">
@@ -173,7 +173,7 @@
                 <span
                   @click="initRightDrawer(index)"
                   class="h-fit cursor-pointer bg-red-100 text-red-600 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
-                  >{{ item.status }}</span
+                  >{{ item.payment_status }}</span
                 >
               </div>
             </td>
@@ -183,7 +183,7 @@
               </span>
             </td>
             <td class="px-4 py-1">{{ item.maker?.name ?? '' }}</td>
-            <td class="px-4 py-1">
+            <td class="px-2 py-1 text-center">
               <div>
                 <Menu as="div" class="relative inline-block text-left">
                   <div>
@@ -204,6 +204,19 @@
                       class="z-50 py-1 absolute right-0 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white dark:bg-gray-800 dark:text-gray-100 shadow-lg ring-1 ring-black dark:ring-gray-700 ring-opacity-5 focus:outline-none"
                     >
                       <div class="px-2 py-1">
+                        <MenuItem v-slot="{ active }">
+                          <button
+                            @click="initRightDrawer(index)"
+                            :class="[
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
+                              'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                            ]"
+                          >
+                            <DocumentIcon class="w-5 h-5 mr-3" />
+                            Detail
+                          </button>
+                        </MenuItem>
+
                         <MenuItem v-slot="{ active }">
                           <button
                             @click="invoice(item.id)"
@@ -285,7 +298,7 @@
         Showing
         <span class="font-semibold text-gray-900 dark:text-white">{{ salesStore.from }} - {{ salesStore.to }}</span>
         of
-        <span class="font-semibold text-gray-900 dark:text-white">{{ salesStore.total }}</span>
+        <span class="font-semibold text-gray-900 dark:text-white">{{ salesStore.totalResp }}</span>
       </span>
       <ul class="inline-flex items-stretch -space-x-px">
         <li>
@@ -347,6 +360,7 @@ import {
   BarsArrowUpIcon,
   BarsArrowDownIcon,
   PlusIcon,
+  DocumentIcon,
 } from '@heroicons/vue/24/outline'
 
 import { XMarkIcon } from '@heroicons/vue/24/solid'

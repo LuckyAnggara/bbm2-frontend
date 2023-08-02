@@ -136,5 +136,9 @@ export const useItemStore = defineStore('itemStore', {
         this.isDestroyLoading = false
       }
     },
+    resetData() {
+      this.searchName = ''
+      this.responses = {}
+    },
   },
 })

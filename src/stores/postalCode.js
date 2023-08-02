@@ -22,16 +22,14 @@ export const usePostalCodeStore = defineStore('postalCodeStore', {
   },
   getters: {
     items: (state) => {
-      return state.responses?.data
+      return state.responses?.data ?? []
     },
   },
   actions: {
     async getData() {
       this.isLoading = true
       try {
-        const response = await axiosIns.get(
-          `https://kodepos.vercel.app/search/?q=${this.searchName}`
-        )
+        const response = await axiosIns.get(`https://kodepos.vercel.app/search/?q=${this.searchName}`)
         this.responses = response.data
       } catch (error) {
         alert(error)

@@ -26,6 +26,9 @@ export const useSalesStore = defineStore('salesStore', {
       deliveryStatus: ['SEMUA', 'TAKE AWAY', 'DELIVERY'],
       pembayaran: ['SEMUA', 'TUNAI', 'KREDIT'],
       currentData: {
+        transaction: {
+          bank: {},
+        },
         customerData: {
           id: 1,
           name: '-',
@@ -37,6 +40,7 @@ export const useSalesStore = defineStore('salesStore', {
         },
         currentCart: [],
         total: {},
+        tax: { id: 1, name: 'Tanpa Pajak', value: 0, created_at: '2023-08-02T00:28:48.000000Z', updated_at: '2023-08-02T00:28:48.000000Z', deleted_at: null },
         credit: {
           amount: 0,
           due_date: null,
@@ -85,7 +89,7 @@ export const useSalesStore = defineStore('salesStore', {
     to(state) {
       return state.responses?.to
     },
-    total(state) {
+    totalResp(state) {
       return state.responses?.total
     },
     searchQuery(state) {
@@ -95,11 +99,7 @@ export const useSalesStore = defineStore('salesStore', {
       return '&name=' + state.searchName
     },
     minTotalQuery(state) {
-      if (
-        state.filter.minTotal == 0 ||
-        state.filter.minTotal == '' ||
-        state.filter.minTotal == null
-      ) {
+      if (state.filter.minTotal == 0 || state.filter.minTotal == '' || state.filter.minTotal == null) {
         return ''
       }
       return '&min-total=' + state.filter.minTotal
@@ -108,12 +108,7 @@ export const useSalesStore = defineStore('salesStore', {
       if (state.filter.date.length == 0 || state.filter.date.length == null) {
         return ''
       }
-      return (
-        '&start-date=' +
-        state.filter.date[0] +
-        '&end-date=' +
-        state.filter.date[1]
-      )
+      return '&start-date=' + state.filter.date[0] + '&end-date=' + state.filter.date[1]
     },
     paymentStatusQuery(state) {
       switch (state.filter.paymentStatus) {
@@ -165,6 +160,40 @@ export const useSalesStore = defineStore('salesStore', {
         deliveryStatus: state.filter.deliveryStatus ?? '-',
         kredit: state.filter.kredit ?? '-',
         minTotal: state.filter.minTotal ?? '-',
+      }
+    },
+    subTotal(state) {
+      let sum = state.currentData.currentCart.reduce((accumulator, item) => {
+        return accumulator + item.price * item.qty
+      }, 0)
+      return sum
+    },
+    discount(state) {
+      let sum = state.currentData.currentCart.reduce((accumulator, item) => {
+        return accumulator + item.disc
+      }, 0)
+      return sum
+    },
+    totalBeforeTax(state) {
+      return state.subTotal - state.discount
+    },
+    tax(state) {
+      const x = state.totalBeforeTax * state.currentData.tax.value
+      if (isNaN(x)) {
+        return 0
+      }
+      return x
+    },
+    grandTotal(state) {
+      return state.totalBeforeTax + state.tax
+    },
+    total(state) {
+      return {
+        subtotal: state.subTotal,
+        discount: state.subTotal,
+        totalBeforeTax: state.subTotal,
+        tax: state.tax,
+        grandTotal: state.grandTotal,
       }
     },
   },
@@ -266,9 +295,7 @@ export const useSalesStore = defineStore('salesStore', {
         toast.success('Data berhasil di hapus', {
           timeout: 2000,
         })
-        const index = this.singleResponses.payment.findIndex(
-          (item) => item.id === id
-        )
+        const index = this.singleResponses.payment.findIndex((item) => item.id === id)
         this.singleResponses.payment.splice(index, 1)
       } catch (error) {
         toast.error(error.response.data.message, {
@@ -288,9 +315,48 @@ export const useSalesStore = defineStore('salesStore', {
       this.sortBy = key
       this.isAscending = !this.isAscending
     },
-
     addDataShipping(value) {
       this.currentData.shipping = { ...value }
+    },
+    setData(isCredit = false, paymentType = 'CASH') {
+      const authStore = useAuthStore()
+      let transaction = {
+        ...this.currentData.transaction,
+        paymentType: paymentType,
+        isCredit: isCredit,
+        amount: paymentType == 'CASH' || paymentType == 'TRANSFER' ? this.total : this.currentData.total.dp,
+        type: 'IN',
+      }
+      this.currentData.transaction = {
+        ...transaction,
+      }
+      this.currentData.total = this.total
+      this.currentData.userData = authStore.userData
+    },
+    resetData() {
+      this.currentData = {
+        transaction: {
+          bank: null,
+        },
+        customerData: {
+          id: 1,
+          name: '-',
+          address: '-',
+          phone_number: '-',
+          withoutCustomer: true,
+          userId: userData.id,
+          saveCustomer: false,
+        },
+        currentCart: [],
+        total: {},
+        tax: { id: 1, name: 'Tanpa Pajak', value: 0, created_at: '2023-08-02T00:28:48.000000Z', updated_at: '2023-08-02T00:28:48.000000Z', deleted_at: null },
+        credit: {
+          amount: 0,
+          due_date: null,
+          notes: '',
+        },
+        shipping: {},
+      }
     },
   },
 })
