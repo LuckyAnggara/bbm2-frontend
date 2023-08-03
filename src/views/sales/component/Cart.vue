@@ -4,7 +4,7 @@
       <button
         @click="emit('previous')"
         type="button"
-        class="text-red-600 inline-flex items-center hover:text-white border hover:-translate-x-2 ease-in-out duration-300 border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+        class="text-red-600 inline-flex items-center hover:text-white border hover:scale-105 ease-in-out duration-300 border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
       >
         <ArrowUturnLeftIcon class="h-5 w-5 mr-2" />
 
@@ -15,29 +15,25 @@
         v-if="canSubmit"
         @click="emit('next')"
         type="button"
-        class="text-blue-600 inline-flex items-center hover:text-white border hover:translate-x-2 ease-in-out duration-300 border-blue-600 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-900"
+        class="text-blue-600 inline-flex items-center hover:text-white border hover:scale-105 ease-in-out duration-300 border-blue-600 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-900"
       >
         Lanjut
         <PaperAirplaneIcon class="h-5 w-5 ml-2" />
       </button>
     </div>
 
-    <div class="flex lg:flex-row flex-col lg:space-x-6 space-y-6 lg:space-y-0">
-      <div class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit">
-        <div class="flex flex-row items-center justify-between p-4 space-y-4">
-          <div class="w-full xl:w-72">
-            <Searchbar
-              @cari-data="cariData()"
-              v-model="itemStore.searchName"
-              :is-loading="itemStore.isLoading"
-              :result-items="itemStore.items"
-              :placeholder="'Cari Item'"
-              :aria-result="false"
-              @add-data="addItem"
-            >
-            </Searchbar>
-          </div>
-        </div>
+    <div class="flex flex-col space-y-6">
+      <div class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit w-1/2">
+        <Searchbar
+          @cari-data="cariData()"
+          v-model="itemStore.searchName"
+          :is-loading="itemStore.isLoading"
+          :result-items="itemStore.items"
+          :placeholder="'Cari Nama / SKU / Product / Scan Barcode'"
+          :aria-result="true"
+          @add-data="addItem"
+        >
+        </Searchbar>
       </div>
 
       <div class="flex flex-col space-y-4 items-end w-full">
@@ -51,14 +47,14 @@
                 <th scope="col" class="py-3 w-6">Qty</th>
                 <th scope="col" class="py-3 w-6">Satuan</th>
                 <th scope="col" class="py-3 w-12">Diskon</th>
-                <th scope="col" class="px-2 py-3 w-12">Subtotal</th>
+                <th scope="col" class="py-3 w-12">Subtotal</th>
                 <th scope="col" class="py-3 w-8">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr v-if="salesStore.currentData.currentCart.length < 1" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td colspan="8" class="px-6 text-center py-4">
-                  <span class="text-lg dark:text-gray-300 text-black">Tidak ada data</span>
+                <td colspan="8" class="px-6 text-center py-2">
+                  <span class="text-base dark:text-gray-300 text-gray-700">Tambahkan data produk</span>
                 </td>
               </tr>
               <tr
@@ -96,14 +92,14 @@
                 <td class="text-xs text-gray-900 dark:text-white px-2">
                   {{ item.unit?.toUpperCase() }}
                 </td>
-                <td class="">
+                <td class="pr-2">
                   <InputCurrency
                     :options="{ currency: 'IDR' }"
                     :custom-class="'text-xs sm:w-full w-36 dark:bg-gray-700 bg-gray-100 text-black dark:text-white border dark:border-gray-800 border-gray-300 text-md rounded-lg p-2 '"
                     v-model="item.disc"
                   />
                 </td>
-                <td class="text-gray-900 dark:text-white text-xs font-bold px-2 text-ellipsis">
+                <td class="text-gray-900 dark:text-white text-xs font-bold text-ellipsis">
                   {{ IDRCurrency.format(item.qty * item.price - item.disc) }}
                 </td>
                 <td class="">

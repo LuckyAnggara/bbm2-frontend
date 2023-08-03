@@ -1,25 +1,14 @@
 <template>
-  <div
-    class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-visible"
-  >
-    <div
-      class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"
-    >
+  <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-visible">
+    <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
       <div class="w-full md:w-1/2 flex space-x-3">
         <div class="flex items-center">
-          <label
-            class="block text-sm font-medium text-gray-900 dark:text-white mr-2"
-            >Show</label
-          >
+          <label class="block text-sm font-medium text-gray-900 dark:text-white mr-2">Show</label>
           <select
             v-model="salesStore.currentLimit"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block sm:w-16 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-16"
           >
-            <option
-              :selected="salesStore.currentLimit == length ? true : false"
-              v-for="length in lengths"
-              :key="length"
-            >
+            <option :selected="salesStore.currentLimit == length ? true : false" v-for="length in lengths" :key="length">
               {{ length }}
             </option>
           </select>
@@ -28,9 +17,7 @@
         <form class="flex items-center w-full" autocomplete="off">
           <label for="simple-search" class="sr-only">Search</label>
           <div class="relative w-full">
-            <div
-              class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
-            >
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg
                 aria-hidden="true"
                 class="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -56,176 +43,86 @@
           </div>
         </form>
       </div>
-      <div
-        class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0"
-      >
+      <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
         <div class="flex items-center space-x-4 w-full md:w-auto">
           <router-link
             :to="{ name: 'new-sale', params: {} }"
-            class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            class="duration-300 hover:scale-105 transition flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             type="button"
           >
-            <PlusIcon class="mr-1 w-4 h-4" />
             Sales
+            <PlusIcon class="ml-2 w-4 h-4" />
           </router-link>
         </div>
 
         <div class="flex items-center space-x-4 w-full md:w-auto">
           <button
             @click="filterDraw()"
-            class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            class="duration-300 hover:scale-105 transition w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
             type="button"
           >
-            <FunnelIcon class="h-4 w-4 mr-2" />
             Filter
+            <FunnelIcon class="h-4 w-4 ml-2" />
           </button>
         </div>
       </div>
     </div>
-    <div
-      class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700"
-    >
-      <table
-        class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 xl:table-fixed"
-      >
-        <thead
-          class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center"
-        >
+    <div class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
+      <table class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 xl:table-fixed">
+        <thead class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
           <tr>
-            <th
-              scope="col"
-              class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600"
-            >
-              No
-            </th>
-            <th
-              scope="col"
-              class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600"
-            >
+            <th scope="col" class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600">No</th>
+            <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">
               <div class="flex flex-row justify-between items-center">
                 <span> Tanggal </span>
-                <button
-                  type="button"
-                  class="inline-flex items-center p-0.5 ml-2"
-                  @click="salesStore.changeSortBy('created_at')"
-                >
-                  <BarsArrowUpIcon
-                    v-if="
-                      salesStore.sortBy == 'created_at' &&
-                      salesStore.isAscending == true
-                    "
-                    class="h-5 w-5"
-                  />
+                <button type="button" class="inline-flex items-center p-0.5 ml-2" @click="salesStore.changeSortBy('created_at')">
+                  <BarsArrowUpIcon v-if="salesStore.sortBy == 'created_at' && salesStore.isAscending == true" class="h-5 w-5" />
                   <BarsArrowDownIcon v-else class="h-5 w-5" />
                 </button>
               </div>
             </th>
-            <th
-              scope="col"
-              class="px-4 py-2 w-14 border border-slate-400 dark:border-slate-600"
-            >
+            <th scope="col" class="px-4 py-2 w-14 border border-slate-400 dark:border-slate-600">
               <div class="flex flex-row justify-between items-center">
                 <span> Invoice </span>
-                <button
-                  type="button"
-                  class="inline-flex items-center p-0.5 ml-2"
-                  @click="salesStore.changeSortBy('invoice')"
-                >
-                  <BarsArrowUpIcon
-                    v-if="
-                      salesStore.sortBy == 'invoice' &&
-                      salesStore.isAscending == true
-                    "
-                    class="h-5 w-5"
-                  />
+                <button type="button" class="inline-flex items-center p-0.5 ml-2" @click="salesStore.changeSortBy('invoice')">
+                  <BarsArrowUpIcon v-if="salesStore.sortBy == 'invoice' && salesStore.isAscending == true" class="h-5 w-5" />
                   <BarsArrowDownIcon v-else class="h-5 w-5" />
                 </button>
               </div>
             </th>
-            <th
-              scope="col"
-              class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600"
-            >
+            <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">
               <span> Nama Pelanggan </span>
             </th>
-            <th
-              scope="col"
-              class="px-4 py-2 w-16 border border-slate-400 dark:border-slate-600"
-            >
+            <th scope="col" class="px-4 py-2 w-16 border border-slate-400 dark:border-slate-600">
               <div class="flex flex-row justify-between items-center">
                 <span> Grand Total </span>
-                <button
-                  type="button"
-                  class="inline-flex items-center p-0.5 ml-2"
-                  @click="salesStore.changeSortBy('grand_total')"
-                >
-                  <BarsArrowUpIcon
-                    v-if="
-                      salesStore.sortBy == 'grand_total' &&
-                      salesStore.isAscending == true
-                    "
-                    class="h-5 w-5"
-                  />
+                <button type="button" class="inline-flex items-center p-0.5 ml-2" @click="salesStore.changeSortBy('grand_total')">
+                  <BarsArrowUpIcon v-if="salesStore.sortBy == 'grand_total' && salesStore.isAscending == true" class="h-5 w-5" />
                   <BarsArrowDownIcon v-else class="h-5 w-5" />
                 </button>
               </div>
             </th>
-            <th
-              scope="col"
-              class="px-4 py-2 w-20 border border-slate-400 dark:border-slate-600"
-            >
+
+            <th scope="col" class="px-4 py-2 w-20 border border-slate-400 dark:border-slate-600">
               <div class="flex flex-row justify-between items-center">
                 <span> Payment Status </span>
-                <button
-                  type="button"
-                  class="inline-flex items-center p-0.5 ml-2"
-                  @click="salesStore.changeSortBy('payment_status')"
-                >
-                  <BarsArrowUpIcon
-                    v-if="
-                      salesStore.sortBy == 'payment_status' &&
-                      salesStore.isAscending == true
-                    "
-                    class="h-5 w-5"
-                  />
+                <button type="button" class="inline-flex items-center p-0.5 ml-2" @click="salesStore.changeSortBy('payment_status')">
+                  <BarsArrowUpIcon v-if="salesStore.sortBy == 'payment_status' && salesStore.isAscending == true" class="h-5 w-5" />
                   <BarsArrowDownIcon v-else class="h-5 w-5" />
                 </button>
               </div>
             </th>
-            <th
-              scope="col"
-              class="px-4 py-2 w-20 border border-slate-400 dark:border-slate-600"
-            >
+            <th scope="col" class="px-4 py-2 w-20 border border-slate-400 dark:border-slate-600">
               <div class="flex flex-row justify-between items-center">
                 <span> Delivery Status </span>
-                <button
-                  type="button"
-                  class="inline-flex items-center p-0.5 ml-2"
-                  @click="salesStore.changeSortBy('shipping_type')"
-                >
-                  <BarsArrowUpIcon
-                    v-if="
-                      salesStore.sortBy == 'shipping_type' &&
-                      salesStore.isAscending == true
-                    "
-                    class="h-5 w-5"
-                  />
+                <button type="button" class="inline-flex items-center p-0.5 ml-2" @click="salesStore.changeSortBy('shipping_type')">
+                  <BarsArrowUpIcon v-if="salesStore.sortBy == 'shipping_type' && salesStore.isAscending == true" class="h-5 w-5" />
                   <BarsArrowDownIcon v-else class="h-5 w-5" />
                 </button>
               </div>
             </th>
-            <th
-              scope="col"
-              class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600"
-            >
-              Dibuat Oleh
-            </th>
-            <th
-              scope="col"
-              class="px-2 py-2 w-8 border border-slate-400 dark:border-slate-600"
-            >
-              Action
-            </th>
+            <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Dibuat Oleh</th>
+            <th scope="col" class="px-2 py-2 w-8 border border-slate-400 dark:border-slate-600">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -242,9 +139,7 @@
             v-for="(item, index) in salesStore.sortItem"
             :key="item.id"
             :class="
-              (index + 1) % 2 !== 0
-                ? 'bg-white border-b dark:bg-gray-900 dark:border-gray-700'
-                : 'border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700'
+              (index + 1) % 2 !== 0 ? 'bg-white border-b dark:bg-gray-900 dark:border-gray-700' : 'border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700'
             "
           >
             <td class="px-4 py-1 text-center">{{ salesStore.from + index }}</td>
@@ -260,10 +155,7 @@
               {{ IDRCurrency.format(item.grand_total ?? 0) }}
             </td>
             <td class="px-4 py-1">
-              <div
-                v-if="item.payment_status == 'LUNAS'"
-                class="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0"
-              >
+              <div v-if="item.payment_status == 'LUNAS'" class="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0">
                 <span
                   @click="paymentCreditView(item.id)"
                   v-if="item.credit == true"
@@ -293,9 +185,7 @@
             <td class="px-4 py-1">
               <span
                 :class="
-                  item.shipping_type == 'DELIVERY'
-                    ? 'bg-orange-100 text-orange-400 dark:bg-orange-500 '
-                    : 'bg-green-100 text-green-400 dark:bg-green-500 '
+                  item.shipping_type == 'DELIVERY' ? 'bg-orange-100 text-orange-400 dark:bg-orange-500 ' : 'bg-green-100 text-green-400 dark:bg-green-500 '
                 "
                 class="text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:text-white"
                 >{{ item.shipping_type }}
@@ -306,13 +196,8 @@
               <div>
                 <Menu as="div" class="relative inline-block text-left">
                   <div>
-                    <MenuButton
-                      class="hover:scale-125 ease-in-out duration-300 flex w-full rounded-md font-medium text-black dark:text-white"
-                    >
-                      <EllipsisVerticalIcon
-                        class="h-5 w-5 text-black dark:text-white"
-                        aria-hidden="true"
-                      />
+                    <MenuButton class="hover:scale-125 ease-in-out duration-300 flex w-full rounded-md font-medium text-black dark:text-white">
+                      <EllipsisVerticalIcon class="h-5 w-5 text-black dark:text-white" aria-hidden="true" />
                     </MenuButton>
                   </div>
 
@@ -332,9 +217,7 @@
                           <button
                             @click="initRightDrawer(index)"
                             :class="[
-                              active
-                                ? 'bg-blue-500 text-white'
-                                : 'text-gray-900 dark:text-white',
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
                               'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                             ]"
                           >
@@ -347,9 +230,7 @@
                           <button
                             @click="invoice(item.id)"
                             :class="[
-                              active
-                                ? 'bg-blue-500 text-white'
-                                : 'text-gray-900 dark:text-white',
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
                               'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                             ]"
                           >
@@ -362,9 +243,7 @@
                           <button
                             @click="editData(item.id)"
                             :class="[
-                              active
-                                ? 'bg-blue-500 text-white'
-                                : 'text-gray-900 dark:text-white',
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
                               'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                             ]"
                           >
@@ -378,9 +257,7 @@
                           <button
                             @click="deleteData(item.id)"
                             :class="[
-                              active
-                                ? 'bg-blue-500 text-white'
-                                : 'text-gray-900 dark:text-white',
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
                               'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                             ]"
                           >
@@ -425,28 +302,17 @@
       </div>
     </div> -->
 
-    <nav
-      class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
-      aria-label="Table navigation"
-    >
+    <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
       <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
         Showing
-        <span class="font-semibold text-gray-900 dark:text-white"
-          >{{ salesStore.from }} - {{ salesStore.to }}</span
-        >
+        <span class="font-semibold text-gray-900 dark:text-white">{{ salesStore.from }} - {{ salesStore.to }}</span>
         of
-        <span class="font-semibold text-gray-900 dark:text-white">{{
-          salesStore.totalResp
-        }}</span>
+        <span class="font-semibold text-gray-900 dark:text-white">{{ salesStore.totalResp }}</span>
       </span>
       <ul class="inline-flex items-stretch -space-x-px">
         <li>
           <a
-            @click="
-              salesStore.currentPage == 1
-                ? ''
-                : salesStore.getData(previousPage)
-            "
+            @click="salesStore.currentPage == 1 ? '' : salesStore.getData(previousPage)"
             :disabled="salesStore.currentPage == 1 ? true : false"
             :class="
               salesStore.currentPage == 1
@@ -459,11 +325,7 @@
         </li>
         <li>
           <a
-            @click="
-              salesStore.lastPage == salesStore.currentPage
-                ? ''
-                : salesStore.getData(nextPage)
-            "
+            @click="salesStore.lastPage == salesStore.currentPage ? '' : salesStore.getData(nextPage)"
             :class="
               salesStore.lastPage == salesStore.currentPage
                 ? 'cursor-not-allowed'
@@ -479,12 +341,7 @@
 
   <!--Confirmation Modal -->
   <Teleport to="body">
-    <ConfirmationModal
-      :show="showConfirmationModal"
-      @close="showConfirmationModal = false"
-      @submit="destroyData"
-      @cancel="showConfirmationModal = false"
-    >
+    <ConfirmationModal :show="showConfirmationModal" @close="showConfirmationModal = false" @submit="destroyData" @cancel="showConfirmationModal = false">
       <template #title>Hapus data ?</template>
       <template #submit>Hapus !</template>
       <template #cancel>Cancel</template>
@@ -493,9 +350,7 @@
 
   <!-- Loading Modal -->
   <Teleport to="body">
-    <LoadingModal :show="salesStore.isDestroyLoading"
-      >Processing transaction</LoadingModal
-    >
+    <LoadingModal :show="salesStore.isDestroyLoading">Processing transaction</LoadingModal>
   </Teleport>
 </template>
 
@@ -519,35 +374,17 @@ import {
 
 import { XMarkIcon } from '@heroicons/vue/24/solid'
 
-import {
-  computed,
-  onUnmounted,
-  onBeforeMount,
-  defineAsyncComponent,
-  ref,
-  nextTick,
-  shallowRef,
-} from 'vue'
+import { computed, onUnmounted, onBeforeMount, defineAsyncComponent, ref, nextTick, shallowRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { IDRCurrency } from '../../utilities/formatter'
 import { useSalesStore } from '../../stores/sales'
 import { useLayoutStore } from '../../stores/layout'
 
-const CircleLoading = defineAsyncComponent(() =>
-  import('../../components/loading/CircleLoading.vue')
-)
-const ConfirmationModal = defineAsyncComponent(() =>
-  import('../../components/modal/ConfirmationModal.vue')
-)
-const LoadingModal = defineAsyncComponent(() =>
-  import('../../components/modal/LoadingModal.vue')
-)
-const DetailPenjualanDrawer = defineAsyncComponent(() =>
-  import('../../views/sales/drawer/DetailPenjualanDrawer.vue')
-)
-const FilterDrawer = defineAsyncComponent(() =>
-  import('./drawer/FilterDrawer.vue')
-)
+const CircleLoading = defineAsyncComponent(() => import('../../components/loading/CircleLoading.vue'))
+const ConfirmationModal = defineAsyncComponent(() => import('../../components/modal/ConfirmationModal.vue'))
+const LoadingModal = defineAsyncComponent(() => import('../../components/modal/LoadingModal.vue'))
+const DetailPenjualanDrawer = defineAsyncComponent(() => import('../../views/sales/drawer/DetailPenjualanDrawer.vue'))
+const FilterDrawer = defineAsyncComponent(() => import('./drawer/FilterDrawer.vue'))
 
 const router = useRouter()
 const salesStore = useSalesStore()

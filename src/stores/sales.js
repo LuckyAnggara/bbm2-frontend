@@ -31,9 +31,6 @@ export const useSalesStore = defineStore('salesStore', {
         },
         customerData: {
           id: 1,
-          name: '-',
-          address: '-',
-          phone_number: '-',
           withoutCustomer: true,
           userId: userData.id,
           saveCustomer: false,
@@ -45,8 +42,11 @@ export const useSalesStore = defineStore('salesStore', {
           amount: 0,
           due_date: null,
           notes: '',
+          isCredit: false,
         },
-        shipping: {},
+        shipping: {
+          useCustomer: false,
+        },
       },
       filter: {
         date: [],
@@ -99,11 +99,7 @@ export const useSalesStore = defineStore('salesStore', {
       return '&name=' + state.searchName
     },
     minTotalQuery(state) {
-      if (
-        state.filter.minTotal == 0 ||
-        state.filter.minTotal == '' ||
-        state.filter.minTotal == null
-      ) {
+      if (state.filter.minTotal == 0 || state.filter.minTotal == '' || state.filter.minTotal == null) {
         return ''
       }
       return '&min-total=' + state.filter.minTotal
@@ -112,12 +108,7 @@ export const useSalesStore = defineStore('salesStore', {
       if (state.filter.date.length == 0 || state.filter.date.length == null) {
         return ''
       }
-      return (
-        '&start-date=' +
-        state.filter.date[0] +
-        '&end-date=' +
-        state.filter.date[1]
-      )
+      return '&start-date=' + state.filter.date[0] + '&end-date=' + state.filter.date[1]
     },
     paymentStatusQuery(state) {
       switch (state.filter.paymentStatus) {
@@ -304,9 +295,7 @@ export const useSalesStore = defineStore('salesStore', {
         toast.success('Data berhasil di hapus', {
           timeout: 2000,
         })
-        const index = this.singleResponses.payment.findIndex(
-          (item) => item.id === id
-        )
+        const index = this.singleResponses.payment.findIndex((item) => item.id === id)
         this.singleResponses.payment.splice(index, 1)
       } catch (error) {
         toast.error(error.response.data.message, {
@@ -335,10 +324,7 @@ export const useSalesStore = defineStore('salesStore', {
         ...this.currentData.transaction,
         paymentType: paymentType,
         isCredit: isCredit,
-        amount:
-          paymentType == 'CASH' || paymentType == 'TRANSFER'
-            ? this.total.grandTotal
-            : this.currentData.total.dp,
+        amount: paymentType == 'CASH' || paymentType == 'TRANSFER' ? this.total.grandTotal : this.currentData.total.dp,
         type: 'IN',
       }
       this.currentData.transaction = {
