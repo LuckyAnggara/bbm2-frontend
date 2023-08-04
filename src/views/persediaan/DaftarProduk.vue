@@ -44,39 +44,7 @@
         </form>
       </div>
       <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-        <button
-          :disabled="showCreateDrawer"
-          :class="showCreateDrawer ? '' : 'hover:translate-x-2 duration-300 ease-in-out'"
-          @click="newProduct()"
-          type="button"
-          class="duration-300 hover:scale-105 transition flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-        >
-          <PlusIcon class="mr-1 w-4 h-4" />
-          Product
-        </button>
-        <div class="flex items-center space-x-3 w-full md:w-auto">
-          <button
-            class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-            type="button"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="h-4 w-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">
-              <path
-                fill-rule="evenodd"
-                d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            Filter
-
-            <svg class="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path
-                clip-rule="evenodd"
-                fill-rule="evenodd"
-                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              />
-            </svg>
-          </button>
-        </div>
+        <HeadlessMenu :links="actionMenu" />
       </div>
     </div>
     <div class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
@@ -84,12 +52,17 @@
         <thead class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
           <tr>
             <!-- <th scope="col" class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600">No</th> -->
-            <th scope="col" class="px-4 py-2 w-36 border border-slate-400 dark:border-slate-600">Nama Produk</th>
-            <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Satuan</th>
-            <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Merek</th>
-            <th scope="col" class="px-4 py-2 w-16 border border-slate-400 dark:border-slate-600">Harga Jual Terakhir</th>
-            <th scope="col" class="px-4 py-2 w-16 border border-slate-400 dark:border-slate-600">Saldo Terakhir</th>
-            <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Action</th>
+            <th scope="col" class="py-2 w-6 border border-slate-400 dark:border-slate-600">SKU</th>
+            <th scope="col" class="py-2 w-24 border border-slate-400 dark:border-slate-600">Nama</th>
+            <th scope="col" class="py-2 w-8 border border-slate-400 dark:border-slate-600">Saldo</th>
+            <th scope="col" class="py-2 w-8 border border-slate-400 dark:border-slate-600">Batas Minimum</th>
+            <th scope="col" class="py-2 w-12 border border-slate-400 dark:border-slate-600">Unit / Satuan</th>
+            <th scope="col" class="py-2 w-8 border border-slate-400 dark:border-slate-600">Harga Rata - Rata</th>
+            <th scope="col" class="py-2 w-10 border border-slate-400 dark:border-slate-600">Harga Beli Terakhir</th>
+            <!-- <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Merek</th> -->
+            <th scope="col" class="py-2 w-10 border border-slate-400 dark:border-slate-600">Harga Jual</th>
+            <th scope="col" class="py-2 w-10 border border-slate-400 dark:border-slate-600">Kategory</th>
+            <th scope="col" class="py-2 w-6 border border-slate-400 dark:border-slate-600">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -110,13 +83,21 @@
             "
           >
             <!-- <td class="px-4 py-1 text-center">{{ itemStore.from + index }}</td> -->
+            <td class="px-4 py-1">{{ item.sku ?? '-' }}</td>
+
             <th class="px-4 py-1">
-              {{ item.name.toUpperCase() }}
+              {{ item.name }}
             </th>
-            <td class="px-4 py-1">{{ item.unit?.name.toUpperCase() ?? '-' }}</td>
-            <td class="px-4 py-1">{{ item.brand?.name.toUpperCase() ?? '-' }}</td>
-            <td class="px-4 py-1">{{ IDRCurrency.format(item.price?.price ?? 0) }}</td>
             <td class="px-4 py-1">{{ item.ending_stock ?? 0 }}</td>
+            <td class="px-4 py-1">{{ item.qty_minimum ?? '-' }}</td>
+            <td class="px-4 py-1">{{ item.unit?.name ?? '-' }}</td>
+
+            <!-- <td class="px-4 py-1">{{ item.category.name.toUpperCase() ?? '-' }}</td> -->
+            <td class="px-4 py-1">{{ IDRCurrency.format(item.price?.price ?? 0) }}</td>
+            <td class="px-4 py-1">{{ IDRCurrency.format(item.price?.price ?? 0) }}</td>
+            <td class="px-4 py-1">{{ IDRCurrency.format(item.price?.price ?? 0) }}</td>
+            <td class="px-4 py-1">{{ item.category.name ?? '-' }}</td>
+
             <td class="px-4 py-1">
               <div>
                 <Menu as="div" class="relative inline-block text-left">
@@ -183,26 +164,6 @@
                   </transition>
                 </Menu>
               </div>
-
-              <!-- <div class="flex space-x-3">
-                <a
-                  @click="detail(item.id)"
-                  class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:dark:text-white hover:text-red-500 hover:scale-105 duration-300 ease-in-out"
-                  ><MagnifyingGlassIcon class="h-7 w-7"
-                /></a>
-
-                <a
-                  @click="edit(item.id)"
-                  class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:dark:text-white hover:text-red-500 hover:scale-105 duration-300 ease-in-out"
-                  ><PencilSquareIcon class="h-7 w-7"
-                /></a>
-
-                <a
-                  @click="deleteData(item.id)"
-                  class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:dark:text-white hover:text-red-500 hover:scale-105 duration-300 ease-in-out"
-                  ><TrashIcon class="h-7 w-7"
-                /></a>
-              </div> -->
             </td>
           </tr>
         </tbody>
@@ -252,6 +213,7 @@
 
 <script setup>
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+import HeadlessMenu from '../../components/menu/HeadlessMenu.vue'
 
 import { EllipsisVerticalIcon, DocumentTextIcon, PencilSquareIcon, TrashIcon, PlusIcon } from '@heroicons/vue/24/outline'
 import { onMounted, computed, onUnmounted, ref, nextTick, inject } from 'vue'
@@ -329,6 +291,16 @@ function deleteData(id) {
     backdrop: true,
   })
 }
+
+const actionMenu = [
+  {
+    function: function tambah() {
+      router.push({ name: 'add-product' })
+    },
+    label: 'Baru',
+    icon: PlusIcon,
+  },
+]
 
 onMounted(() => {
   itemStore.getData()

@@ -32,21 +32,15 @@ export const menu = [
   },
   {
     id: 3,
-    name: 'Persediaan',
+    name: 'Produk',
     icon: BriefcaseIcon,
+    to: 'produk',
     // to: 'persediaan',
-    child: [
-      {
-        id: 0,
-        name: 'Daftar Produk',
-        to: 'produk',
-      },
-      {
-        id: 1,
-        name: 'Mutasi Produk',
-        to: 'produk-mutasi',
-      },
-    ],
+  },
+  {
+    id: 1,
+    name: 'Mutasi Produk',
+    to: 'produk-mutasi',
   },
   {
     id: 4,

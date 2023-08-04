@@ -141,9 +141,10 @@
     </Teleport>
 
     <Teleport to="body">
-      <SuccessModal :show="salesStore.isTransactionSuccess" @submit="invoicePage" :type="'success'"
+      <SuccessModal :show="salesStore.isTransactionSuccess" @submit="invoicePage" @close="closeModal" :type="'success'"
         ><template #message> Transaction success </template>
         <template #buttonText> Invoice </template>
+        <template #buttonText2> Tutup </template>
       </SuccessModal>
     </Teleport>
 
@@ -269,6 +270,12 @@ const SuccessModal = defineAsyncComponent(() => import('../../../components/moda
 
 function noFeature() {
   swal.fire('Fitur belum dapat digunakan', '', 'info')
+}
+
+async function closeModal() {
+  salesStore.isTransactionSuccess = false
+  await nextTick()
+  router.push({ name: 'new-sale' })
 }
 
 function backward() {

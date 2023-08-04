@@ -164,7 +164,7 @@
                 </span>
                 <span
                   @click="initRightDrawer(index)"
-                  class="bg-blue-100 cursor-pointer text-blue-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-500 dark:text-white"
+                  class="bg-blue-100 cursor-pointer text-blue-600 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-blue-500 dark:text-white"
                   >{{ item.payment_status }}</span
                 >
               </div>
@@ -172,7 +172,7 @@
                 <span
                   @click="paymentCreditView(item.id)"
                   v-if="item.credit == true"
-                  class="h-fit cursor-pointer bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
+                  class="h-fit cursor-pointer bg-red-100 text-red-600 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
                   >KREDIT
                 </span>
                 <span
