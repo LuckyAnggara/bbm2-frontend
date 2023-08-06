@@ -1,14 +1,26 @@
 <template>
-  <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-visible">
-    <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+  <div
+    class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-visible"
+  >
+    <div
+      class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"
+    >
       <div class="w-full md:w-1/2 flex space-x-3">
         <div class="flex items-center">
-          <label for="years" class="block text-sm font-medium text-gray-900 dark:text-white mr-2">Show</label>
+          <label
+            for="years"
+            class="block text-sm font-medium text-gray-900 dark:text-white mr-2"
+            >Show</label
+          >
           <select
             v-model="itemStore.currentLimit"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block sm:w-16 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-16"
           >
-            <option :selected="itemStore.currentLimit == length ? true : false" v-for="length in lengths" :key="length">
+            <option
+              :selected="itemStore.currentLimit == length ? true : false"
+              v-for="length in lengths"
+              :key="length"
+            >
               {{ length }}
             </option>
           </select>
@@ -17,7 +29,9 @@
         <form class="flex items-center w-full" autocomplete="off">
           <label for="simple-search" class="sr-only">Search</label>
           <div class="relative w-full">
-            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <div
+              class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+            >
               <svg
                 aria-hidden="true"
                 class="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -43,43 +57,96 @@
           </div>
         </form>
       </div>
-      <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+      <div
+        class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0"
+      >
         <HeadlessMenu :links="actionMenu" />
       </div>
     </div>
-    <div class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
-      <table class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 table-fixed table-striped">
-        <thead class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
+    <div
+      class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700"
+    >
+      <table
+        class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 table-fixed table-striped"
+      >
+        <thead
+          class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center"
+        >
           <tr>
             <!-- <th scope="col" class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600">No</th> -->
-            <th scope="col" class="py-2 w-6 border border-slate-400 dark:border-slate-600">SKU</th>
-            <th scope="col" class="py-2 w-24 border border-slate-400 dark:border-slate-600">Nama</th>
-            <th scope="col" class="py-2 w-8 border border-slate-400 dark:border-slate-600">Saldo</th>
-            <th scope="col" class="py-2 w-8 border border-slate-400 dark:border-slate-600">Batas Minimum</th>
-            <th scope="col" class="py-2 w-12 border border-slate-400 dark:border-slate-600">Unit / Satuan</th>
-            <th scope="col" class="py-2 w-8 border border-slate-400 dark:border-slate-600">Harga Rata - Rata</th>
-            <th scope="col" class="py-2 w-10 border border-slate-400 dark:border-slate-600">Harga Beli Terakhir</th>
+            <th
+              scope="col"
+              class="px-1 py-2 w-12 border border-slate-400 dark:border-slate-600"
+            >
+              SKU
+            </th>
+            <th
+              scope="col"
+              class="px-1 py-2 w-24 border border-slate-400 dark:border-slate-600"
+            >
+              Nama
+            </th>
+            <th
+              scope="col"
+              class="px-1 py-2 w-8 border border-slate-400 dark:border-slate-600"
+            >
+              Saldo
+            </th>
+            <th
+              scope="col"
+              class="px-1 py-2 w-8 border border-slate-400 dark:border-slate-600"
+            >
+              Batas Minimum
+            </th>
+            <th
+              scope="col"
+              class="px-1 py-2 w-12 border border-slate-400 dark:border-slate-600"
+            >
+              Unit / Satuan
+            </th>
+
+            <th
+              scope="col"
+              class="px-1 py-2 w-10 border border-slate-400 dark:border-slate-600"
+            >
+              Harga Beli Terakhir
+            </th>
             <!-- <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Merek</th> -->
-            <th scope="col" class="py-2 w-10 border border-slate-400 dark:border-slate-600">Harga Jual</th>
-            <th scope="col" class="py-2 w-10 border border-slate-400 dark:border-slate-600">Kategory</th>
-            <th scope="col" class="py-2 w-6 border border-slate-400 dark:border-slate-600">Action</th>
+            <th
+              scope="col"
+              class="px-1 py-2 w-10 border border-slate-400 dark:border-slate-600"
+            >
+              Harga Jual
+            </th>
+            <th
+              scope="col"
+              class="px-1 py-2 w-12 border border-slate-400 dark:border-slate-600"
+            >
+              Kategori
+            </th>
+            <th
+              scope="col"
+              class="px-1 py-2 w-4 border border-slate-400 dark:border-slate-600"
+            ></th>
           </tr>
         </thead>
         <tbody>
           <tr v-if="itemStore.isLoading">
-            <td colspan="6" class="text-center py-6">
+            <td colspan="9" class="text-center py-6">
               <CircleLoading>Prosesing ... </CircleLoading>
             </td>
           </tr>
           <tr v-else-if="!itemStore.isLoading && itemStore.items.length < 1">
-            <td colspan="6" class="text-center py-6">No Data</td>
+            <td colspan="9" class="text-center py-6">No Data</td>
           </tr>
           <tr
             v-else
             v-for="(item, index) in itemStore.items"
             :key="item.id"
             :class="
-              (index + 1) % 2 !== 0 ? 'bg-white border-b dark:bg-gray-900 dark:border-gray-700' : 'border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700'
+              (index + 1) % 2 !== 0
+                ? 'bg-white border-b dark:bg-gray-900 dark:border-gray-700'
+                : 'border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700'
             "
           >
             <!-- <td class="px-4 py-1 text-center">{{ itemStore.from + index }}</td> -->
@@ -93,17 +160,26 @@
             <td class="px-4 py-1">{{ item.unit?.name ?? '-' }}</td>
 
             <!-- <td class="px-4 py-1">{{ item.category.name.toUpperCase() ?? '-' }}</td> -->
-            <td class="px-4 py-1">{{ IDRCurrency.format(item.price?.price ?? 0) }}</td>
-            <td class="px-4 py-1">{{ IDRCurrency.format(item.price?.price ?? 0) }}</td>
-            <td class="px-4 py-1">{{ IDRCurrency.format(item.price?.price ?? 0) }}</td>
+
+            <td class="px-4 py-1">
+              {{ IDRCurrency.format(item.buying_price ?? 0) }}
+            </td>
+            <td class="px-4 py-1">
+              {{ IDRCurrency.format(item.selling_price ?? 0) }}
+            </td>
             <td class="px-4 py-1">{{ item.category.name ?? '-' }}</td>
 
             <td class="px-4 py-1">
               <div>
                 <Menu as="div" class="relative inline-block text-left">
                   <div>
-                    <MenuButton class="hover:scale-125 ease-in-out duration-300 flex w-full rounded-md font-medium text-black dark:text-white">
-                      <EllipsisVerticalIcon class="h-5 w-5 text-black dark:text-white" aria-hidden="true" />
+                    <MenuButton
+                      class="hover:scale-125 ease-in-out duration-300 flex w-full rounded-md font-medium text-black dark:text-white"
+                    >
+                      <EllipsisVerticalIcon
+                        class="h-5 w-5 text-black dark:text-white"
+                        aria-hidden="true"
+                      />
                     </MenuButton>
                   </div>
 
@@ -119,44 +195,18 @@
                       class="z-50 py-1 absolute right-0 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white dark:bg-gray-800 dark:text-gray-100 shadow-lg ring-1 ring-black dark:ring-gray-700 ring-opacity-5 focus:outline-none"
                     >
                       <div class="px-2 py-1">
-                        <MenuItem v-slot="{ active }">
+                        <MenuItem v-for="menu in itemMenu" v-slot="{ active }">
                           <button
-                            @click="detail(item.id)"
+                            @click="menu.function(item)"
                             :class="[
-                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
+                              active
+                                ? 'bg-blue-500 text-white'
+                                : 'text-gray-900 dark:text-white',
                               'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                             ]"
                           >
-                            <DocumentTextIcon class="w-5 h-5 mr-3" />
-                            Detail
-                          </button>
-                        </MenuItem>
-
-                        <MenuItem v-slot="{ active }">
-                          <button
-                            @click="edit(item.id)"
-                            :class="[
-                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
-                              'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                            ]"
-                          >
-                            <PencilSquareIcon class="w-5 h-5 mr-3" />
-
-                            Edit
-                          </button>
-                        </MenuItem>
-
-                        <MenuItem v-slot="{ active }">
-                          <button
-                            @click="deleteData(item.id)"
-                            :class="[
-                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
-                              'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                            ]"
-                          >
-                            <TrashIcon class="w-5 h-5 mr-3" />
-
-                            Delete
+                            <component :is="menu.icon" class="w-5 h-5 mr-3" />
+                            {{ menu.label }}
                           </button>
                         </MenuItem>
                       </div>
@@ -169,17 +219,26 @@
         </tbody>
       </table>
     </div>
-    <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
+    <nav
+      class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
+      aria-label="Table navigation"
+    >
       <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
         Showing
-        <span class="font-semibold text-gray-900 dark:text-white">{{ itemStore.from }} - {{ itemStore.to }}</span>
+        <span class="font-semibold text-gray-900 dark:text-white"
+          >{{ itemStore.from }} - {{ itemStore.to }}</span
+        >
         of
-        <span class="font-semibold text-gray-900 dark:text-white">{{ itemStore.total }}</span>
+        <span class="font-semibold text-gray-900 dark:text-white">{{
+          itemStore.total
+        }}</span>
       </span>
       <ul class="inline-flex items-stretch -space-x-px">
         <li>
           <a
-            @click="itemStore.currentPage == 1 ? '' : itemStore.getData(previousPage)"
+            @click="
+              itemStore.currentPage == 1 ? '' : itemStore.getData(previousPage)
+            "
             :disabled="itemStore.currentPage == 1 ? true : false"
             :class="
               itemStore.currentPage == 1
@@ -193,7 +252,11 @@
 
         <li>
           <a
-            @click="itemStore.lastPage == itemStore.currentPage ? '' : itemStore.getData(nextPage)"
+            @click="
+              itemStore.lastPage == itemStore.currentPage
+                ? ''
+                : itemStore.getData(nextPage)
+            "
             :class="
               itemStore.lastPage == itemStore.currentPage
                 ? 'cursor-not-allowed'
@@ -215,9 +278,26 @@
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import HeadlessMenu from '../../components/menu/HeadlessMenu.vue'
 
-import { EllipsisVerticalIcon, DocumentTextIcon, PencilSquareIcon, TrashIcon, PlusIcon } from '@heroicons/vue/24/outline'
-import { onMounted, computed, onUnmounted, ref, nextTick, inject } from 'vue'
-import TableComplex from '../../components/table/TableComplex.vue'
+import {
+  EllipsisVerticalIcon,
+  DocumentTextIcon,
+  PencilSquareIcon,
+  TrashIcon,
+  PlusIcon,
+  FunnelIcon,
+  Bars4Icon,
+  ArchiveBoxIcon,
+} from '@heroicons/vue/24/outline'
+import {
+  onMounted,
+  computed,
+  onUnmounted,
+  ref,
+  shallowRef,
+  nextTick,
+  inject,
+  defineAsyncComponent,
+} from 'vue'
 import { IDRCurrency } from '../../utilities/formatter'
 import { useItemStore } from '../../stores/items'
 import { useItemBrandStore } from '../../stores/itemBrand'
@@ -227,17 +307,29 @@ import CircleLoading from '../../components/loading/CircleLoading.vue'
 import CreateDrawer from './drawer/CreateDrawer.vue'
 import EditDrawer from './drawer/EditDrawer.vue'
 import { useRouter } from 'vue-router'
+import { useLayoutStore } from '../../stores/layout'
+
+const FilterDrawer = defineAsyncComponent(() =>
+  import('./drawer/FilterDrawer.vue')
+)
 
 const lengths = ref([5, 10, 20, 30, 40, 50])
-
 const swal = inject('$swal')
 const router = useRouter()
 const itemStore = useItemStore()
 const itemBrandStore = useItemBrandStore()
 const itemUnitStore = useItemUnitStore()
+const layoutStore = useLayoutStore()
 
 const showCreateDrawer = ref(false)
 const showEditDrawer = ref(false)
+
+async function filterDraw() {
+  await nextTick()
+  layoutStore.component = shallowRef(FilterDrawer)
+  layoutStore.title = 'Filter Data'
+  layoutStore.isRightDrawShow = true
+}
 
 const previousPage = computed(() => {
   return '&page=' + (itemStore.currentPage - 1)
@@ -253,8 +345,8 @@ itemStore.$subscribe((mutation, state) => {
   }
 })
 
-async function detail(id) {
-  router.push({ name: 'detail-product', params: { id } })
+async function detail(item) {
+  router.push({ name: 'detail-product', params: { sku: item.sku } })
 }
 
 async function edit(id) {
@@ -274,7 +366,7 @@ async function newProduct() {
   showCreateDrawer.value = true
 }
 
-function deleteData(id) {
+function deleteData(item) {
   swal.fire({
     title: 'Hapus?',
     text: 'Data tidak bisa dikembalikan!',
@@ -285,7 +377,7 @@ function deleteData(id) {
     showLoaderOnConfirm: true,
     reverseButtons: true,
     preConfirm: async () => {
-      await itemStore.destroy(id)
+      await itemStore.destroy(item.id)
     },
     allowOutsideClick: () => !itemStore.isDestroyLoading,
     backdrop: true,
@@ -295,10 +387,40 @@ function deleteData(id) {
 const actionMenu = [
   {
     function: function tambah() {
-      router.push({ name: 'add-product' })
+      router.push({ name: 'new-product' })
     },
     label: 'Baru',
     icon: PlusIcon,
+  },
+  {
+    function: filterDraw,
+    label: 'Filter',
+    icon: FunnelIcon,
+  },
+  {
+    function: function mutasi() {
+      // router.push({ name: 'new-product' })
+    },
+    label: 'Mutasi',
+    icon: Bars4Icon,
+  },
+]
+
+const itemMenu = [
+  {
+    function: detail,
+    label: 'Detail',
+    icon: DocumentTextIcon,
+  },
+  {
+    function: filterDraw,
+    label: 'Archive',
+    icon: ArchiveBoxIcon,
+  },
+  {
+    function: deleteData,
+    label: 'Hapus',
+    icon: TrashIcon,
   },
 ]
 

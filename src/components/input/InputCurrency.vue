@@ -6,6 +6,7 @@
     :class="customClass"
     :placeholder="placeholder"
     type="text"
+    :disabled="isDisabled"
   />
 </template>
 
@@ -20,6 +21,10 @@ export default {
     placeholder: {
       type: String,
       default: 'Nominal',
+    },
+    isDisabled: {
+      type: Boolean,
+      default: false,
     },
     isRequired: {
       type: Boolean,

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import axiosIns from '../services/axios'
 const userData = JSON.parse(localStorage.getItem('userData'))
 import { useToast } from 'vue-toastification'
+import { useAuthStore } from './auth'
 
 const toast = useToast()
 // ITEM STORE
@@ -10,25 +11,51 @@ export const useItemStore = defineStore('itemStore', {
     return {
       responses: {},
       singleResponses: null,
+      originalSingleResponses: null,
       fromDate: '',
       toDate: '',
       isLoading: false,
       isStoreLoading: false,
       isEditLoading: false,
       isDestroyLoading: false,
+      isTransactionSuccess: false,
       modalToggle: false,
       currentLimit: 10,
       editCurrentData: {},
       currentData: {
         name: null,
-        brand_id: 0,
+        description: null,
+        sku: null,
+        brand: null,
+        category_id: 1,
         unit_id: 0,
+        buying_price: 0,
+        selling_price: 0,
+        iSell: true,
+        iBuy: true,
+        beginningStock: {
+          value: false,
+          stock: 0,
+          price: 0,
+        },
+        buying_tax_id: 1,
+        selling_tax_id: 1,
+        qty_minimum: 0,
         warehouse_id: 0,
+        notification_qty: false,
         created_by: userData.id,
+        branch_id: userData.branch_id,
       },
       searchName: '',
       itemDetailData: {
         name: null,
+      },
+      filter: {
+        minSellingPrice: 0,
+        minBuyingPrice: 0,
+        minStock: 0,
+        unit: 0,
+        category: 0,
       },
     }
   },
@@ -54,18 +81,80 @@ export const useItemStore = defineStore('itemStore', {
     total(state) {
       return state.responses?.total
     },
+    totalBeginningStock(state) {
+      return (
+        state.currentData.beginningStock.price *
+        state.currentData.beginningStock.stock
+      )
+    },
     searchQuery(state) {
       if (state.searchName == '' || null) {
         return ''
       }
       return '&name=' + state.searchName
     },
+    branchQuery() {
+      const authStore = useAuthStore()
+      return '&branch=' + authStore.userData.branch_id
+    },
+    minSellingPriceQuery(state) {
+      if (
+        state.filter.minSellingPrice == 0 ||
+        state.filter.minSellingPrice == '' ||
+        state.filter.minSellingPrice == null
+      ) {
+        return ''
+      }
+      return '&min-selling-price=' + state.filter.minSellingPrice
+    },
+    minBuyingPriceQuery(state) {
+      if (
+        state.filter.minBuyingPrice == 0 ||
+        state.filter.minBuyingPrice == '' ||
+        state.filter.minBuyingPrice == null
+      ) {
+        return ''
+      }
+      return '&min-buying-price=' + state.filter.minBuyingPrice
+    },
+    minStockQuery(state) {
+      if (
+        state.filter.minStock == 0 ||
+        state.filter.minStock == '' ||
+        state.filter.minStock == null
+      ) {
+        return ''
+      }
+      return '&min-stock=' + state.filter.minStock
+    },
+    unitQuery(state) {
+      switch (state.filter.unit) {
+        case '':
+        case null:
+        case 0:
+          return ''
+        default:
+          return '&unit=' + state.filter.unit
+      }
+    },
+    categoryQuery(state) {
+      switch (state.filter.category) {
+        case '':
+        case null:
+        case 0:
+          return ''
+        default:
+          return '&category=' + state.filter.category
+      }
+    },
   },
   actions: {
     async getData(page = '') {
       this.isLoading = true
       try {
-        const response = await axiosIns.get(`/items?limit=${this.currentLimit}${this.searchQuery}${page}`)
+        const response = await axiosIns.get(
+          `/items?limit=${this.currentLimit}${this.searchQuery}${this.branchQuery}${page}${this.minSellingPriceQuery}${this.minBuyingPriceQuery}${this.minStockQuery}${this.unitQuery}${this.categoryQuery}`
+        )
         this.responses = response.data.data
       } catch (error) {
         toast.error(error.message, {
@@ -78,7 +167,10 @@ export const useItemStore = defineStore('itemStore', {
       this.isLoading = true
       try {
         const response = await axiosIns.get(`/items/${id}`)
-        this.singleResponses = response.data.data
+        this.singleResponses = JSON.parse(JSON.stringify(response.data.data))
+        this.originalSingleResponses = JSON.parse(
+          JSON.stringify(response.data.data)
+        )
       } catch (error) {
         toast.error('Data not found', {
           position: 'bottom-right',
@@ -90,12 +182,11 @@ export const useItemStore = defineStore('itemStore', {
       this.isStoreLoading = true
       try {
         const response = await axiosIns.post(`/items`, this.currentData)
-        toast.success('Produk baru berhasil ditambahkan', {
-          timeout: 3000,
-        })
+        this.isTransactionSuccess = true
         this.getData()
       } catch (error) {
-        toast.error(error.message, {
+        console.info(error)
+        toast.error(error.response.data.data, {
           timeout: 3000,
         })
       } finally {
@@ -105,7 +196,10 @@ export const useItemStore = defineStore('itemStore', {
     async update() {
       this.isEditLoading = true
       try {
-        const response = await axiosIns.put(`/items/${this.editCurrentData.id}`, this.editCurrentData)
+        const response = await axiosIns.put(
+          `/items/${this.editCurrentData.id}`,
+          this.editCurrentData
+        )
         toast.success('Produk berhasil diperbaharui!', {
           timeout: 3000,
         })
@@ -118,27 +212,55 @@ export const useItemStore = defineStore('itemStore', {
         this.isEditLoading = false
       }
     },
-    async destroy(id) {
+    async destroy(id, inListProduct = true) {
       this.isDestroyLoading = true
       try {
-        const response = await axiosIns.delete(`/items/${id}`)
+        await axiosIns.delete(`/items/${id}`)
         toast.success('Data berhasil di hapus', {
           timeout: 2000,
         })
         const index = this.items.findIndex((item) => item.id === id)
-        this.responses.data.splice(index, 1)
-        return response
+        if (inListProduct) {
+          this.responses.data.splice(index, 1)
+        }
       } catch (error) {
-        toast.error(error.response.data.message, {
+        toast.error(error.message, {
           timeout: 2000,
         })
       } finally {
         this.isDestroyLoading = false
       }
     },
-    resetData() {
-      this.searchName = ''
-      this.responses = {}
+    copyOriginalSingleResponses() {
+      this.singleResponses = JSON.parse(
+        JSON.stringify(this.originalSingleResponses)
+      )
+    },
+    clearData() {
+      this.currentData = {
+        name: null,
+        description: null,
+        sku: null,
+        brand: null,
+        category_id: 1,
+        unit_id: 0,
+        buying_price: 0,
+        selling_price: 0,
+        iSell: true,
+        iBuy: true,
+        beginningStock: {
+          value: false,
+          stock: 0,
+          price: 0,
+        },
+        buying_tax_id: 1,
+        selling_tax_id: 1,
+        qty_minimum: 0,
+        warehouse_id: 0,
+        notification_qty: false,
+        created_by: userData.id,
+        branch_id: userData.branch_id,
+      }
     },
   },
 })

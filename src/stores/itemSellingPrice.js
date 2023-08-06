@@ -4,7 +4,7 @@ import { useToast } from 'vue-toastification'
 
 const toast = useToast()
 // ITEM STORE
-export const useItemPriceStore = defineStore('itemPriceStore', {
+export const useItemSellingPriceStore = defineStore('itemSellingPriceStore', {
   state: () => {
     return {
       responses: {},
@@ -43,7 +43,9 @@ export const useItemPriceStore = defineStore('itemPriceStore', {
     async getData(itemId) {
       this.isLoading = true
       try {
-        const response = await axiosIns.get(`/item-prices?limit=${this.currentLimit}&id=${itemId}`)
+        const response = await axiosIns.get(
+          `/item-selling-prices?limit=${this.currentLimit}&id=${itemId}`
+        )
         this.responses = response.data.data
       } catch (error) {
         alert(error)

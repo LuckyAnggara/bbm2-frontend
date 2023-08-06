@@ -1,43 +1,81 @@
 <template>
-  <div class="mt-12 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700 lg:w-3/6 w-full mx-auto">
+  <div
+    class="mt-12 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700 lg:w-3/6 w-full mx-auto"
+  >
     <div class="w-full pt-1 pb-5">
-      <div class="bg-indigo-500 text-white overflow-hidden rounded-full w-20 h-20 -mt-16 mx-auto shadow-lg flex justify-center items-center">
+      <div
+        class="bg-indigo-500 text-white overflow-hidden rounded-full w-20 h-20 -mt-16 mx-auto shadow-lg flex justify-center items-center"
+      >
         <i class="mdi mdi-credit-card-outline text-3xl">
           <BanknotesIcon class="h-10" />
         </i>
       </div>
     </div>
-    <h5 class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white">Pilih metode pembayaran</h5>
-    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Untuk metode kredit dipastikan bahwa pelanggan adalah Pelanggan Tetap</p>
+    <h5
+      class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white"
+    >
+      Pilih metode pembayaran
+    </h5>
+    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
+      Untuk metode kredit dipastikan bahwa pelanggan adalah Pelanggan Tetap
+    </p>
 
     <div class="my-4 mb-5">
       <div class="flex flex-row items-center">
-        <h6 class="text-base font-semibold text-gray-900 md:text-xl dark:text-white">Grand Total</h6>
+        <h6
+          class="text-base font-semibold text-gray-900 md:text-xl dark:text-white"
+        >
+          Grand Total
+        </h6>
         <Popper hover placement="right" content="aaa">
-          <ExclamationCircleIcon class="cursor-pointer ml-1 h-5 w-5 text-gray-600 dark:text-gray-300" />
+          <ExclamationCircleIcon
+            class="cursor-pointer ml-1 h-5 w-5 text-gray-600 dark:text-gray-300"
+          />
           <template #content>
-            <div class="bg-gray-50 dark:bg-gray-700 w-60 p-4 rounded-lg shadow-md">
+            <div
+              class="bg-gray-50 dark:bg-gray-700 w-60 p-4 rounded-lg shadow-md"
+            >
               <ul class="text-gray-600 dark:text-gray-300 space-y-1">
                 <li class="flex justify-between">
-                  <span>Total</span> <span>{{ IDRCurrency.format(salesStore.total.subtotal ?? 0) }}</span>
+                  <span>Total</span>
+                  <span>{{
+                    IDRCurrency.format(salesStore.total.subtotal ?? 0)
+                  }}</span>
                 </li>
                 <li class="flex justify-between">
-                  <span>Discount</span> <span>{{ IDRCurrency.format(salesStore.total.discount ?? 0) }}</span>
-                </li>
-                <hr />
-                <li class="flex justify-between">
-                  <span>Total Before Tax</span> <span class="font-medium">{{ IDRCurrency.format(salesStore.total.totalBeforeTax ?? 0) }}</span>
-                </li>
-                <li class="flex justify-between">
-                  <span>Tax</span> <span>{{ IDRCurrency.format(salesStore.total.tax ?? 0) }}</span>
-                </li>
-                <li class="flex justify-between">
-                  <span>Shipping</span> <span>{{ IDRCurrency.format(salesStore.currentData.shipping.fee ?? 0) }}</span>
+                  <span>Discount</span>
+                  <span>{{
+                    IDRCurrency.format(salesStore.total.discount ?? 0)
+                  }}</span>
                 </li>
                 <hr />
                 <li class="flex justify-between">
                   <span>Total Before Tax</span>
-                  <span class="font-medium">{{ IDRCurrency.format(salesStore.total.grandTotal + salesStore.currentData.shipping.fee ?? 0) }}</span>
+                  <span class="font-medium">{{
+                    IDRCurrency.format(salesStore.total.totalBeforeTax ?? 0)
+                  }}</span>
+                </li>
+                <li class="flex justify-between">
+                  <span>Tax</span>
+                  <span>{{
+                    IDRCurrency.format(salesStore.total.tax ?? 0)
+                  }}</span>
+                </li>
+                <li class="flex justify-between">
+                  <span>Shipping</span>
+                  <span>{{
+                    IDRCurrency.format(salesStore.currentData.shipping.fee ?? 0)
+                  }}</span>
+                </li>
+                <hr />
+                <li class="flex justify-between">
+                  <span>Total Before Tax</span>
+                  <span class="font-medium">{{
+                    IDRCurrency.format(
+                      salesStore.total.grandTotal +
+                        salesStore.currentData.shipping.fee ?? 0
+                    )
+                  }}</span>
                 </li>
               </ul>
             </div>
@@ -46,7 +84,12 @@
       </div>
 
       <p class="text-3xl font-normal text-gray-500 dark:text-gray-400">
-        {{ IDRCurrency.format(salesStore.total.grandTotal + salesStore.currentData.shipping.fee ?? 0) }}
+        {{
+          IDRCurrency.format(
+            salesStore.total.grandTotal + salesStore.currentData.shipping.fee ??
+              0
+          )
+        }}
       </p>
     </div>
     <a
@@ -61,7 +104,12 @@
     <hr />
     <Transition name="slide-up">
       <ul class="my-4 space-y-4" v-if="stateShow == 'first'">
-        <li v-for="item in firstMenu" :key="item.id" @click="item.action" class="hover:scale-105 ease-in-out duration-300 cursor-pointer">
+        <li
+          v-for="item in firstMenu"
+          :key="item.id"
+          @click="item.action"
+          class="hover:scale-105 ease-in-out duration-300 cursor-pointer"
+        >
           <a
             class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-700 text-white group hover:bg-gray-600 hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white"
           >
@@ -72,14 +120,28 @@
       </ul>
 
       <ul class="my-4 space-y-4" v-else>
-        <div v-if="salesStore.currentData.transaction.paymentStatus == 'BELUM LUNAS'">
+        <div
+          v-if="
+            salesStore.currentData.transaction.paymentStatus == 'BELUM LUNAS'
+          "
+        >
           <div class="flex flex-row items-center">
-            <h6 class="text-base font-semibold text-gray-900 md:text-xl dark:text-white">Down Payment</h6>
+            <h6
+              class="text-base font-semibold text-gray-900 md:text-xl dark:text-white"
+            >
+              Down Payment
+            </h6>
             <Popper hover placement="right" content="aaa">
-              <ExclamationCircleIcon class="cursor-pointer ml-1 h-5 w-5 text-gray-600 dark:text-gray-300" />
+              <ExclamationCircleIcon
+                class="cursor-pointer ml-1 h-5 w-5 text-gray-600 dark:text-gray-300"
+              />
               <template #content>
-                <div class="bg-gray-50 dark:bg-gray-700 w-fit p-4 rounded-lg shadow-md">
-                  <span class="text-gray-600 dark:text-gray-300">Jumlah yang harus di bayarkan</span>
+                <div
+                  class="bg-gray-50 dark:bg-gray-700 w-fit p-4 rounded-lg shadow-md"
+                >
+                  <span class="text-gray-600 dark:text-gray-300"
+                    >Jumlah yang harus di bayarkan</span
+                  >
                 </div>
               </template>
             </Popper>
@@ -88,7 +150,12 @@
             {{ IDRCurrency.format(salesStore.currentData.credit.amount) }}
           </p>
         </div>
-        <li v-for="item in secondMenu" :key="item.id" @click="item.action" class="hover:scale-105 ease-in-out duration-300 cursor-pointer">
+        <li
+          v-for="item in secondMenu"
+          :key="item.id"
+          @click="item.action"
+          class="hover:scale-105 ease-in-out duration-300 cursor-pointer"
+        >
           <a
             class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-700 text-white group hover:bg-gray-600 hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white"
           >
@@ -99,7 +166,9 @@
       </ul>
     </Transition>
     <div>
-      <a class="inline-flex items-center text-xs font-normal text-gray-500 hover:underline dark:text-gray-400">
+      <a
+        class="inline-flex items-center text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
+      >
         <svg
           class="w-3 h-3 mr-2"
           aria-hidden="true"
@@ -122,34 +191,67 @@
     <!-- Modal -->
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
-      <CashModal :show="showCashModal" @close="showCashModal = false" @submitTransaction="submitTransaction(false, 'CASH')"> </CashModal>
+      <CashModal
+        :show="showCashModal"
+        @close="showCashModal = false"
+        @submitTransaction="submitTransaction(false, 'CASH')"
+      >
+      </CashModal>
     </Teleport>
 
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
-      <TransferModal :show="showTransferModal" @close="showTransferModal = false" @submitTransaction="submitTransaction(false, 'TRANSFER')"> </TransferModal>
+      <TransferModal
+        :show="showTransferModal"
+        @close="showTransferModal = false"
+        @submitTransaction="submitTransaction(false, 'TRANSFER')"
+      >
+      </TransferModal>
     </Teleport>
 
     <!-- Modal -->
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
-      <CreditModal :show="showCreditModal" @close="showCreditModal = false" @nextProcess="processCredit()"> </CreditModal>
+      <CreditModal
+        :show="showCreditModal"
+        @close="showCreditModal = false"
+        @nextProcess="processCredit()"
+      >
+      </CreditModal>
     </Teleport>
 
     <Teleport to="body">
-      <LoadingModal :show="salesStore.isStoreLoading">Processing transaction</LoadingModal>
+      <LoadingModal :show="salesStore.isStoreLoading"
+        >Processing transaction</LoadingModal
+      >
     </Teleport>
 
     <Teleport to="body">
-      <SuccessModal :show="salesStore.isTransactionSuccess" @submit="invoicePage" @close="closeModal" :type="'success'"
+      <SuccessModal :show="salesStore.isTransactionSuccess" :type="'success'"
         ><template #message> Transaction success </template>
-        <template #buttonText> Invoice </template>
-        <template #buttonText2> Tutup </template>
+        <template #buttonText>
+          <button
+            @click="invoicePage"
+            type="button"
+            class="hover:scale-110 duration-300 ease-in-out transform py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-900"
+          >
+            Invoice
+          </button>
+          <button
+            @click="closeModal"
+            type="button"
+            class="hover:scale-110 duration-300 ease-in-out transform py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-900"
+          ></button>
+        </template>
       </SuccessModal>
     </Teleport>
 
     <Teleport to="body">
-      <SuccessModal :show="errorModal" @submit="errorModal = false" :type="'error'">
+      <SuccessModal
+        :show="errorModal"
+        @submit="errorModal = false"
+        :type="'error'"
+      >
         <template #message>
           <div class="flex flex-col">
             <span class="text-red-500"> Error</span>
@@ -212,7 +314,10 @@ const firstMenu = ref([
     label: 'Credit',
     icon: CreditCardIcon,
     action: () => {
-      if (salesStore.currentData.customerData.id == 1 && salesStore.currentData.customerData.saveCustomer == false) {
+      if (
+        salesStore.currentData.customerData.id == 1 &&
+        salesStore.currentData.customerData.saveCustomer == false
+      ) {
         errorModal.value = true
       } else {
         showCreditModal.value = true
@@ -262,11 +367,19 @@ const secondMenu = ref([
 ])
 
 const CashModal = defineAsyncComponent(() => import('../modal/CashModal.vue'))
-const TransferModal = defineAsyncComponent(() => import('../modal/TransferModal.vue'))
-const CreditModal = defineAsyncComponent(() => import('../modal/CreditModal.vue'))
+const TransferModal = defineAsyncComponent(() =>
+  import('../modal/TransferModal.vue')
+)
+const CreditModal = defineAsyncComponent(() =>
+  import('../modal/CreditModal.vue')
+)
 
-const LoadingModal = defineAsyncComponent(() => import('../../../components/modal/LoadingModal.vue'))
-const SuccessModal = defineAsyncComponent(() => import('../../../components/modal/SuccessModal.vue'))
+const LoadingModal = defineAsyncComponent(() =>
+  import('../../../components/modal/LoadingModal.vue')
+)
+const SuccessModal = defineAsyncComponent(() =>
+  import('../../../components/modal/SuccessModal.vue')
+)
 
 function noFeature() {
   swal.fire('Fitur belum dapat digunakan', '', 'info')

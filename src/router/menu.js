@@ -1,4 +1,9 @@
-import { RectangleGroupIcon, BuildingStorefrontIcon, BriefcaseIcon, ShoppingBagIcon } from '@heroicons/vue/24/outline'
+import {
+  RectangleGroupIcon,
+  BuildingStorefrontIcon,
+  BriefcaseIcon,
+  ShoppingBagIcon,
+} from '@heroicons/vue/24/outline'
 
 export const menu = [
   {
@@ -32,9 +37,9 @@ export const menu = [
   },
   {
     id: 3,
-    name: 'Produk',
+    name: 'Products',
     icon: BriefcaseIcon,
-    to: 'produk',
+    to: 'list-product',
     // to: 'persediaan',
   },
   {

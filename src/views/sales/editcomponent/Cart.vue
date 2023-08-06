@@ -23,7 +23,9 @@
     </div>
 
     <div class="flex lg:flex-row flex-col lg:space-x-6 space-y-6 lg:space-y-0">
-      <div class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit">
+      <div
+        class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit"
+      >
         <div class="flex flex-row items-center justify-between p-4 space-y-4">
           <div class="w-full xl:w-72">
             <Searchbar
@@ -41,9 +43,15 @@
       </div>
 
       <div class="flex flex-col space-y-4 items-end w-full">
-        <div class="overflow-auto shadow-md rounded-lg w-full h-fit scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
-          <table class="w-full text-xs text-left text-gray-500 dark:text-gray-400 xl:table-fixed">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+        <div
+          class="overflow-auto shadow-md rounded-lg w-full h-fit scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700"
+        >
+          <table
+            class="w-full text-xs text-left text-gray-500 dark:text-gray-400 xl:table-fixed"
+          >
+            <thead
+              class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400"
+            >
               <tr>
                 <th scope="col" class="py-3 w-4 text-center">No</th>
                 <th scope="col" class="py-3 w-36">Nama Produk</th>
@@ -56,9 +64,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-if="salesStore.singleResponses.detail.length < 1" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <tr
+                v-if="salesStore.singleResponses.detail.length < 1"
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              >
                 <td colspan="8" class="px-6 text-center">
-                  <span class="text-xl dark:text-gray-200 text-black">Tidak ada data</span>
+                  <span class="text-xl dark:text-gray-200 text-black"
+                    >Tidak ada data</span
+                  >
                 </td>
               </tr>
               <tr
@@ -88,7 +101,11 @@
                   <input
                     min="0"
                     type="number"
-                    :class="[item.qty > item.stock ? 'dark:bg-red-400 bg-red-300' : 'dark:bg-gray-700 bg-gray-100']"
+                    :class="[
+                      item.qty > item.stock
+                        ? 'dark:bg-red-400 bg-red-300'
+                        : 'dark:bg-gray-700 bg-gray-100',
+                    ]"
                     class="sm:w-full text-xs w-20 text-black dark:text-white dark:border-gray-800 border-gray-300 text-md rounded-lg p-2 font-medium"
                     v-model="item.qty"
                   />
@@ -103,11 +120,18 @@
                     v-model="item.discount"
                   />
                 </td>
-                <td class="text-gray-900 dark:text-white text-xs font-bold px-2 text-ellipsis">
-                  {{ IDRCurrency.format(item.qty * item.price - item.discount) }}
+                <td
+                  class="text-gray-900 dark:text-white text-xs font-bold px-2 text-ellipsis"
+                >
+                  {{
+                    IDRCurrency.format(item.qty * item.price - item.discount)
+                  }}
                 </td>
                 <td class="">
-                  <TrashIcon @click="removeItem(index)" class="h-6 w-6 hover:text-red-500 cursor-pointer hover:animate-bounce" />
+                  <TrashIcon
+                    @click="removeItem(index)"
+                    class="h-6 w-6 hover:text-red-500 cursor-pointer hover:animate-bounce"
+                  />
                 </td>
               </tr>
             </tbody>
@@ -117,13 +141,22 @@
     </div>
 
     <Teleport to="body">
-      <PriceModal :show="showPriceModal" @close="showPriceModal = false" @set-item="setPrice" :item-title="itemTitle" />
+      <PriceModal
+        :show="showPriceModal"
+        @close="showPriceModal = false"
+        @set-item="setPrice"
+        :item-title="itemTitle"
+      />
     </Teleport>
   </section>
 </template>
 
 <script setup>
-import { TrashIcon, PaperAirplaneIcon, ArrowUturnLeftIcon } from '@heroicons/vue/24/outline'
+import {
+  TrashIcon,
+  PaperAirplaneIcon,
+  ArrowUturnLeftIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, reactive, computed, onUnmounted, defineAsyncComponent } from 'vue'
 import { useItemStore } from '../../../stores/items'
@@ -133,14 +166,14 @@ import { useToast } from 'vue-toastification'
 import Searchbar from '../../../components/input/Searchbar.vue'
 import InputCurrency from '../../../components/input/InputCurrency.vue'
 import { useSalesStore } from '../../../stores/sales'
-import { useItemPriceStore } from '../../../stores/itemPrice'
+import { useItemSellingPriceStore } from '../../../stores/itemSellingPrice'
 
 const emit = defineEmits(['next', 'previous'])
 
 const toast = useToast()
 const itemStore = useItemStore()
 const salesStore = useSalesStore()
-const itemPriceStore = useItemPriceStore()
+const itemSellingPriceStore = useItemSellingPriceStore()
 
 const showPriceModal = ref(false)
 const itemTitle = ref('')
@@ -206,7 +239,7 @@ function setPrice(x) {
 
 function showPrice(item, index) {
   showPriceModal.value = true
-  itemPriceStore.getData(item.id)
+  itemSellingPriceStore.getData(item.id)
   itemTitle.value = item.name
   itemIndex.value = index
 }

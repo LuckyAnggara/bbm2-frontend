@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 import HelloWorld from '../components/HelloWorld.vue'
 import DaftarProduk from '../views/persediaan/DaftarProduk.vue'
-import DetailProduk from '../views/persediaan/DetailProduk.vue'
+import DetailProduct from '../views/persediaan/DetailProduct.vue'
 import AddProduct from '../views/persediaan/AddProduct.vue'
 import MutationProduk from '../views/persediaan/MutationProduk.vue'
 import WizardSale from '../views/sales/WizardSale.vue'
@@ -83,8 +83,8 @@ const routes = [
     },
   },
   {
-    path: '/persediaan/daftar-produk',
-    name: 'produk',
+    path: '/products/list',
+    name: 'list-product',
     component: DaftarProduk,
     meta: {
       transition: 'slide-left',
@@ -94,8 +94,8 @@ const routes = [
     },
   },
   {
-    path: '/product/add-product',
-    name: 'add-product',
+    path: '/product/new-product',
+    name: 'new-product',
     component: AddProduct,
     meta: {
       transition: 'slide-left',
@@ -105,13 +105,13 @@ const routes = [
     },
   },
   {
-    path: '/persediaan/detail-product/:id',
+    path: '/product/detail-product/:sku',
     name: 'detail-product',
-    component: DetailProduk,
+    component: DetailProduct,
     meta: {
       transition: 'slide-left',
       requiresAuth: true,
-      title: 'Detail Produk',
+      title: 'Detail Product',
       layout: 'layout-content',
     },
   },
