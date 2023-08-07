@@ -16,7 +16,7 @@ export const useItemStore = defineStore('itemStore', {
       toDate: '',
       isLoading: false,
       isStoreLoading: false,
-      isEditLoading: false,
+      isUpdateLoading: false,
       isDestroyLoading: false,
       isTransactionSuccess: false,
       modalToggle: false,
@@ -82,10 +82,7 @@ export const useItemStore = defineStore('itemStore', {
       return state.responses?.total
     },
     totalBeginningStock(state) {
-      return (
-        state.currentData.beginningStock.price *
-        state.currentData.beginningStock.stock
-      )
+      return state.currentData.beginningStock.price * state.currentData.beginningStock.stock
     },
     searchQuery(state) {
       if (state.searchName == '' || null) {
@@ -98,31 +95,19 @@ export const useItemStore = defineStore('itemStore', {
       return '&branch=' + authStore.userData.branch_id
     },
     minSellingPriceQuery(state) {
-      if (
-        state.filter.minSellingPrice == 0 ||
-        state.filter.minSellingPrice == '' ||
-        state.filter.minSellingPrice == null
-      ) {
+      if (state.filter.minSellingPrice == 0 || state.filter.minSellingPrice == '' || state.filter.minSellingPrice == null) {
         return ''
       }
       return '&min-selling-price=' + state.filter.minSellingPrice
     },
     minBuyingPriceQuery(state) {
-      if (
-        state.filter.minBuyingPrice == 0 ||
-        state.filter.minBuyingPrice == '' ||
-        state.filter.minBuyingPrice == null
-      ) {
+      if (state.filter.minBuyingPrice == 0 || state.filter.minBuyingPrice == '' || state.filter.minBuyingPrice == null) {
         return ''
       }
       return '&min-buying-price=' + state.filter.minBuyingPrice
     },
     minStockQuery(state) {
-      if (
-        state.filter.minStock == 0 ||
-        state.filter.minStock == '' ||
-        state.filter.minStock == null
-      ) {
+      if (state.filter.minStock == 0 || state.filter.minStock == '' || state.filter.minStock == null) {
         return ''
       }
       return '&min-stock=' + state.filter.minStock
@@ -168,9 +153,7 @@ export const useItemStore = defineStore('itemStore', {
       try {
         const response = await axiosIns.get(`/items/${id}`)
         this.singleResponses = JSON.parse(JSON.stringify(response.data.data))
-        this.originalSingleResponses = JSON.parse(
-          JSON.stringify(response.data.data)
-        )
+        this.originalSingleResponses = JSON.parse(JSON.stringify(response.data.data))
       } catch (error) {
         toast.error('Data not found', {
           position: 'bottom-right',
@@ -185,7 +168,6 @@ export const useItemStore = defineStore('itemStore', {
         this.isTransactionSuccess = true
         this.getData()
       } catch (error) {
-        console.info(error)
         toast.error(error.response.data.data, {
           timeout: 3000,
         })
@@ -193,23 +175,23 @@ export const useItemStore = defineStore('itemStore', {
         this.isStoreLoading = false
       }
     },
-    async update() {
-      this.isEditLoading = true
+    async update(inListProduct = true) {
+      this.isUpdateLoading = true
       try {
-        const response = await axiosIns.put(
-          `/items/${this.editCurrentData.id}`,
-          this.editCurrentData
-        )
-        toast.success('Produk berhasil diperbaharui!', {
-          timeout: 3000,
-        })
-        this.getData()
+        const response = await axiosIns.put(`/items/${this.singleResponses.id}`, this.singleResponses)
+        this.isTransactionSuccess = true
+        // toast.success('Product successfully updated!', {
+        //   timeout: 2000,
+        // })
+        if (inListProduct) {
+          this.getData()
+        }
       } catch (error) {
         toast.error(error.message, {
           timeout: 3000,
         })
       } finally {
-        this.isEditLoading = false
+        this.isUpdateLoading = false
       }
     },
     async destroy(id, inListProduct = true) {
@@ -232,9 +214,7 @@ export const useItemStore = defineStore('itemStore', {
       }
     },
     copyOriginalSingleResponses() {
-      this.singleResponses = JSON.parse(
-        JSON.stringify(this.originalSingleResponses)
-      )
+      this.singleResponses = JSON.parse(JSON.stringify(this.originalSingleResponses))
     },
     clearData() {
       this.currentData = {
