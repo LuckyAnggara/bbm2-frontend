@@ -1,10 +1,19 @@
 <template>
-  <div class="px-2 sm:px-0 justify-center flex flex-col transition-all duration-300 ease-in-out">
+  <div
+    class="px-2 sm:px-0 justify-center flex flex-col transition-all duration-300 ease-in-out"
+  >
     <template v-if="itemStore.singleResponses">
       <TabGroup @change="changeTab">
         <div class="flex md:flex-row flex-col-reverse justify-between w-full">
-          <TabList class="md:w-96 flex space-x-1 rounded-md shadow-sm bg-white py-1 px-2 dark:bg-gray-800">
-            <Tab v-for="tab in tabs" as="template" :key="tab.id" v-slot="{ selected }">
+          <TabList
+            class="md:w-96 flex space-x-1 rounded-md shadow-sm bg-white py-1 px-2 dark:bg-gray-800"
+          >
+            <Tab
+              v-for="tab in tabs"
+              as="template"
+              :key="tab.id"
+              v-slot="{ selected }"
+            >
               <button
                 :class="[
                   'w-full rounded-md py-2 text-sm font-medium leading-5 text-black',
@@ -25,7 +34,9 @@
           </div>
         </div>
 
-        <TabPanels class="mt-2 w-full bg-white py-4 px-6 rounded-md dark:bg-gray-800 dark:text-white shadow-sm">
+        <TabPanels
+          class="mt-2 w-full bg-white py-4 px-6 rounded-md dark:bg-gray-800 dark:text-white shadow-sm"
+        >
           <div class="text-2xl font-medium mb-4 flex flex-row justify-between">
             <span class="py-2">{{ tabs[activeTab].label }}</span>
             <div v-if="isEdit" class="flex flex-row space-x-2">
@@ -40,7 +51,11 @@
               </button>
               <button
                 :disabled="!canSubmit"
-                :class="!canSubmit ? 'cursor-not-allowed' : 'duration-300 hover:scale-105 transition'"
+                :class="
+                  !canSubmit
+                    ? 'cursor-not-allowed'
+                    : 'duration-300 hover:scale-105 transition'
+                "
                 @click="update"
                 class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                 type="button"
@@ -54,10 +69,15 @@
           <hr class="py-2" />
           <TabPanel>
             <div class="max-w-lg">
-              <div class="grid gap-2 sm:grid-cols-2 sm:gap-4 duration-300 ease-in-out transition-all">
+              <div
+                class="grid gap-2 sm:grid-cols-2 sm:gap-4 duration-300 ease-in-out transition-all"
+              >
                 <div class="sm:col-span-2">
-                  <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >Product Name <span v-if="isEdit" class="text-red-500">*</span></label
+                  <label
+                    for="name"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Product Name
+                    <span v-if="isEdit" class="text-red-500">*</span></label
                   >
                   <input
                     :disabled="!isEdit"
@@ -69,7 +89,11 @@
                   />
                 </div>
                 <div class="sm:col-span-2">
-                  <label for="kode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode / SKU</label>
+                  <label
+                    for="kode"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Kode / SKU</label
+                  >
                   <input
                     :disabled="!isEdit"
                     v-model="itemStore.singleResponses.sku"
@@ -80,7 +104,11 @@
                   />
                 </div>
                 <div class="sm:col-span-2">
-                  <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Brand</label>
+                  <label
+                    for="brand"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Brand</label
+                  >
                   <input
                     :disabled="!isEdit"
                     v-model="itemStore.singleResponses.brand"
@@ -91,18 +119,29 @@
                   />
                 </div>
                 <div class="sm:col-span-2">
-                  <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >Category <span v-if="isEdit" class="text-red-500">*</span></label
+                  <label
+                    for="category"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Category
+                    <span v-if="isEdit" class="text-red-500">*</span></label
                   >
                   <DotLoading v-if="itemCategoryStore.isLoading" />
-                  <div v-else :class="isEdit ? 'flex flex-row space-x-2' : ''" class="duration-300 transition ease-in-out">
+                  <div
+                    v-else
+                    :class="isEdit ? 'flex flex-row space-x-2' : ''"
+                    class="duration-300 transition ease-in-out"
+                  >
                     <select
                       :disabled="!isEdit"
                       v-model="itemStore.singleResponses.category_id"
                       id="category"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
-                      <option v-for="item in itemCategoryStore.items" :key="item.id" :value="item.id">
+                      <option
+                        v-for="item in itemCategoryStore.items"
+                        :key="item.id"
+                        :value="item.id"
+                      >
                         {{ item.name }}
                       </option>
                     </select>
@@ -117,18 +156,29 @@
                   </div>
                 </div>
                 <div class="sm:col-span-2">
-                  <label for="unit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >Unit <span v-if="isEdit" class="text-red-500">*</span></label
+                  <label
+                    for="unit"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Unit
+                    <span v-if="isEdit" class="text-red-500">*</span></label
                   >
                   <DotLoading v-if="itemUnitStore.isLoading" />
-                  <div v-else :class="isEdit ? 'flex flex-row space-x-2' : ''" class="duration-300 transition ease-in-out">
+                  <div
+                    v-else
+                    :class="isEdit ? 'flex flex-row space-x-2' : ''"
+                    class="duration-300 transition ease-in-out"
+                  >
                     <select
                       :disabled="!isEdit"
                       v-model="itemStore.singleResponses.unit_id"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
                       <option value="0" disabled>Pilih satuan product</option>
-                      <option v-for="item in itemUnitStore.items" :key="item.id" :value="item.id">
+                      <option
+                        v-for="item in itemUnitStore.items"
+                        :key="item.id"
+                        :value="item.id"
+                      >
                         {{ item.name }}
                       </option>
                     </select>
@@ -143,7 +193,11 @@
                   </div>
                 </div>
                 <div class="sm:col-span-2">
-                  <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                  <label
+                    for="description"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Description</label
+                  >
                   <textarea
                     :disabled="!isEdit"
                     v-model="itemStore.singleResponses.description"
@@ -171,7 +225,9 @@
           <TabPanel>
             <div class="flex flex-col md:flex-row md:space-x-8 md:divide-x-2">
               <div class="md:w-1/2 min-w-md">
-                <div class="items-start mb-4 space-y-4 grid gap-2 sm:grid-cols-2 sm:gap-4">
+                <div
+                  class="items-start mb-4 space-y-4 grid gap-2 sm:grid-cols-2 sm:gap-4"
+                >
                   <div class="flex flex-col space-y-4 sm:col-span-2">
                     <div>
                       <input
@@ -182,14 +238,22 @@
                         value=""
                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       />
-                      <label for="beli-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Saya Beli Product Ini</label>
+                      <label
+                        for="beli-checkbox"
+                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                        >Saya Beli Product Ini</label
+                      >
                     </div>
                     <div
                       v-if="itemStore.singleResponses.iBuy"
                       class="duration-300 ease-in-out transition-all grid gap-2 md:grid-cols-3 sm:grid-cols-2 md:gap-4 sm:gap-2"
                     >
                       <div class="md:col-span-2">
-                        <label for="beli-satuan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Harga Beli Satuan</label>
+                        <label
+                          for="beli-satuan"
+                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          >Harga Beli Satuan</label
+                        >
                         <InputCurrency
                           :disabled="!isEdit"
                           v-model="itemStore.singleResponses.buying_price"
@@ -200,7 +264,11 @@
                         />
                       </div>
                       <div>
-                        <label for="beli-pajak" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pajak Beli</label>
+                        <label
+                          for="beli-pajak"
+                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          >Pajak Beli</label
+                        >
                         <DotLoading v-if="taxStore.isLoading" />
                         <select
                           :disabled="!isEdit"
@@ -209,7 +277,13 @@
                           id="beli-pajak"
                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         >
-                          <option v-for="item in taxStore.items" :key="item.id" :value="item.id">{{ item.name }} ({{ item.value * 100 }}%)</option>
+                          <option
+                            v-for="item in taxStore.items"
+                            :key="item.id"
+                            :value="item.id"
+                          >
+                            {{ item.name }} ({{ item.value * 100 }}%)
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -224,14 +298,22 @@
                         value=""
                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       />
-                      <label for="jual-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Saya Jual Product Ini</label>
+                      <label
+                        for="jual-checkbox"
+                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                        >Saya Jual Product Ini</label
+                      >
                     </div>
                     <div
                       v-if="itemStore.singleResponses.iSell"
                       class="duration-300 ease-in-out transition-all grid gap-2 md:grid-cols-3 sm:grid-cols-2 md:gap-4 sm:gap-2"
                     >
                       <div class="md:col-span-2">
-                        <label for="jual-satuan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Harga Jual Satuan</label>
+                        <label
+                          for="jual-satuan"
+                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          >Harga Jual Satuan</label
+                        >
                         <InputCurrency
                           :disabled="!isEdit"
                           v-model="itemStore.singleResponses.selling_price"
@@ -242,7 +324,11 @@
                         />
                       </div>
                       <div>
-                        <label for="jual-pajak" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pajak Jual</label>
+                        <label
+                          for="jual-pajak"
+                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          >Pajak Jual</label
+                        >
                         <DotLoading v-if="taxStore.isLoading" />
 
                         <select
@@ -252,7 +338,13 @@
                           id="jual-pajak"
                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         >
-                          <option v-for="item in taxStore.items" :key="item.id" :value="item.id">{{ item.name }} ({{ item.value * 100 }}%)</option>
+                          <option
+                            v-for="item in taxStore.items"
+                            :key="item.id"
+                            :value="item.id"
+                          >
+                            {{ item.name }} ({{ item.value * 100 }}%)
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -264,13 +356,17 @@
                 </div>
               </div>
               <div class="md:w-1/2 min-w-md md:px-6">
-                <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+                <div
+                  class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700"
+                >
                   <ul class="flex flex-wrap -mb-px">
                     <li class="mr-2">
                       <a
                         @click="priceStateShow = 'sell'"
                         :class="
-                          priceStateShow == 'sell' ? 'text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500' : ''
+                          priceStateShow == 'sell'
+                            ? 'text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500'
+                            : ''
                         "
                         class="cursor-pointer inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                         >Daftar Harga Jual</a
@@ -280,7 +376,9 @@
                       <a
                         @click="priceStateShow = 'buy'"
                         :class="
-                          priceStateShow == 'buy' ? 'text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500' : ''
+                          priceStateShow == 'buy'
+                            ? 'text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500'
+                            : ''
                         "
                         class="cursor-pointer inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                         >Daftar Harga Beli</a
@@ -290,14 +388,43 @@
                 </div>
                 <div v-if="priceStateShow == 'sell'" class="mt-4">
                   <div class="overflow-x-auto">
-                    <table class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto table-striped">
-                      <thead class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
+                    <table
+                      class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto table-striped"
+                    >
+                      <thead
+                        class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center"
+                      >
                         <tr>
-                          <th scope="col" class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600">No</th>
-                          <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Tanggal</th>
-                          <th scope="col" class="px-4 py-2 w-8 border border-slate-400 dark:border-slate-600">Debit</th>
-                          <th scope="col" class="px-4 py-2 w-8 border border-slate-400 dark:border-slate-600">kredit</th>
-                          <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">Keterangan</th>
+                          <th
+                            scope="col"
+                            class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600"
+                          >
+                            No
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600"
+                          >
+                            Tanggal
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-4 py-2 w-8 border border-slate-400 dark:border-slate-600"
+                          >
+                            Debit
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-4 py-2 w-8 border border-slate-400 dark:border-slate-600"
+                          >
+                            kredit
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600"
+                          >
+                            Keterangan
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -306,7 +433,12 @@
                             <CircleLoading>Prosesing ... </CircleLoading>
                           </td>
                         </tr>
-                        <tr v-else-if="!itemMutationStore.isLoading && itemMutationStore.items.length < 1">
+                        <tr
+                          v-else-if="
+                            !itemMutationStore.isLoading &&
+                            itemMutationStore.items.length < 1
+                          "
+                        >
                           <td colspan="5" class="text-center py-6">No Data</td>
                         </tr>
                         <tr
@@ -328,7 +460,10 @@
                           <td class="px-4 py-2">{{ item.debit }}</td>
                           <td class="px-4 py-2">{{ item.credit }}</td>
                           <td class="px-4 py-2">
-                            <router-link :to="item.link" v-if="item.link == null ? false : true">
+                            <router-link
+                              :to="item.link"
+                              v-if="item.link == null ? false : true"
+                            >
                               <span class="text-blue-700 dark:text-blue-400">
                                 {{ item.notes }}
                               </span></router-link
@@ -341,15 +476,112 @@
                       </tbody>
                     </table>
                   </div>
-                  <small class="mt-3 text-grey-800 dark:text-gray-500"><i>Klik link biru untuk melihat Invoice</i></small>
+                  <small class="mt-3 text-grey-800 dark:text-gray-500"
+                    ><i>Klik link biru untuk melihat Invoice</i></small
+                  >
                 </div>
-                <div v-if="priceStateShow == 'buy'" class="mt-4"></div>
+                <div v-if="priceStateShow == 'buy'" class="mt-4">
+                  <div class="overflow-x-auto">
+                    <table
+                      class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto table-striped"
+                    >
+                      <thead
+                        class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center"
+                      >
+                        <tr>
+                          <th
+                            scope="col"
+                            class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600"
+                          >
+                            No
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600"
+                          >
+                            Tanggal
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-4 py-2 w-8 border border-slate-400 dark:border-slate-600"
+                          >
+                            Debit
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-4 py-2 w-8 border border-slate-400 dark:border-slate-600"
+                          >
+                            kredit
+                          </th>
+                          <th
+                            scope="col"
+                            class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600"
+                          >
+                            Keterangan
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-if="itemMutationStore.isLoading">
+                          <td colspan="5" class="text-center py-6">
+                            <CircleLoading>Prosesing ... </CircleLoading>
+                          </td>
+                        </tr>
+                        <tr
+                          v-else-if="
+                            !itemMutationStore.isLoading &&
+                            itemMutationStore.items.length < 1
+                          "
+                        >
+                          <td colspan="5" class="text-center py-6">No Data</td>
+                        </tr>
+                        <tr
+                          v-else
+                          v-for="(item, index) in itemMutationStore.items"
+                          :key="item.id"
+                          :class="
+                            (index + 1) % 2 !== 0
+                              ? 'bg-white border-b dark:bg-gray-900 dark:border-gray-700'
+                              : 'border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700'
+                          "
+                        >
+                          <td class="px-4 py-2 text-center">
+                            {{ itemMutationStore.from + index }}
+                          </td>
+                          <td class="px-4 py-2">
+                            {{ moment(item.created_at).format('DD MMMM YYYY') }}
+                          </td>
+                          <td class="px-4 py-2">{{ item.debit }}</td>
+                          <td class="px-4 py-2">{{ item.credit }}</td>
+                          <td class="px-4 py-2">
+                            <router-link
+                              :to="item.link"
+                              v-if="item.link == null ? false : true"
+                            >
+                              <span class="text-blue-700 dark:text-blue-400">
+                                {{ item.notes }}
+                              </span></router-link
+                            >
+                            <span v-else>
+                              {{ item.notes }}
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <small class="mt-3 text-grey-800 dark:text-gray-500"
+                    ><i>Klik link biru untuk melihat Invoice</i></small
+                  >
+                </div>
               </div>
             </div>
           </TabPanel>
           <TabPanel>
             <form class="max-w-lg" autocomplete="off">
-              <div class="items-start mb-4 space-y-4 grid gap-2 sm:grid-cols-2 sm:gap-4">
+              <div
+                class="items-start mb-4 space-y-4 grid gap-2 sm:grid-cols-2 sm:gap-4"
+              >
                 <div class="flex flex-col space-y-4 sm:col-span-2">
                   <div>
                     <input
@@ -360,11 +592,22 @@
                       value=""
                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
-                    <label for="notification-check" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Notifikasi batas minimum</label>
+                    <label
+                      for="notification-check"
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      >Notifikasi batas minimum</label
+                    >
                   </div>
-                  <div v-if="itemStore.currentData.notification_qty" class="duration-300 ease-in-out transition-all">
+                  <div
+                    v-if="itemStore.currentData.notification_qty"
+                    class="duration-300 ease-in-out transition-all"
+                  >
                     <div>
-                      <label for="notification-qty" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Batas minimum</label>
+                      <label
+                        for="notification-qty"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >Batas minimum</label
+                      >
                       <input
                         :disabled="!isEdit"
                         type="text"
@@ -381,7 +624,14 @@
           </TabPanel>
 
           <hr class="mt-4 py-2" />
-          <small class="italic text-right block">Last edit {{ moment(itemStore.singleResponses.updated_at).format('DD MMMM YYYY H:mm:ss') }} </small>
+          <small class="italic text-right block"
+            >Last edit
+            {{
+              moment(itemStore.singleResponses.updated_at).format(
+                'DD MMMM YYYY H:mm:ss'
+              )
+            }}
+          </small>
         </TabPanels>
       </TabGroup>
     </template>
@@ -395,24 +645,37 @@
       <div class="mx-auto">
         <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
           <div class="mx-auto max-w-screen-sm text-center">
-            <h1 class="mb-4 text-2xl tracking-tight font-extrabold lg:text-5xl text-green-600 dark:text-green-500">Opss!!</h1>
+            <h1
+              class="mb-4 text-2xl tracking-tight font-extrabold lg:text-5xl text-green-600 dark:text-green-500"
+            >
+              Opss!!
+            </h1>
 
-            <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">Data yang diminta tidak ada.</p>
+            <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
+              Data yang diminta tidak ada.
+            </p>
           </div>
         </div>
       </div>
     </template>
 
     <Teleport to="body">
-      <NewUnitModal :show="showModalAddUnit" @close="showModalAddUnit = false"> </NewUnitModal>
+      <NewUnitModal :show="showModalAddUnit" @close="showModalAddUnit = false">
+      </NewUnitModal>
     </Teleport>
 
     <Teleport to="body">
-      <NewCategoryModal :show="showModalAddCategory" @close="showModalAddCategory = false"> </NewCategoryModal>
+      <NewCategoryModal
+        :show="showModalAddCategory"
+        @close="showModalAddCategory = false"
+      >
+      </NewCategoryModal>
     </Teleport>
 
     <Teleport to="body">
-      <LoadingModal :show="itemStore.isUpdateLoading">Processing transaction</LoadingModal>
+      <LoadingModal :show="itemStore.isUpdateLoading"
+        >Processing transaction</LoadingModal
+      >
     </Teleport>
 
     <Teleport to="body">
@@ -433,7 +696,14 @@
 </template>
 
 <script setup>
-import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref } from 'vue'
+import {
+  computed,
+  defineAsyncComponent,
+  inject,
+  nextTick,
+  onMounted,
+  ref,
+} from 'vue'
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
 
 import FileUpload from '../../components/FileUpload.vue'
@@ -441,7 +711,14 @@ import HeadlessMenu from '../../components/menu/HeadlessMenu.vue'
 import { useTaxDetailStore } from '../../stores/taxDetail'
 import { useItemUnitStore } from '../../stores/itemUnit'
 import { useItemStore } from '../../stores/items'
-import { ArchiveBoxIcon, FolderArrowDownIcon, PencilSquareIcon, PlusIcon, TrashIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import {
+  ArchiveBoxIcon,
+  FolderArrowDownIcon,
+  PencilSquareIcon,
+  PlusIcon,
+  TrashIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
 
 import DotLoading from '../../components/loading/DotLoading.vue'
 import { useItemCategoryStore } from '../../stores/itemCategory'
@@ -461,7 +738,9 @@ const route = useRoute()
 const swal = inject('$swal')
 
 const NewUnitModal = defineAsyncComponent(() => import('./modal/UnitModal.vue'))
-const NewCategoryModal = defineAsyncComponent(() => import('./modal/CategoryModal.vue'))
+const NewCategoryModal = defineAsyncComponent(() =>
+  import('./modal/CategoryModal.vue')
+)
 
 const taxStore = useTaxDetailStore()
 const itemStore = useItemStore()
@@ -542,7 +821,14 @@ function update() {
 
 const canSubmit = computed(() => {
   const item = itemStore.singleResponses
-  if (item.name == null || item.name === '' || item.category_id == null || item.category_id === '' || item.unit_id == null || item.unit_id === 0) {
+  if (
+    item.name == null ||
+    item.name === '' ||
+    item.category_id == null ||
+    item.category_id === '' ||
+    item.unit_id == null ||
+    item.unit_id === 0
+  ) {
     return false
   }
   return true

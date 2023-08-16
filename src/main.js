@@ -12,6 +12,9 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 import '@sweetalert2/themes/dark/dark.css'
 import axiosIns from './services/axios'
 
+import FloatingVue from 'floating-vue'
+import 'floating-vue/dist/style.css'
+
 moment.locale('id')
 
 const pinia = createPinia()
@@ -26,6 +29,7 @@ app.use(router)
 app.use(pinia)
 app.use(autoAnimatePlugin)
 app.use(VueSweetalert2)
+app.use(FloatingVue)
 
 app.use(Toast, {
   transition: 'Vue-Toastification__bounce',
