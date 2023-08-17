@@ -102,7 +102,7 @@
       <span class="flex-1 ml-4 whitespace-nowrap">Kembali</span>
     </a>
     <hr />
-    <Transition name="slide-up">
+    <Transition name="slide-left">
       <ul class="my-4 space-y-4" v-if="stateShow == 'first'">
         <li
           v-for="item in firstMenu"
@@ -233,15 +233,20 @@
           <button
             @click="invoicePage"
             type="button"
-            class="hover:scale-110 duration-300 ease-in-out transform py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-900"
+            class="flex flex-row items-center hover:scale-105 duration-300 ease-in-out transform py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-900"
           >
-            Invoice
+            <PrinterIcon class="h-4 w-4 mr-2" />
+            Print
           </button>
+
           <button
-            @click="closeModal"
+            @click="newTransaction()"
             type="button"
-            class="hover:scale-110 duration-300 ease-in-out transform py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-900"
-          ></button>
+            class="flex flex-row items-center hover:scale-105 duration-300 ease-in-out transform py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-900"
+          >
+            <ArrowPathIcon class="h-4 w-4 mr-2" />
+            New Transaction
+          </button>
         </template>
       </SuccessModal>
     </Teleport>
@@ -276,7 +281,10 @@ import {
   BuildingLibraryIcon,
   ArrowLeftIcon,
   ExclamationCircleIcon,
+  CheckCircleIcon,
   ArrowUturnLeftIcon,
+  PrinterIcon,
+  ArrowPathIcon,
 } from '@heroicons/vue/24/outline'
 import { inject, defineAsyncComponent, ref, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
@@ -287,7 +295,7 @@ import { IDRCurrency } from '../../../utilities/formatter'
 
 import ErrorModal from '../../../components/modal/SuccessModal.vue'
 
-const emit = defineEmits(['next', 'previous'])
+const emit = defineEmits(['next', 'previous', 'new'])
 
 const errorModal = ref(false)
 const swal = inject('$swal')
@@ -434,4 +442,41 @@ async function invoicePage() {
   await nextTick()
   router.push({ name: 'invoice', params: { id: salesStore.responses.id } })
 }
+
+async function newTransaction() {
+  errorModal.value = false
+  emit('new')
+}
 </script>
+
+<style>
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.25s ease-out;
+}
+
+.slide-up-enter-from {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition: all 0.15s ease-out;
+}
+
+.slide-left-enter-from {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.slide-left-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+</style>

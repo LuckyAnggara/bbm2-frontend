@@ -82,7 +82,12 @@
       <!-- Konfirmasi -->
       <Confirmation v-show="step == 2" @next="step++" @previous="step--" />
       <!-- Pembayaran -->
-      <Payment v-show="step == 3" @next="step++" @previous="step--" />
+      <Payment
+        v-show="step == 3"
+        @next="step++"
+        @previous="step--"
+        @new="newTransaction"
+      />
     </div>
   </Transition>
 </template>
@@ -104,6 +109,11 @@ const transitionName = ref('slide-right')
 watch(step, (val, old) => {
   transitionName.value = val > old ? 'slide-left' : 'slide-right'
 })
+
+function newTransaction() {
+  salesStore.$reset()
+  step.value = 1
+}
 
 onUnmounted(() => {
   salesStore.$reset()

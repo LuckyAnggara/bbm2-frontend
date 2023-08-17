@@ -22,18 +22,7 @@ export const menu = [
     id: 2,
     name: 'Penjualan',
     icon: BuildingStorefrontIcon,
-    child: [
-      {
-        id: 0,
-        name: 'Daftar Penjualan',
-        to: 'daftar-sale',
-      },
-      {
-        id: 1,
-        name: 'Penjualan Baru',
-        to: 'new-sale',
-      },
-    ],
+    to: 'daftar-sale',
   },
   {
     id: 3,

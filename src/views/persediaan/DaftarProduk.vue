@@ -143,11 +143,7 @@
             v-else
             v-for="(item, index) in itemStore.items"
             :key="item.id"
-            :class="
-              (index + 1) % 2 !== 0
-                ? 'bg-white border-b dark:bg-gray-900 dark:border-gray-700'
-                : 'border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700'
-            "
+            class="odd:bg-white odd:dark:bg-gray-900 odd:dark:border-gray-700 even:bg-gray-50 even:dark:bg-gray-800 even:dark:border-gray-700 border-b"
           >
             <!-- <td class="px-4 py-1 text-center">{{ itemStore.from + index }}</td> -->
             <td class="px-4 py-1">{{ item.sku ?? '-' }}</td>
