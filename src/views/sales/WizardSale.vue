@@ -1,25 +1,14 @@
 <template>
   <div class="pr-24">
-    <ol
-      class="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base"
-    >
+    <ol class="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
       <li
         :class="[
-          step == 1
-            ? 'text-blue-600 dark:text-blue-500'
-            : salesStore.currentData.customerData.name
-            ? 'text-green-600 dark:text-green-500 cursor-pointer'
-            : '',
+          step == 1 ? 'text-blue-600 dark:text-blue-500' : salesStore.currentData.customerData.name ? 'text-green-600 dark:text-green-500 cursor-pointer' : '',
         ]"
         class="flex md:w-full items-center sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700"
       >
-        <span
-          class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500"
-        >
-          <CheckCircleIcon
-            class="w-4 h-4 mr-2 sm:w-5 sm:h-5"
-            v-if="step == 1"
-          />
+        <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
+          <CheckCircleIcon class="w-4 h-4 mr-2 sm:w-5 sm:h-5" v-if="step == 1" />
           <span v-else class="mr-2">1.</span>
           Info <span class="hidden sm:inline-flex sm:ml-2">Pelanggan</span>
         </span>
@@ -34,13 +23,8 @@
         ]"
         class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700"
       >
-        <span
-          class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500"
-        >
-          <CheckCircleIcon
-            class="w-4 h-4 mr-2 sm:w-5 sm:h-5"
-            v-if="step == 2"
-          />
+        <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
+          <CheckCircleIcon class="w-4 h-4 mr-2 sm:w-5 sm:h-5" v-if="step == 2" />
           <span v-else class="mr-2">2.</span>
           Keranjang <span class="hidden sm:inline-flex sm:ml-2">Belanja</span>
         </span>
@@ -55,23 +39,13 @@
         ]"
         class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700"
       >
-        <span
-          class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500"
-        >
-          <CheckCircleIcon
-            class="w-4 h-4 mr-2 sm:w-5 sm:h-5"
-            v-if="step == 3"
-          />
+        <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
+          <CheckCircleIcon class="w-4 h-4 mr-2 sm:w-5 sm:h-5" v-if="step == 3" />
           <span v-else class="mr-2">3.</span>
           Konfirmasi
         </span>
       </li>
-      <li
-        :class="[
-          step == 4 ? 'text-blue-600 dark:text-blue-500' : 'cursor-pointer',
-        ]"
-        class="flex items-center"
-      >
+      <li :class="[step == 4 ? 'text-blue-600 dark:text-blue-500' : 'cursor-pointer']" class="flex items-center">
         <CheckCircleIcon class="w-4 h-4 mr-2 sm:w-5 sm:h-5" v-if="step == 4" />
         <span v-else class="mr-2">4.</span>
         Pembayaran
@@ -94,24 +68,21 @@
 
 <script setup>
 import { CheckCircleIcon } from '@heroicons/vue/24/outline'
-// import Cart from './component/Cart.vue'
-// import CustomerInfo from './component/CustomerInfo.vue'
-// import Confirmation from './component/Confirmation.vue'
-// import Payment from './component/Payment.vue'
-import { defineAsyncComponent, onUnmounted, ref, watch } from 'vue'
+import { defineAsyncComponent, onMounted, onUnmounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 import { useSalesStore } from '../../stores/sales'
 
 const Cart = defineAsyncComponent(() => import('./component/Cart.vue'))
-const CustomerInfo = defineAsyncComponent(() =>
-  import('./component/CustomerInfo.vue')
-)
-const Confirmation = defineAsyncComponent(() =>
-  import('./component/Confirmation.vue')
-)
+const CustomerInfo = defineAsyncComponent(() => import('./component/CustomerInfo.vue'))
+const Confirmation = defineAsyncComponent(() => import('./component/Confirmation.vue'))
 const Payment = defineAsyncComponent(() => import('./component/Payment.vue'))
 
 const salesStore = useSalesStore()
+
+const route = useRoute()
+
+const customer = ref(route.meta)
 
 const emit = defineEmits(['next', 'previous'])
 
@@ -119,6 +90,10 @@ const step = ref(1)
 const transitionName = ref('slide-right')
 watch(step, (val, old) => {
   transitionName.value = val > old ? 'slide-left' : 'slide-right'
+})
+
+onMounted(() => {
+  console.info(customer)
 })
 
 onUnmounted(() => {

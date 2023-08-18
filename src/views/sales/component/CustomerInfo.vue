@@ -9,26 +9,20 @@
           value=""
           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
         />
-        <label
-          for="checkbox-1"
-          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-          >Tanpa data pelanggan
-        </label>
+        <label for="checkbox-1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Without Customer Data </label>
       </div>
     </div>
     <div
       v-if="!salesStore.currentData.customerData.withoutCustomer"
       class="flex lg:flex-row flex-col lg:space-x-6 space-y-6 lg:space-y-0 ease-in-out transform duration-300"
     >
-      <div
-        class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit w-1/2"
-      >
+      <div class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit w-1/2">
         <Searchbar
           @cari-data="cariData()"
           v-model="customerStore.searchName"
           :is-loading="customerStore.isLoading"
           :result-items="customerStore.items"
-          :placeholder="'Cari data pelanggan'"
+          :placeholder="'Find existing customer'"
           :aria-result="true"
           @add-data="addData"
           :disabled-add="isEdit"
@@ -39,80 +33,61 @@
         <div class="bg-white shadow-md dark:bg-gray-800 rounded-lg px-6 py-6">
           <div class="flex flex-col space-y-4">
             <div>
-              <label
-                for="name"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Nama Lengkap</label
-              >
+              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
               <input
                 required
                 ref="namaLengkap"
                 :disabled="formDisabled"
                 v-model="salesStore.currentData.customerData.name"
                 type="text"
-                :class="[
-                  formDisabled
-                    ? 'bg-gray-200 dark:bg-gray-700'
-                    : 'bg-white dark:bg-gray-900',
-                ]"
+                :class="[formDisabled ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-900']"
                 class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                placeholder="Nama Lengkap"
+                placeholder="Customer Name"
               />
               <div v-if="canSubmit == true || isEdit == true">
-                <span v-if="isCustomer" class="text-blue-400 py-2"
-                  >Pelanggan Tetap</span
-                >
+                <span v-if="salesStore.currentData.customerData.isCustomer" class="text-blue-400 py-2">Pelanggan Tetap</span>
                 <span v-else class="text-green-400 py-2">Pelanggan Baru</span>
               </div>
             </div>
             <div>
-              <label
-                for="brand"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Nomor Telepon</label
+              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
+              <select
+                v-model="salesStore.currentData.customerData.type"
+                :class="[formDisabled ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-900']"
+                class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               >
+                <option value="" disabled selected>Choose Customer Type</option>
+                <option value="personal">Personal</option>
+                <option value="company">Company</option>
+              </select>
+            </div>
+            <div>
+              <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
               <input
                 required
                 :disabled="formDisabled"
-                :class="[
-                  formDisabled
-                    ? 'bg-gray-200 dark:bg-gray-700'
-                    : 'bg-white dark:bg-gray-900',
-                ]"
+                :class="[formDisabled ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-900']"
                 v-model="salesStore.currentData.customerData.phone_number"
                 type="text"
                 class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                placeholder="Nomor Telepon / Whatsapp"
+                placeholder="Phone Number"
               />
             </div>
 
             <div class="sm:col-span-2">
-              <label
-                for="description"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Alamat Lengkap</label
-              >
+              <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
               <textarea
                 required
-                :class="[
-                  formDisabled == true
-                    ? 'bg-gray-200 dark:bg-gray-700'
-                    : 'bg-white dark:bg-gray-900',
-                ]"
+                :class="[formDisabled == true ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-900']"
                 :disabled="formDisabled"
                 v-model="salesStore.currentData.customerData.address"
                 rows="5"
                 class="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                placeholder="Alamat lengkap customer"
+                placeholder="Customer Address"
               ></textarea>
             </div>
 
-            <div
-              v-if="
-                !isCustomer && salesStore.currentData.customerData.name !== ''
-              "
-              class="flex items-center mb-4"
-            >
+            <div v-if="!salesStore.currentData.customerData.isCustomer && salesStore.currentData.customerData.name !== ''" class="flex items-center mb-4">
               <input
                 v-model="salesStore.currentData.customerData.saveCustomer"
                 id="checkbox-3"
@@ -120,16 +95,10 @@
                 value=""
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
               />
-              <label
-                for="checkbox-3"
-                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >Simpan pelanggan
-              </label>
+              <label for="checkbox-3" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Simpan pelanggan </label>
             </div>
 
-            <small
-              class="text-red-500 font-medium text-start"
-              v-if="salesStore.currentData.customerData.saveCustomer"
+            <small class="text-red-500 font-medium text-start" v-if="salesStore.currentData.customerData.saveCustomer"
               >Mohon lengkapi data pelanggan setelah transaksi selesai</small
             >
           </div>
@@ -137,10 +106,7 @@
             <div class="flex space-x-4">
               <button
                 :disabled="customerStore.isEditLoading"
-                :class="[
-                  canSubmit == true ? '' : isEdit ? '' : 'hidden',
-                  customerStore.isEditLoading ? 'cursor-wait' : '',
-                ]"
+                :class="[canSubmit == true ? '' : isEdit ? '' : 'hidden', customerStore.isEditLoading ? 'cursor-wait' : '']"
                 @click="clearData"
                 ref="submit"
                 type="button"
@@ -160,23 +126,14 @@
               <button
                 :disabled="customerStore.isEditLoading"
                 @click="editData"
-                :class="[
-                  isCustomer == true ? '' : 'hidden',
-                  customerStore.isEditLoading ? 'cursor-wait' : '',
-                ]"
+                :class="[salesStore.currentData.customerData.isCustomer == true ? '' : 'hidden', customerStore.isEditLoading ? 'cursor-wait' : '']"
                 ref="submit"
                 type="button"
                 class="text-white-600 inline-flex items-center hover:text-white border border-green-600 hover:bg-green-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600"
               >
                 <div>
-                  <span
-                    v-if="customerStore.isEditLoading"
-                    class="text-center flex items-center"
-                  >
-                    <CircleLoading
-                      :size="'w-5 h-5'"
-                      :bg-circle="'fill-green-500'"
-                    />
+                  <span v-if="customerStore.isEditLoading" class="text-center flex items-center">
+                    <CircleLoading :size="'w-5 h-5'" :bg-circle="'fill-green-500'" />
                     Prosessing</span
                   >
                   <span v-else class="flex">
@@ -204,12 +161,7 @@
 </template>
 
 <script setup>
-import {
-  PaperAirplaneIcon,
-  TrashIcon,
-  PencilSquareIcon,
-  XMarkIcon,
-} from '@heroicons/vue/24/outline'
+import { PaperAirplaneIcon, TrashIcon, PencilSquareIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { nextTick, ref, computed, watch, onUnmounted } from 'vue'
 import { useCustomerStore } from '../../../stores/customer'
 import { useSalesStore } from '../../../stores/sales'
@@ -227,10 +179,9 @@ const toast = useToast()
 const customerStore = useCustomerStore()
 const salesStore = useSalesStore()
 const authStore = useAuthStore()
-const isCustomer = ref(false)
+
 const isEdit = ref(false)
 const canClose = ref(true)
-const useCustomer = ref(true)
 
 function nextStep() {
   if (salesStore.currentData.customerData.withoutCustomer) {
@@ -254,7 +205,7 @@ function clearData() {
     isEdit.value = false
   } else {
     canClose.value = true
-    isCustomer.value = false
+    salesStore.currentData.customerData.isCustomer = false
     isEdit.value = false
     customerStore.searchName = ''
     salesStore.currentData.customerData = {
@@ -298,7 +249,7 @@ function addData(item) {
     }
   })
 
-  isCustomer.value = true
+  salesStore.currentData.customerData.isCustomer = true
 
   toast.success(item.name + ' menjadi pelanggan transaksi ini', {
     timeout: 2000,
@@ -309,6 +260,7 @@ function addData(item) {
 const canNext = computed(() => {
   if (
     salesStore.currentData.customerData.name !== '' &&
+    salesStore.currentData.customerData.type !== '' &&
     salesStore.currentData.customerData.address !== '' &&
     salesStore.currentData.customerData.phone_number !== ''
   ) {
@@ -322,6 +274,7 @@ const canSubmit = computed(() => {
   if (salesStore.currentData.customerData) {
     return (
       salesStore.currentData.customerData.name !== '' &&
+      salesStore.currentData.customerData.type !== '' &&
       salesStore.currentData.customerData.address !== '' &&
       salesStore.currentData.customerData.phone_number !== ''
     )
@@ -330,7 +283,7 @@ const canSubmit = computed(() => {
 })
 
 const formDisabled = computed(() => {
-  if (isCustomer.value == true && isEdit.value == false) return true
+  if (salesStore.currentData.customerData.isCustomer == true && isEdit.value == false) return true
   return false
 })
 

@@ -9,6 +9,9 @@ import WizardSale from '../views/sales/WizardSale.vue'
 import WizardPos from '../views/sales/WizardPos.vue'
 import WizardEditSale from '../views/sales/WizardEditSale.vue'
 import DaftarPenjualan from '../views/sales/DaftarPenjualan.vue'
+import CustomerList from '../views/customer/CustomerList.vue'
+import CustomerAdd from '../views/customer/CustomerAdd.vue'
+import CustomerDetail from '../views/customer/CustomerDetail.vue'
 import Login from '../views/Login/Login.vue'
 import Invoice from '../views/invoice/SaleInvoice.vue'
 import PaymentCredit from '../views/sales/PaymentCredit.vue'
@@ -112,6 +115,39 @@ const routes = [
       transition: 'slide-left',
       requiresAuth: true,
       title: 'Detail Product',
+      layout: 'layout-content',
+    },
+  },
+  {
+    path: '/customer/list',
+    name: 'list-customer',
+    component: CustomerList,
+    meta: {
+      transition: 'slide-left',
+      requiresAuth: true,
+      title: 'Daftar Customer',
+      layout: 'layout-content',
+    },
+  },
+  {
+    path: '/customer/add',
+    name: 'new-customer',
+    component: CustomerAdd,
+    meta: {
+      transition: 'slide-left',
+      requiresAuth: true,
+      title: 'New Customer',
+      layout: 'layout-content',
+    },
+  },
+  {
+    path: '/customer/detail/:uuid',
+    name: 'detail-customer',
+    component: CustomerDetail,
+    meta: {
+      transition: 'slide-left',
+      requiresAuth: true,
+      title: 'Detail Customer',
       layout: 'layout-content',
     },
   },

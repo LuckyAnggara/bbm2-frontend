@@ -3,6 +3,7 @@ import axiosIns from '../services/axios'
 import { useToast } from 'vue-toastification'
 
 import { useAuthStore } from './auth'
+import { useNotificationStore } from './notification'
 const toast = useToast()
 const userData = JSON.parse(localStorage.getItem('userData'))
 
@@ -26,15 +27,18 @@ export const useSalesStore = defineStore('salesStore', {
       deliveryStatus: ['SEMUA', 'TAKE AWAY', 'DELIVERY'],
       pembayaran: ['SEMUA', 'TUNAI', 'KREDIT'],
       currentData: {
+        fromCustomer: false,
         useGlobalTax: false,
         transaction: {
           bank: {},
         },
         customerData: {
+          isCustomer: false,
           id: 1,
           withoutCustomer: true,
           userId: userData.id,
           saveCustomer: false,
+          type: '',
         },
         currentCart: [],
         total: {},
@@ -100,11 +104,7 @@ export const useSalesStore = defineStore('salesStore', {
       return '&name=' + state.searchName
     },
     minTotalQuery(state) {
-      if (
-        state.filter.minTotal == 0 ||
-        state.filter.minTotal == '' ||
-        state.filter.minTotal == null
-      ) {
+      if (state.filter.minTotal == 0 || state.filter.minTotal == '' || state.filter.minTotal == null) {
         return ''
       }
       return '&min-total=' + state.filter.minTotal
@@ -113,12 +113,7 @@ export const useSalesStore = defineStore('salesStore', {
       if (state.filter.date.length == 0 || state.filter.date.length == null) {
         return ''
       }
-      return (
-        '&start-date=' +
-        state.filter.date[0] +
-        '&end-date=' +
-        state.filter.date[1]
-      )
+      return '&start-date=' + state.filter.date[0] + '&end-date=' + state.filter.date[1]
     },
     paymentStatusQuery(state) {
       switch (state.filter.paymentStatus) {
@@ -237,6 +232,7 @@ export const useSalesStore = defineStore('salesStore', {
       this.isLoading = false
     },
     async store() {
+      const notificationStore = useNotificationStore()
       this.isStoreLoading = true
       try {
         const response = await axiosIns.post(`/sales`, this.currentData)
@@ -245,6 +241,7 @@ export const useSalesStore = defineStore('salesStore', {
         })
         this.responses = response.data.data
         this.isTransactionSuccess = true
+        notificationStore.getUnread()
       } catch (error) {
         toast.error(error.message, {
           timeout: 3000,
@@ -304,9 +301,7 @@ export const useSalesStore = defineStore('salesStore', {
         toast.success('Data berhasil di hapus', {
           timeout: 2000,
         })
-        const index = this.singleResponses.payment.findIndex(
-          (item) => item.id === id
-        )
+        const index = this.singleResponses.payment.findIndex((item) => item.id === id)
         this.singleResponses.payment.splice(index, 1)
       } catch (error) {
         toast.error(error.response.data.message, {
@@ -335,10 +330,7 @@ export const useSalesStore = defineStore('salesStore', {
         ...this.currentData.transaction,
         paymentType: paymentType,
         isCredit: isCredit,
-        amount:
-          paymentType == 'CASH' || paymentType == 'TRANSFER'
-            ? this.total.grandTotal
-            : this.currentData.total.dp,
+        amount: paymentType == 'CASH' || paymentType == 'TRANSFER' ? this.total.grandTotal : this.currentData.total.dp,
         type: 'IN',
       }
       this.currentData.transaction = {

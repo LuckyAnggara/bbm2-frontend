@@ -1,9 +1,6 @@
 <script>
 // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-document.documentElement.classList.toggle(
-  'dark',
-  JSON.parse(localStorage.getItem('isDark'))
-)
+document.documentElement.classList.toggle('dark', JSON.parse(localStorage.getItem('isDark')))
 
 import LayoutFull from './layouts/LayoutFull.vue'
 import LayoutContent from './layouts/LayoutContent.vue'
@@ -37,7 +34,7 @@ export default {
     // Melakukan proses loading di sini
     setTimeout(() => {
       this.isLoading = false
-    }, 1000) // contoh waktu loading selama 3 detik
+    }, 100) // contoh waktu loading selama 3 detik
   },
 }
 </script>
@@ -45,12 +42,7 @@ export default {
 <template>
   <TransitionSlide mode="out-in" :duration="500">
     <div v-if="isLoading" class="flex h-screen items-center justify-center">
-      <Logo
-        :size="'w-64 h-64'"
-        :animated="true"
-        class="dark:bg-black bg-white"
-        :is-dark="isDark"
-      />
+      <Logo :size="'w-64 h-64'" :animated="true" class="dark:bg-black bg-white" :is-dark="isDark" />
     </div>
 
     <component v-else :is="layout">

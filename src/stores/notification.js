@@ -43,18 +43,16 @@ export const useNotificationStore = defineStore('notificationStore', {
       try {
         const response = await axiosIns.get(`/notification?${this.userQuery}`)
         this.responses = response.data
-        this.getRead()
+        this.getUnread()
       } catch (error) {
         alert(error)
       }
       this.isLoading = false
     },
-    async getRead() {
+    async getUnread() {
       const authStore = useAuthStore()
       try {
-        const unread = await axiosIns.get(
-          `/notification/get-unread/${authStore.userData.id}`
-        )
+        const unread = await axiosIns.get(`/notification/get-unread/${authStore.userData.id}`)
         this.unread = unread.data.data
       } catch (error) {
         alert(error)
@@ -71,7 +69,7 @@ export const useNotificationStore = defineStore('notificationStore', {
           const index = this.items.findIndex((item) => item.id === item.id)
           this.items[index].status = 'read'
           console.info(this.items[index])
-          this.getRead()
+          this.getUnread()
         }
       } catch (error) {
         alert(error)

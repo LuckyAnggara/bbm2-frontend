@@ -91,7 +91,7 @@
 </template>
 
 <script setup>
-import { ArrowPathIcon, CheckIcon } from '@heroicons/vue/24/outline'
+import { ArrowPathIcon, CheckCircleIcon, CheckIcon } from '@heroicons/vue/24/outline'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useSalesStore } from '../../../stores/sales'
 import { IDRCurrency } from '../../../utilities/formatter'

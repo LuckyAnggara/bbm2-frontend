@@ -14,14 +14,43 @@ export const useCustomerStore = defineStore('customerStore', {
       currentLimit: 5,
       customer: null,
       isLoading: false,
+      singleResponses: null,
+      originalSingleResponses: null,
+      isStoreLoading: false,
       isEditLoading: false,
       errorMessage: null,
       successMessage: null,
+      currentData: {
+        name: '',
+        phoneNumber: '',
+        address: '',
+        type: '',
+        postalCode: '',
+        user: useAuthStore().userData,
+      },
     }
   },
   getters: {
     items: (state) => {
-      return state.responses.data
+      return state.responses?.data ?? []
+    },
+    currentPage(state) {
+      return state.responses?.current_page
+    },
+    pageLength(state) {
+      return Math.round(state.responses.total / state.responses.per_page)
+    },
+    lastPage(state) {
+      return state.responses?.last_page
+    },
+    from(state) {
+      return state.responses?.from
+    },
+    to(state) {
+      return state.responses?.to
+    },
+    total(state) {
+      return state.responses?.total
     },
     searchQuery(state) {
       if (state.searchName == '' || null) {
@@ -33,21 +62,42 @@ export const useCustomerStore = defineStore('customerStore', {
       const authStore = useAuthStore()
       return '&branch=' + authStore.userData.branch_id
     },
-    branchQuery2(state) {
-      if (state.searchBranch == '' || null) {
-        return ''
-      }
-      return '&branch=' + state.searchBranch
-    },
   },
   actions: {
     async getData(page = '') {
       this.isLoading = true
       try {
-        const response = await axiosIns.get(`/customers?limit=${this.currentLimit}${this.searchQuery}${this.branchQuery}`)
+        const response = await axiosIns.get(`/customers?limit=${this.currentLimit}${this.searchQuery}${this.branchQuery}&list=true`)
         this.responses = response.data.data
       } catch (error) {
         alert(error)
+      }
+      this.isLoading = false
+    },
+    async store() {
+      this.isStoreLoading = true
+      try {
+        const response = await axiosIns.post(`/customers`, this.currentData)
+        this.isTransactionSuccess = true
+        this.getData()
+      } catch (error) {
+        toast.error(error.response.data.data, {
+          timeout: 2000,
+        })
+      } finally {
+        this.isStoreLoading = false
+      }
+    },
+    async showData(id = '') {
+      this.isLoading = true
+      try {
+        const response = await axiosIns.get(`/customers/${id}`)
+        this.singleResponses = JSON.parse(JSON.stringify(response.data.data))
+        this.originalSingleResponses = JSON.parse(JSON.stringify(response.data.data))
+      } catch (error) {
+        toast.error('Data not found', {
+          position: 'bottom-right',
+        })
       }
       this.isLoading = false
     },
@@ -64,6 +114,9 @@ export const useCustomerStore = defineStore('customerStore', {
       } finally {
         this.isEditLoading = false
       }
+    },
+    copyOriginalSingleResponses() {
+      this.singleResponses = JSON.parse(JSON.stringify(this.originalSingleResponses))
     },
   },
 })
