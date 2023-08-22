@@ -1,11 +1,19 @@
 <template>
-  <div class="mt-2 w-full bg-white py-4 px-6 rounded-md dark:bg-gray-800 dark:text-white shadow-sm">
+  <div
+    class="mt-2 w-full bg-white py-4 px-6 rounded-md dark:bg-gray-800 dark:text-white shadow-sm"
+  >
     <div class="min-w-lg px-2 sm:px-0">
-      <div class="text-2xl font-medium mb-4 flex md:flex-row flex-col justify-between duration-300 ease-in-out">
+      <div
+        class="text-2xl font-medium mb-4 flex md:flex-row flex-col justify-between duration-300 ease-in-out"
+      >
         <span class="py-2">Info</span>
         <button
           :disabled="!canSubmit"
-          :class="!canSubmit ? 'cursor-not-allowed' : 'duration-300 hover:scale-105 transition'"
+          :class="
+            !canSubmit
+              ? 'cursor-not-allowed'
+              : 'duration-300 hover:scale-105 transition'
+          "
           @click="store"
           class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
           type="button"
@@ -16,7 +24,12 @@
         </button>
       </div>
       <hr class="py-4" />
-      <div class="max-w-lg" autosave="off" aria-autocomplete="off" autocomplete="off">
+      <div
+        class="max-w-lg"
+        autosave="off"
+        aria-autocomplete="off"
+        autocomplete="off"
+      >
         <div class="relative z-0 w-full mb-6 group">
           <input
             v-model="customerStore.currentData.name"
@@ -48,7 +61,8 @@
           <label
             for="customer_phone_number"
             class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >Customer Phone Number / WhatsApp <span class="text-red-500">*</span></label
+            >Customer Phone Number / WhatsApp
+            <span class="text-red-500">*</span></label
           >
         </div>
 
@@ -77,7 +91,9 @@
             id="customer_type"
             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           >
-            <option class="dark:bg-gray-700" value="" disabled selected>Customer Type</option>
+            <option class="dark:bg-gray-700" value="" disabled selected>
+              Customer Type
+            </option>
             <option class="dark:bg-gray-700" value="personal">Personal</option>
             <option class="dark:bg-gray-700" value="company">Company</option>
           </select>
@@ -187,12 +203,16 @@
       </div>
 
       <Teleport to="body">
-        <LoadingModal :show="customerStore.isStoreLoading">Processing ...</LoadingModal>
+        <LoadingModal :show="customerStore.isStoreLoading"
+          >Processing ...</LoadingModal
+        >
       </Teleport>
 
       <Teleport to="body">
-        <SuccessModal :show="customerStore.isTransactionSuccess" :type="'success'"
-          ><template #message> Product successfull created </template>
+        <SuccessModal
+          :show="customerStore.isTransactionSuccess"
+          :type="'success'"
+          ><template #message> Customer successfull created </template>
           <template #buttonText>
             <button
               @click="toCustomerPage"
@@ -207,7 +227,12 @@
 
       <Teleport to="body">
         <!-- use the modal component, pass in the prop -->
-        <PostalCodeModal :show="showPostalCodeModal" @close="showPostalCodeModal = false" @submit="fromPostal"> </PostalCodeModal>
+        <PostalCodeModal
+          :show="showPostalCodeModal"
+          @close="showPostalCodeModal = false"
+          @submit="fromPostal"
+        >
+        </PostalCodeModal>
       </Teleport>
     </div>
   </div>
@@ -272,7 +297,14 @@ function store() {
 
 const canSubmit = computed(() => {
   const customer = customerStore.currentData
-  if (customer.name == null || customer.name === '' || customer.type == null || customer.type === '' || customer.address == null || customer.address === 0) {
+  if (
+    customer.name == null ||
+    customer.name === '' ||
+    customer.type == null ||
+    customer.type === '' ||
+    customer.address == null ||
+    customer.address === 0
+  ) {
     return false
   }
 

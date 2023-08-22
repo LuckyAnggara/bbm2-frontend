@@ -56,6 +56,7 @@
             <div class="max-w-lg" autosave="off" aria-autocomplete="off" autocomplete="off">
               <div class="relative z-0 w-full mb-6 group">
                 <input
+                  :disabled="!isEdit"
                   v-model="customerStore.singleResponses.name"
                   type="text"
                   name="customer_name"
@@ -73,6 +74,7 @@
 
               <div class="relative z-0 w-full mb-6 group">
                 <input
+                  :disabled="!isEdit"
                   v-model="customerStore.singleResponses.phone_number"
                   type="tel"
                   pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
@@ -91,6 +93,7 @@
 
               <div class="relative z-0 w-full mb-6 group">
                 <input
+                  :disabled="!isEdit"
                   v-model="customerStore.singleResponses.email"
                   type="email"
                   name="customer_email"
@@ -108,6 +111,7 @@
 
               <div class="relative z-0 w-full mb-6 group">
                 <select
+                  :disabled="!isEdit"
                   v-model="customerStore.singleResponses.type"
                   required
                   name="customer_type"
@@ -126,6 +130,7 @@
               </div>
               <div class="relative z-0 w-full mb-6 group">
                 <textarea
+                  :disabled="!isEdit"
                   v-model="customerStore.singleResponses.address"
                   type="text"
                   name="customer_address"
@@ -133,7 +138,7 @@
                   class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
                   required
-                />
+                ></textarea>
                 <label
                   for="customer_address"
                   class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
@@ -145,6 +150,7 @@
                   <div class="flex space-x-2">
                     <div class="w-full">
                       <input
+                        :disabled="!isEdit"
                         v-model="customerStore.singleResponses.postalcode"
                         type="text"
                         name="customer_postal_code"
@@ -160,6 +166,7 @@
                       >
                     </div>
                     <button
+                      :disabled="!isEdit"
                       type="button"
                       @click="popPostalCodeModal"
                       class="h-fit place-self-end text-gray-700 border border-gray-700 hover:bg-gray-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500"
@@ -171,6 +178,7 @@
                 </div>
                 <div class="relative z-0 w-full mb-6 group">
                   <input
+                    :disabled="!isEdit"
                     v-model="customerStore.singleResponses.urban"
                     type="text"
                     name="customer_urban"
@@ -189,6 +197,7 @@
               <div class="grid md:grid-cols-2 md:gap-6">
                 <div class="relative z-0 w-full mb-6 group">
                   <input
+                    :disabled="!isEdit"
                     v-model="customerStore.singleResponses.subdistrict"
                     type="text"
                     pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
@@ -206,6 +215,7 @@
                 </div>
                 <div class="relative z-0 w-full mb-6 group">
                   <input
+                    :disabled="!isEdit"
                     v-model="customerStore.singleResponses.city"
                     type="text"
                     name="customer_city"
@@ -229,7 +239,7 @@
           <hr class="mt-4 py-2" />
           <small class="italic text-right block"
             >Last edit
-            {{ moment(customerStore.singleResponses.updated_at).format('DD MMMM YYYY H:mm:ss') }}
+            {{ moment(customerStore.singleResponses.updated_at).format("DD MMMM YYYY H:mm:ss") }}
           </small>
         </TabPanels>
       </TabGroup>
@@ -244,7 +254,9 @@
       <div class="mx-auto">
         <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
           <div class="mx-auto max-w-screen-sm text-center">
-            <h1 class="mb-4 text-2xl tracking-tight font-extrabold lg:text-5xl text-green-600 dark:text-green-500">Opss!!</h1>
+            <h1 class="mb-4 text-2xl tracking-tight font-extrabold lg:text-5xl text-green-600 dark:text-green-500">
+              Opss!!
+            </h1>
 
             <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">Data yang diminta tidak ada.</p>
           </div>
@@ -257,7 +269,7 @@
     </Teleport>
 
     <Teleport to="body">
-      <SuccessModal :show="customerStore.isTransactionSuccess" :type="'success'"
+      <SuccessModal :show="customerStore.isUpdateSuccess" :type="'success'"
         ><template #message> Update success </template>
         <template #buttonText>
           <button
@@ -270,110 +282,157 @@
         </template>
       </SuccessModal>
     </Teleport>
+
+    <Teleport to="body">
+      <!-- use the modal component, pass in the prop -->
+      <PostalCodeModal :show="showPostalCodeModal" @close="showPostalCodeModal = false" @submit="fromPostal">
+      </PostalCodeModal>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
-import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref } from 'vue'
-import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
+import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref } from "vue";
+import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
-import HeadlessMenu from '../../components/menu/HeadlessMenu.vue'
-import { useTaxDetailStore } from '../../stores/taxDetail'
-import { ArchiveBoxIcon, FolderArrowDownIcon, MagnifyingGlassIcon, PencilSquareIcon, PlusIcon, TrashIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import HeadlessMenu from "../../components/menu/HeadlessMenu.vue";
+import { useTaxDetailStore } from "../../stores/taxDetail";
+import {
+  ArchiveBoxIcon,
+  FolderArrowDownIcon,
+  MagnifyingGlassIcon,
+  PencilSquareIcon,
+  PlusIcon,
+  TrashIcon,
+  XMarkIcon,
+} from "@heroicons/vue/24/outline";
 
-import LoadingModal from '../../components/modal/LoadingModal.vue'
-import SuccessModal from '../../components/modal/SuccessModal.vue'
-import { useToast } from 'vue-toastification'
-import { useRoute, useRouter } from 'vue-router'
-import CircleLoading from '../../components/loading/CircleLoading.vue'
-import { useCustomerStore } from '../../stores/customer'
+import LoadingModal from "../../components/modal/LoadingModal.vue";
+import SuccessModal from "../../components/modal/SuccessModal.vue";
+import { useToast } from "vue-toastification";
+import { useRoute, useRouter } from "vue-router";
+import CircleLoading from "../../components/loading/CircleLoading.vue";
+import { useCustomerStore } from "../../stores/customer";
+import { usePostalCodeStore } from "../../stores/postalCode";
+import PostalCodeModal from "../../components/modal/PostalCodeModal.vue";
 
-const toast = useToast()
-const router = useRouter()
-const route = useRoute()
-const swal = inject('$swal')
+const toast = useToast();
+const router = useRouter();
+const route = useRoute();
+const swal = inject("$swal");
 
-const customerStore = useCustomerStore()
+const postalCodeStore = usePostalCodeStore();
+const customerStore = useCustomerStore();
 
-const activeTab = ref(0)
-const isEdit = ref(false)
+const activeTab = ref(0);
+const isEdit = ref(false);
 const tabs = ref([
-  { id: 1, label: 'Info' },
-  { id: 2, label: 'Buying Data' },
-  { id: 3, label: 'Informasi Privasi' },
-])
+  { id: 1, label: "Info" },
+  { id: 2, label: "Buying Data" },
+  { id: 3, label: "Informasi Privasi" },
+]);
 const actionMenu = [
   {
     function: editMode,
-    label: 'Edit',
+    label: "Edit",
     icon: PencilSquareIcon,
   },
 
   {
     function: deleteData,
-    label: 'Hapus',
+    label: "Hapus",
     icon: TrashIcon,
   },
-]
+];
+
+const showPostalCodeModal = ref(false);
+
+async function popPostalCodeModal() {
+  postalCodeStore.searchName = customerStore.singleResponses.postalcode;
+  await nextTick();
+  if (postalCodeStore.searchName !== "") {
+    postalCodeStore.getData();
+  }
+  showPostalCodeModal.value = true;
+}
+
+function fromPostal(item) {
+  customerStore.$patch((state) => {
+    state.singleResponses.postalcode = item.postalcode;
+    state.singleResponses.urban = item.urban;
+    state.singleResponses.subdistrict = item.subdistrict;
+    state.singleResponses.city = item.city;
+  });
+}
 
 function changeTab(index) {
-  activeTab.value = index
+  activeTab.value = index;
 }
 function closeModal() {
-  isEdit.value = !isEdit.value
-  customerStore.isTransactionSuccess = false
+  isEdit.value = !isEdit.value;
+  customerStore.isUpdateSuccess = false;
 }
 function editMode() {
-  isEdit.value = true
+  customerStore.$patch((state) => {
+    state.originalSingleResponses = JSON.parse(JSON.stringify(state.singleResponses));
+  });
+  isEdit.value = true;
 }
 function cancelEdit() {
-  customerStore.copyOriginalSingleResponses()
-  isEdit.value = !isEdit.value
+  customerStore.copyOriginalSingleResponses();
+  isEdit.value = !isEdit.value;
 }
 function deleteData(item) {
   swal.fire({
-    title: 'Hapus?',
-    text: 'Data tidak bisa dikembalikan!',
-    icon: 'warning',
+    title: "Hapus?",
+    text: "Data tidak bisa dikembalikan!",
+    icon: "warning",
     showCancelButton: true,
-    confirmButtonText: 'Ya, hapus!',
-    cancelButtonText: 'Cancel!',
+    confirmButtonText: "Ya, hapus!",
+    cancelButtonText: "Cancel!",
     showLoaderOnConfirm: true,
     reverseButtons: true,
     preConfirm: async () => {
-      await customerStore.destroy(customerStore.singleResponses.id, false)
-      router.push({ name: 'list-product' })
+      await customerStore.destroy(customerStore.singleResponses.id, false);
+      router.push({ name: "list-customer" });
     },
     allowOutsideClick: () => !customerStore.isDestroyLoading,
     backdrop: true,
-  })
+  });
 }
 function update() {
   if (canSubmit.value) {
-    customerStore.update(false)
+    customerStore.update(null, false);
   } else {
-    toast.error('Incomplete Product Information', {
+    toast.error("Incomplete Customer Information", {
       timeout: 2000,
-      position: 'top-center',
-    })
+      position: "top-center",
+    });
   }
 }
 
 const canSubmit = computed(() => {
-  const item = customerStore.singleResponses
-  if (item.name == null || item.name === '' || item.category_id == null || item.category_id === '' || item.unit_id == null || item.unit_id === 0) {
-    return false
+  const customer = customerStore.singleResponses;
+  if (
+    customer.name == null ||
+    customer.name === "" ||
+    customer.type == null ||
+    customer.type === "" ||
+    customer.address == null ||
+    customer.address === 0
+  ) {
+    return false;
   }
-  return true
-})
+  return true;
+});
 
 const uuid = computed(() => {
-  return route.params.uuid ?? null
-})
+  return route.params.uuid ?? null;
+});
 
 onMounted(async () => {
   if (customerStore.singleResponses == null) {
-    await customerStore.showData(uuid.value)
+    await customerStore.showData(uuid.value);
   }
-})
+});
 </script>

@@ -4,7 +4,8 @@
       <MenuButton
         class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
       >
-        Action
+        {{ title }}
+
         <EllipsisVerticalIcon class="h-5 w-5 ml-2 text-black dark:text-white" aria-hidden="true" />
       </MenuButton>
     </div>
@@ -24,7 +25,10 @@
           <MenuItem v-for="link in links" :key="link.baru" :href="link.href" v-slot="{ active }">
             <button
               @click="link.function"
-              :class="[active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white', 'group flex w-full items-center rounded-sm px-2 py-2 text-sm']"
+              :class="[
+                active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
+                'group flex w-full items-center rounded-sm px-2 py-2 text-sm',
+              ]"
             >
               <component :is="link.icon" class="w-5 h-5 mr-3" />
               {{ link.label }}
@@ -37,10 +41,14 @@
 </template>
 
 <script setup>
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-import { DocumentIcon, DocumentTextIcon, EllipsisVerticalIcon, FunnelIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import { DocumentIcon, DocumentTextIcon, EllipsisVerticalIcon, FunnelIcon, PlusIcon } from "@heroicons/vue/24/outline";
 
 const props = defineProps({
+  title: {
+    type: String,
+    default: "Action",
+  },
   links: {
     type: Object,
     // Object or array defaults must be returned from
@@ -50,13 +58,13 @@ const props = defineProps({
       return [
         {
           function: function wow() {
-            alert('it work')
+            alert("it work");
           },
-          label: 'Baru',
+          label: "Baru",
           icon: PlusIcon,
         },
-      ]
+      ];
     },
   },
-})
+});
 </script>

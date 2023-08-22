@@ -8,16 +8,10 @@
       >
         <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
           <!-- Modal content -->
-          <div
-            class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
-          >
+          <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
             <!-- Modal header -->
-            <div
-              class="flex justify-between items-center pb-4 rounded-t border-b dark:border-gray-600"
-            >
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                Shipping Detail
-              </h3>
+            <div class="flex justify-between items-center pb-4 rounded-t border-b dark:border-gray-600">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Shipping Detail</h3>
               <button
                 @click="closeModal"
                 type="button"
@@ -33,9 +27,7 @@
             <div>
               <!-- TABS HEADER -->
               <div class="border-b border-gray-200 dark:border-gray-700 mb-6">
-                <ul
-                  class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400"
-                >
+                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
                   <li class="mr-2">
                     <a
                       @click="step = 1"
@@ -82,9 +74,7 @@
               <Transition name="slide-up">
                 <div v-if="step == 1" class="flex flex-col space-y-4 mb-6">
                   <div>
-                    <label
-                      for="name"
-                      class="block text-sm font-medium text-gray-900 dark:text-white mb-1"
+                    <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white mb-1"
                       >Shipping Vendor</label
                     >
                     <select
@@ -96,9 +86,7 @@
                   </div>
 
                   <div>
-                    <label
-                      for="name"
-                      class="block text-sm font-medium text-gray-900 dark:text-white mb-1"
+                    <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white mb-1"
                       >Fee Shipping</label
                     >
                     <InputCurrency
@@ -116,16 +104,12 @@
                       type="checkbox"
                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
                     />
-                    <label
-                      for="checkbox-2"
-                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    <label for="checkbox-2" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                       >Sama dengan data costumer
                     </label>
                   </div>
                   <div>
-                    <label
-                      for="name"
-                      class="block text-sm font-medium text-gray-900 dark:text-white"
+                    <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white"
                       >Nama Penerima</label
                     >
                     <input
@@ -136,24 +120,18 @@
                     />
                   </div>
                   <div>
-                    <label
-                      for="name"
-                      class="block text-sm font-medium text-gray-900 dark:text-white"
+                    <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white"
                       >Nomor Telepon Penerima</label
                     >
                     <input
-                      v-model="
-                        salesStore.currentData.shipping.receiverPhoneNumber
-                      "
+                      v-model="salesStore.currentData.shipping.receiverPhoneNumber"
                       type="text"
                       class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       placeholder="Nomor telepon"
                     />
                   </div>
                   <div>
-                    <label
-                      for="description"
-                      class="block text-sm font-medium text-gray-900 dark:text-white"
+                    <label for="description" class="block text-sm font-medium text-gray-900 dark:text-white"
                       >Alamat Penerima</label
                     >
                     <textarea
@@ -166,15 +144,11 @@
                   <div class="grid gap-4 sm:grid-cols-2">
                     <div class="flex space-x-2">
                       <div class="w-full">
-                        <label
-                          for="name"
-                          class="block text-sm font-medium text-gray-900 dark:text-white"
+                        <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white"
                           >Kode Pos</label
                         >
                         <input
-                          v-model="
-                            salesStore.currentData.shipping.receiverPostalCode
-                          "
+                          v-model="salesStore.currentData.shipping.receiverPostalCode"
                           type="text"
                           class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Kode Pos"
@@ -190,39 +164,29 @@
                       </button>
                     </div>
                     <div class="w-full">
-                      <label
-                        for="name"
-                        class="block text-sm font-medium text-gray-900 dark:text-white"
+                      <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white"
                         >Kelurahan</label
                       >
                       <input
-                        v-model="
-                          salesStore.currentData.shipping.receiverKelurahan
-                        "
+                        v-model="salesStore.currentData.shipping.receiverKelurahan"
                         type="text"
                         class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Kelurahan"
                       />
                     </div>
                     <div class="w-full">
-                      <label
-                        for="name"
-                        class="block text-sm font-medium text-gray-900 dark:text-white"
+                      <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white"
                         >Kecamatan</label
                       >
                       <input
-                        v-model="
-                          salesStore.currentData.shipping.receiverKecamatan
-                        "
+                        v-model="salesStore.currentData.shipping.receiverKecamatan"
                         type="text"
                         class="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Kecamatan"
                       />
                     </div>
                     <div class="w-full">
-                      <label
-                        for="name"
-                        class="block text-sm font-medium text-gray-900 dark:text-white"
+                      <label for="name" class="block text-sm font-medium text-gray-900 dark:text-white"
                         >Kota/Kabupaten</label
                       >
                       <input
@@ -294,18 +258,14 @@
 
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
-      <PostalCodeModal
-        :show="showPostalCodeModal"
-        @close="showPostalCodeModal = false"
-        @submit="fromPostal"
-      >
+      <PostalCodeModal :show="showPostalCodeModal" @close="showPostalCodeModal = false" @submit="fromPostal">
       </PostalCodeModal>
     </Teleport>
   </section>
 </template>
 
 <script setup>
-import { isEmpty as _isEmpty } from 'lodash'
+import { isEmpty as _isEmpty } from "lodash";
 import {
   PaperAirplaneIcon,
   TrashIcon,
@@ -316,125 +276,135 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
   MagnifyingGlassIcon,
-} from '@heroicons/vue/24/outline'
-import { nextTick, onMounted, ref, computed, watch } from 'vue'
+} from "@heroicons/vue/24/outline";
+import { nextTick, onMounted, ref, computed, watch } from "vue";
 
-import CircleLoading from '../../../components/loading/CircleLoading.vue'
-import { IDRCurrency } from '../../../utilities/formatter'
-import InputCurrency from '../../../components/input/InputCurrency.vue'
+import CircleLoading from "../../../components/loading/CircleLoading.vue";
+import { IDRCurrency } from "../../../utilities/formatter";
+import InputCurrency from "../../../components/input/InputCurrency.vue";
 
-import { useSalesStore } from '../../../stores/sales'
-import { usePostalCodeStore } from '../../../stores/postalCode'
-import PostalCodeModal from '../../../components/modal/PostalCodeModal.vue'
-import { useToast } from 'vue-toastification'
+import { useSalesStore } from "../../../stores/sales";
+import { usePostalCodeStore } from "../../../stores/postalCode";
+import PostalCodeModal from "../../../components/modal/PostalCodeModal.vue";
+import { useToast } from "vue-toastification";
 
 const props = defineProps({
   show: Boolean,
-})
-const emit = defineEmits(['close', 'next'])
+});
+const emit = defineEmits(["close", "next"]);
 
-const toast = useToast()
-const showPostalCodeModal = ref(false)
+const toast = useToast();
+const showPostalCodeModal = ref(false);
 
-const salesStore = useSalesStore()
-const postalCodeStore = usePostalCodeStore()
-const step = ref(1)
+const salesStore = useSalesStore();
+const postalCodeStore = usePostalCodeStore();
+const step = ref(1);
 
 function submit() {
   if (canSubmit.value) {
-    emit('next')
+    emit("next");
   } else {
-    toast.error('Data penerima belum lengkap', {
+    toast.error("Data penerima belum lengkap", {
       timeout: 2000,
-      position: 'top-center',
-    })
+      position: "top-center",
+    });
   }
 }
 function closeModal() {
-  emit('close')
-  step.value = 1
+  emit("close");
+  step.value = 1;
 }
 function nextStep() {
   if (canNext.value) {
-    step.value++
+    step.value++;
   } else {
-    toast.error('Data pengiriman belum lengkap', {
+    toast.error("Data pengiriman belum lengkap", {
       timeout: 2000,
-      position: 'top-center',
-    })
+      position: "top-center",
+    });
   }
 }
 
 function fromPostal(item) {
-  salesStore.currentData.shipping.receiverKelurahan = item.urban
-  salesStore.currentData.shipping.receiverKecamatan = item.subdistrict
-  salesStore.currentData.shipping.receiverKota = item.city
-  salesStore.currentData.shipping.receiverPostalCode = item.postalcode
+  salesStore.currentData.shipping.receiverKelurahan = item.urban;
+  salesStore.currentData.shipping.receiverKecamatan = item.subdistrict;
+  salesStore.currentData.shipping.receiverKota = item.city;
+  salesStore.currentData.shipping.receiverPostalCode = item.postalcode;
 }
 
 async function popPostalCodeModal() {
-  postalCodeStore.searchName =
-    salesStore.currentData.shipping.receiverPostalCode
-  await nextTick()
-  if (postalCodeStore.searchName !== '') {
-    postalCodeStore.getData()
+  postalCodeStore.searchName = salesStore.currentData.shipping.receiverPostalCode;
+  await nextTick();
+  if (postalCodeStore.searchName !== "") {
+    postalCodeStore.getData();
   }
-  showPostalCodeModal.value = true
+  showPostalCodeModal.value = true;
 }
 
 const canNext = computed(() => {
-  const shipping = salesStore.currentData.shipping
-  const hasVendorAndFee = !!shipping.vendor && !!shipping.fee
+  const shipping = salesStore.currentData.shipping;
+  const hasVendorAndFee = !!shipping.vendor && !!shipping.fee;
 
-  return hasVendorAndFee
-})
+  return hasVendorAndFee;
+});
 
 const canSubmit = computed(() => {
-  const shipping = salesStore.currentData.shipping
+  const shipping = salesStore.currentData.shipping;
 
   if (
     shipping.receiverName == null ||
-    shipping.receiverName === '' ||
+    shipping.receiverName === "" ||
     shipping.receiverAddress == null ||
-    shipping.receiverAddress === '' ||
+    shipping.receiverAddress === "" ||
     shipping.receiverPhoneNumber == null ||
-    shipping.receiverPhoneNumber === '' ||
+    shipping.receiverPhoneNumber === "" ||
     shipping.receiverKelurahan == null ||
-    shipping.receiverKelurahan === '' ||
+    shipping.receiverKelurahan === "" ||
     shipping.receiverKecamatan == null ||
-    shipping.receiverKecamatan === '' ||
+    shipping.receiverKecamatan === "" ||
     shipping.receiverKota == null ||
-    shipping.receiverKota === '' ||
+    shipping.receiverKota === "" ||
     shipping.receiverPostalCode == null ||
-    shipping.receiverPostalCode === ''
+    shipping.receiverPostalCode === ""
   ) {
-    return false
+    return false;
   }
 
-  return true
-})
+  return true;
+});
 
 watch(
   () => salesStore.currentData.shipping.useCustomer,
   (newValue, oldValue) => {
+    const customer = salesStore.currentData.customerData;
+    const shipping = salesStore.currentData.shipping;
     if (newValue == true) {
       if (salesStore.currentData.customerData.withoutCustomer == true) {
-        toast.info('Data pelanggan tidak ada', {
+        toast.info("Data pelanggan tidak ada", {
           timeout: 2000,
-          position: 'top-center',
-        })
+          position: "top-center",
+        });
       } else {
-        salesStore.currentData.shipping.receiverName =
-          salesStore.currentData.customerData.name
-        salesStore.currentData.shipping.receiverAddress =
-          salesStore.currentData.customerData.address
-        salesStore.currentData.shipping.receiverPhoneNumber =
-          salesStore.currentData.customerData.phone_number
+        shipping.receiverName = JSON.parse(JSON.stringify(customer.name));
+        shipping.receiverAddress = JSON.parse(JSON.stringify(customer.address));
+        shipping.receiverPhoneNumber = JSON.parse(JSON.stringify(customer.phone_number));
+        shipping.receiverPostalCode = JSON.parse(JSON.stringify(customer.postalcode));
+        shipping.receiverKelurahan = JSON.parse(JSON.stringify(customer.urban));
+        shipping.receiverKecamatan = JSON.parse(JSON.stringify(customer.subdistrict));
+        shipping.receiverKota = JSON.parse(JSON.stringify(customer.city));
       }
+    } else {
+      shipping.receiverName = "";
+      shipping.receiverAddress = "";
+      shipping.receiverPhoneNumber = "";
+      shipping.receiverPostalCode = "";
+      shipping.receiverKelurahan = "";
+      shipping.receiverKecamatan = "";
+      shipping.receiverKota = "";
     }
   },
   { deep: true }
-)
+);
 </script>
 
 <style>

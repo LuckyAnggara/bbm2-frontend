@@ -14,7 +14,10 @@
               >
                 LUNAS
               </div>
-              <div v-else class="block bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-2 rounded dark:bg-red-500 dark:text-white text-center">
+              <div
+                v-else
+                class="block bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-2 rounded dark:bg-red-500 dark:text-white text-center"
+              >
                 BELUM LUNAS
               </div>
             </div>
@@ -27,7 +30,9 @@
               />
             </div>
             <div class="mb-2">
-              <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm">Nama Pelanggan</label>
+              <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
+                >Nama Pelanggan</label
+              >
               <input
                 :value="salesStore.singleResponses.customer.name"
                 disabled
@@ -35,7 +40,9 @@
               />
             </div>
             <div class="mb-2">
-              <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm">Nomor Telepon</label>
+              <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
+                >Nomor Telepon</label
+              >
               <input
                 :value="salesStore.singleResponses.customer.phone_number"
                 disabled
@@ -52,7 +59,9 @@
               ></textarea>
             </div>
             <div class="mb-2">
-              <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm">Grand Total</label>
+              <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
+                >Grand Total</label
+              >
               <input
                 :value="IDRCurrency.format(salesStore.singleResponses.grand_total)"
                 disabled
@@ -60,7 +69,9 @@
               />
             </div>
             <div class="mb-2">
-              <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm">Total Pembayaran</label>
+              <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
+                >Total Pembayaran</label
+              >
               <input
                 :value="IDRCurrency.format(salesStore.singleResponses.total_payment ?? 0)"
                 disabled
@@ -68,7 +79,9 @@
               />
             </div>
             <div class="mb-2">
-              <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm">Sisa Kredit</label>
+              <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
+                >Sisa Kredit</label
+              >
               <input
                 :value="IDRCurrency.format(salesStore.singleResponses.remaining_credit)"
                 disabled
@@ -76,7 +89,9 @@
               />
             </div>
             <div class="mb-2">
-              <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm">Jatuh Tempo</label>
+              <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
+                >Jatuh Tempo</label
+              >
               <input
                 :value="moment(salesStore.singleResponses.due_date).format('DD MMMM YYYY')"
                 disabled
@@ -89,12 +104,18 @@
           <h5 class="text-xl font-medium text-gray-900 dark:text-white">Rincian Pembayaran</h5>
           <hr class="my-2" />
           <div class="flex flex-col md:flex-row justify-end items-center space-y-3 md:space-y-0 md:space-x-4 my-2">
-            <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+            <div
+              class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0"
+            >
               <div class="flex items-center space-x-4 w-full md:w-auto">
                 <button
                   :disabled="salesStore.singleResponses.status == 'LUNAS' ? true : false"
                   @click="showPembayaranModal = true"
-                  :class="[salesStore.singleResponses.status == 'LUNAS' ? 'cursor-not-allowed' : 'hover:scale-105 duration-100 ease-in-out']"
+                  :class="[
+                    salesStore.singleResponses.status == 'LUNAS'
+                      ? 'cursor-not-allowed'
+                      : 'hover:scale-105 duration-100 ease-in-out',
+                  ]"
                   class="duration-300 hover:scale-105 transition flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                   type="button"
                 >
@@ -106,7 +127,11 @@
               <div class="flex items-center space-x-4 w-full md:w-auto">
                 <button
                   :disabled="salesStore.singleResponses.status == 'LUNAS' ? true : false"
-                  :class="[salesStore.singleResponses.status == 'LUNAS' ? 'cursor-not-allowed' : 'hover:scale-105 duration-100 ease-in-out']"
+                  :class="[
+                    salesStore.singleResponses.status == 'LUNAS'
+                      ? 'cursor-not-allowed'
+                      : 'hover:scale-105 duration-100 ease-in-out',
+                  ]"
                   @click="prosesLunas()"
                   class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                   type="button"
@@ -118,7 +143,9 @@
             </div>
           </div>
 
-          <div class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700 max-h-full h-60">
+          <div
+            class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700 max-h-full h-60"
+          >
             <table class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 xl:table-fixed">
               <thead class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -126,7 +153,9 @@
                   <th scope="col" class="px-4 py-2 w-6 border border-slate-400 dark:border-slate-600">Tanggal</th>
                   <th scope="col" class="px-4 py-2 w-10 border border-slate-400 dark:border-slate-600">Pembayaran</th>
                   <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">Catatan</th>
-                  <th scope="col" class="px-2 py-2 w-8 border border-slate-400 dark:border-slate-600 text-center">Action</th>
+                  <th scope="col" class="px-2 py-2 w-8 border border-slate-400 dark:border-slate-600 text-center">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -150,7 +179,7 @@
                 >
                   <td class="px-4 py-1">{{ ++index }}</td>
                   <td class="px-4 py-1">
-                    {{ moment(item.created_at).format('DD MMMM YYYY') }}
+                    {{ moment(item.created_at).format("DD MMMM YYYY") }}
                   </td>
 
                   <th class="px-4 py-1">
@@ -180,7 +209,9 @@
       <div class="mx-auto">
         <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
           <div class="mx-auto max-w-screen-sm text-center">
-            <h1 class="mb-4 text-2xl tracking-tight font-extrabold lg:text-5xl text-blue-600 dark:text-blue-500">Opss!!</h1>
+            <h1 class="mb-4 text-2xl tracking-tight font-extrabold lg:text-5xl text-blue-600 dark:text-blue-500">
+              Opss!!
+            </h1>
 
             <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">Data yang diminta tidak ada.</p>
           </div>
@@ -212,32 +243,41 @@
 </template>
 
 <script setup>
-import moment from 'moment'
-import { TrashIcon, PlusIcon, CheckIcon, BarsArrowUpIcon, BarsArrowDownIcon, FunnelIcon, CheckCircleIcon, PlusCircleIcon } from '@heroicons/vue/24/outline'
-import { computed, ref, nextTick, onMounted, defineAsyncComponent, inject } from 'vue'
-import { useRoute } from 'vue-router'
-import { IDRCurrency } from '../../utilities/formatter'
-import TableComplex from '../../components/table/TableComplex.vue'
-import { useSalesStore } from '../../stores/sales'
-import CircleLoading from '../../components/loading/CircleLoading.vue'
+import moment from "moment";
+import {
+  TrashIcon,
+  PlusIcon,
+  CheckIcon,
+  BarsArrowUpIcon,
+  BarsArrowDownIcon,
+  FunnelIcon,
+  CheckCircleIcon,
+  PlusCircleIcon,
+} from "@heroicons/vue/24/outline";
+import { computed, ref, nextTick, onMounted, defineAsyncComponent, inject } from "vue";
+import { useRoute } from "vue-router";
+import { IDRCurrency } from "../../utilities/formatter";
+import TableComplex from "../../components/table/TableComplex.vue";
+import { useSalesStore } from "../../stores/sales";
+import CircleLoading from "../../components/loading/CircleLoading.vue";
 
-const swal = inject('$swal')
-const route = useRoute()
-const salesStore = useSalesStore()
-const showPembayaranModal = ref(false)
+const swal = inject("$swal");
+const route = useRoute();
+const salesStore = useSalesStore();
+const showPembayaranModal = ref(false);
 
 const column = [
-  { key: 'id', label: 'No', type: 'number', type: 'id' },
-  { key: 'created_at', label: 'Tanggal', class: 'uppercase', type: 'date' },
-  { key: 'payment', label: 'Pembayaran', class: 'uppercase', type: 'currency' },
-  { key: 'notes', label: 'Catatan', class: 'uppercase' },
-  { key: 'action', label: 'Action' },
-]
+  { key: "id", label: "No", type: "number", type: "id" },
+  { key: "created_at", label: "Tanggal", class: "uppercase", type: "date" },
+  { key: "payment", label: "Pembayaran", class: "uppercase", type: "currency" },
+  { key: "notes", label: "Catatan", class: "uppercase" },
+  { key: "action", label: "Action" },
+];
 
-const PembayaranModal = defineAsyncComponent(() => import('../sales/modal/PembayaranKreditModal.vue'))
+const PembayaranModal = defineAsyncComponent(() => import("../sales/modal/PembayaranKreditModal.vue"));
 
-const LoadingModal = defineAsyncComponent(() => import('../../components/modal/LoadingModal.vue'))
-const SuccessModal = defineAsyncComponent(() => import('../../components/modal/SuccessModal.vue'))
+const LoadingModal = defineAsyncComponent(() => import("../../components/modal/LoadingModal.vue"));
+const SuccessModal = defineAsyncComponent(() => import("../../components/modal/SuccessModal.vue"));
 
 const formattedTableData = computed(() => {
   return salesStore.singleResponses?.payment?.map((item) => {
@@ -245,42 +285,42 @@ const formattedTableData = computed(() => {
       id: item.id,
       payment: item.payment,
       created_at: item.created_at,
-      notes: item.notes ?? '',
-    }
-  })
-})
+      notes: item.notes ?? "",
+    };
+  });
+});
 
 function deleteData(idPayment) {
   swal
     .fire({
-      title: 'Are you sure?',
-      text: 'Data tidak bisa dikembalikan!',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "Data tidak bisa dikembalikan!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Ya, hapus!',
-      cancelButtonText: 'Cancel!',
+      confirmButtonText: "Ya, hapus!",
+      cancelButtonText: "Cancel!",
       showLoaderOnConfirm: true,
       reverseButtons: true,
       preConfirm: () => {
-        salesStore.destroyCreditData(idPayment)
+        salesStore.destroyCreditData(idPayment);
       },
       allowOutsideClick: () => !salesStore.isDestroyLoading,
     })
     .then((result) => {
       if (result.isConfirmed) {
-        salesStore.showData(id.value)
+        salesStore.showData(id.value);
       }
-    })
+    });
 }
 
 function prosesLunas() {
   swal.fire({
-    title: 'PELUNASAN',
-    text: 'Data Invoice ini akan di lunasi sejumlah cicilan tersisa! Proses?',
-    icon: 'info',
+    title: "PELUNASAN",
+    text: "Data Invoice ini akan di lunasi sejumlah cicilan tersisa! Proses?",
+    icon: "info",
     showCancelButton: true,
-    confirmButtonText: 'Ya!',
-    cancelButtonText: 'Cancel!',
+    confirmButtonText: "Ya!",
+    cancelButtonText: "Cancel!",
     showLoaderOnConfirm: salesStore.isPaymentLoading,
     reverseButtons: true,
     preConfirm: async () => {
@@ -288,34 +328,34 @@ function prosesLunas() {
         sale_id: salesStore.singleResponses.id,
         created_at: this.moment(),
         payment: salesStore.singleResponses.remaining_credit,
-        notes: 'PELUNASAN',
-      }
-      salesStore.storeCreditPayment(data)
+        notes: "PELUNASAN",
+      };
+      salesStore.storeCreditPayment(data);
     },
     allowOutsideClick: () => !salesStore.isPaymentLoading,
     backdrop: true,
-  })
+  });
 }
 
 async function prosesTransaction(data) {
-  showPembayaranModal.value = false
-  await nextTick()
-  salesStore.storeCreditPayment(data)
+  showPembayaranModal.value = false;
+  await nextTick();
+  salesStore.storeCreditPayment(data);
 }
 
 async function reload() {
-  salesStore.isTransactionSuccess = false
-  await nextTick()
-  salesStore.showData(id.value)
+  salesStore.isTransactionSuccess = false;
+  await nextTick();
+  salesStore.showData(id.value);
 }
 
 const id = computed(() => {
-  return route.params.id ?? null
-})
+  return route.params.id ?? null;
+});
 
 onMounted(() => {
   if (salesStore.singleResponses == null) {
-    salesStore.showData(id.value)
+    salesStore.showData(id.value);
   }
-})
+});
 </script>

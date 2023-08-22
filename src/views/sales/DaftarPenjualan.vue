@@ -1,16 +1,9 @@
 <template>
-  <div
-    class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-visible"
-  >
-    <div
-      class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"
-    >
+  <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-visible">
+    <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
       <div class="w-full md:w-1/2 flex space-x-3">
         <div class="flex items-center">
-          <label
-            class="block text-sm font-medium text-gray-900 dark:text-white mr-2"
-            >Show</label
-          >
+          <label class="block text-sm font-medium text-gray-900 dark:text-white mr-2">Show</label>
           <select
             v-model="salesStore.currentLimit"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block sm:w-16 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-16"
@@ -28,9 +21,7 @@
         <form class="flex items-center w-full" autocomplete="off">
           <label for="simple-search" class="sr-only">Search</label>
           <div class="relative w-full">
-            <div
-              class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
-            >
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg
                 aria-hidden="true"
                 class="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -82,26 +73,12 @@
         </div>
       </div>
     </div>
-    <div
-      class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700"
-    >
-      <table
-        class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 xl:table-fixed"
-      >
-        <thead
-          class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center"
-        >
+    <div class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
+      <table class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 xl:table-fixed">
+        <thead class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
           <tr>
-            <th
-              scope="col"
-              class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600"
-            >
-              No
-            </th>
-            <th
-              scope="col"
-              class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600"
-            >
+            <th scope="col" class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600">No</th>
+            <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">
               <div class="flex flex-row justify-between items-center">
                 <span> Tanggal </span>
                 <button
@@ -110,20 +87,14 @@
                   @click="salesStore.changeSortBy('created_at')"
                 >
                   <BarsArrowUpIcon
-                    v-if="
-                      salesStore.sortBy == 'created_at' &&
-                      salesStore.isAscending == true
-                    "
+                    v-if="salesStore.sortBy == 'created_at' && salesStore.isAscending == true"
                     class="h-5 w-5"
                   />
                   <BarsArrowDownIcon v-else class="h-5 w-5" />
                 </button>
               </div>
             </th>
-            <th
-              scope="col"
-              class="px-4 py-2 w-14 border border-slate-400 dark:border-slate-600"
-            >
+            <th scope="col" class="px-4 py-2 w-14 border border-slate-400 dark:border-slate-600">
               <div class="flex flex-row justify-between items-center">
                 <span> Invoice </span>
                 <button
@@ -132,26 +103,17 @@
                   @click="salesStore.changeSortBy('invoice')"
                 >
                   <BarsArrowUpIcon
-                    v-if="
-                      salesStore.sortBy == 'invoice' &&
-                      salesStore.isAscending == true
-                    "
+                    v-if="salesStore.sortBy == 'invoice' && salesStore.isAscending == true"
                     class="h-5 w-5"
                   />
                   <BarsArrowDownIcon v-else class="h-5 w-5" />
                 </button>
               </div>
             </th>
-            <th
-              scope="col"
-              class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600"
-            >
+            <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">
               <span> Nama Pelanggan </span>
             </th>
-            <th
-              scope="col"
-              class="px-4 py-2 w-16 border border-slate-400 dark:border-slate-600"
-            >
+            <th scope="col" class="px-4 py-2 w-16 border border-slate-400 dark:border-slate-600">
               <div class="flex flex-row justify-between items-center">
                 <span> Grand Total </span>
                 <button
@@ -160,10 +122,7 @@
                   @click="salesStore.changeSortBy('grand_total')"
                 >
                   <BarsArrowUpIcon
-                    v-if="
-                      salesStore.sortBy == 'grand_total' &&
-                      salesStore.isAscending == true
-                    "
+                    v-if="salesStore.sortBy == 'grand_total' && salesStore.isAscending == true"
                     class="h-5 w-5"
                   />
                   <BarsArrowDownIcon v-else class="h-5 w-5" />
@@ -171,10 +130,7 @@
               </div>
             </th>
 
-            <th
-              scope="col"
-              class="px-4 py-2 w-20 border border-slate-400 dark:border-slate-600"
-            >
+            <th scope="col" class="px-4 py-2 w-20 border border-slate-400 dark:border-slate-600">
               <div class="flex flex-row justify-between items-center">
                 <span> Payment Status </span>
                 <button
@@ -183,20 +139,14 @@
                   @click="salesStore.changeSortBy('payment_status')"
                 >
                   <BarsArrowUpIcon
-                    v-if="
-                      salesStore.sortBy == 'payment_status' &&
-                      salesStore.isAscending == true
-                    "
+                    v-if="salesStore.sortBy == 'payment_status' && salesStore.isAscending == true"
                     class="h-5 w-5"
                   />
                   <BarsArrowDownIcon v-else class="h-5 w-5" />
                 </button>
               </div>
             </th>
-            <th
-              scope="col"
-              class="px-4 py-2 w-20 border border-slate-400 dark:border-slate-600"
-            >
+            <th scope="col" class="px-4 py-2 w-20 border border-slate-400 dark:border-slate-600">
               <div class="flex flex-row justify-between items-center">
                 <span> Delivery Status </span>
                 <button
@@ -205,28 +155,15 @@
                   @click="salesStore.changeSortBy('shipping_type')"
                 >
                   <BarsArrowUpIcon
-                    v-if="
-                      salesStore.sortBy == 'shipping_type' &&
-                      salesStore.isAscending == true
-                    "
+                    v-if="salesStore.sortBy == 'shipping_type' && salesStore.isAscending == true"
                     class="h-5 w-5"
                   />
                   <BarsArrowDownIcon v-else class="h-5 w-5" />
                 </button>
               </div>
             </th>
-            <th
-              scope="col"
-              class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600"
-            >
-              Dibuat Oleh
-            </th>
-            <th
-              scope="col"
-              class="px-2 py-2 w-8 border border-slate-400 dark:border-slate-600"
-            >
-              Action
-            </th>
+            <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Dibuat Oleh</th>
+            <th scope="col" class="px-2 py-2 w-8 border border-slate-400 dark:border-slate-600">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -246,13 +183,13 @@
           >
             <td class="px-4 py-1 text-center">{{ salesStore.from + index }}</td>
             <td class="px-4 py-1">
-              {{ moment(item.created_at).format('DD MMMM YYYY') }}
+              {{ moment(item.created_at).format("DD MMMM YYYY") }}
             </td>
 
             <th class="px-4 py-1">
               {{ item.invoice }}
             </th>
-            <td class="px-4 py-1">{{ item.customer?.name ?? '-' }}</td>
+            <td class="px-4 py-1">{{ item.customer?.name ?? "-" }}</td>
             <td class="px-4 py-1">
               {{ IDRCurrency.format(item.grand_total ?? 0) }}
             </td>
@@ -298,7 +235,7 @@
                 >{{ item.shipping_type }}
               </span>
             </td>
-            <td class="px-4 py-1">{{ item.maker?.name ?? '' }}</td>
+            <td class="px-4 py-1">{{ item.maker?.name ?? "" }}</td>
             <td class="px-2 py-1 text-center">
               <div>
                 <Menu as="div" class="relative inline-block text-left">
@@ -306,10 +243,7 @@
                     <MenuButton
                       class="hover:scale-125 ease-in-out duration-300 flex w-full rounded-md font-medium text-black dark:text-white"
                     >
-                      <EllipsisVerticalIcon
-                        class="h-5 w-5 text-black dark:text-white"
-                        aria-hidden="true"
-                      />
+                      <EllipsisVerticalIcon class="h-5 w-5 text-black dark:text-white" aria-hidden="true" />
                     </MenuButton>
                   </div>
 
@@ -327,11 +261,9 @@
                       <div class="px-2 py-1">
                         <MenuItem v-slot="{ active }">
                           <button
-                            @click="initRightDrawer(index)"
+                            @click="detail(item.uuid)"
                             :class="[
-                              active
-                                ? 'bg-blue-500 text-white'
-                                : 'text-gray-900 dark:text-white',
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
                               'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                             ]"
                           >
@@ -344,9 +276,7 @@
                           <button
                             @click="invoice(item.id)"
                             :class="[
-                              active
-                                ? 'bg-blue-500 text-white'
-                                : 'text-gray-900 dark:text-white',
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
                               'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                             ]"
                           >
@@ -359,9 +289,7 @@
                           <button
                             @click="editData(item.id)"
                             :class="[
-                              active
-                                ? 'bg-blue-500 text-white'
-                                : 'text-gray-900 dark:text-white',
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
                               'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                             ]"
                           >
@@ -375,9 +303,7 @@
                           <button
                             @click="deleteData(item.id)"
                             :class="[
-                              active
-                                ? 'bg-blue-500 text-white'
-                                : 'text-gray-900 dark:text-white',
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
                               'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                             ]"
                           >
@@ -428,22 +354,14 @@
     >
       <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
         Showing
-        <span class="font-semibold text-gray-900 dark:text-white"
-          >{{ salesStore.from }} - {{ salesStore.to }}</span
-        >
+        <span class="font-semibold text-gray-900 dark:text-white">{{ salesStore.from }} - {{ salesStore.to }}</span>
         of
-        <span class="font-semibold text-gray-900 dark:text-white">{{
-          salesStore.totalResp
-        }}</span>
+        <span class="font-semibold text-gray-900 dark:text-white">{{ salesStore.totalResp }}</span>
       </span>
       <ul class="inline-flex items-stretch -space-x-px">
         <li>
           <a
-            @click="
-              salesStore.currentPage == 1
-                ? ''
-                : salesStore.getData(previousPage)
-            "
+            @click="salesStore.currentPage == 1 ? '' : salesStore.getData(previousPage)"
             :disabled="salesStore.currentPage == 1 ? true : false"
             :class="
               salesStore.currentPage == 1
@@ -456,11 +374,7 @@
         </li>
         <li>
           <a
-            @click="
-              salesStore.lastPage == salesStore.currentPage
-                ? ''
-                : salesStore.getData(nextPage)
-            "
+            @click="salesStore.lastPage == salesStore.currentPage ? '' : salesStore.getData(nextPage)"
             :class="
               salesStore.lastPage == salesStore.currentPage
                 ? 'cursor-not-allowed'
@@ -490,14 +404,12 @@
 
   <!-- Loading Modal -->
   <Teleport to="body">
-    <LoadingModal :show="salesStore.isDestroyLoading"
-      >Processing transaction</LoadingModal
-    >
+    <LoadingModal :show="salesStore.isDestroyLoading">Processing transaction</LoadingModal>
   </Teleport>
 </template>
 
 <script setup>
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import {
   AdjustmentsHorizontalIcon,
   CreditCardIcon,
@@ -512,108 +424,93 @@ import {
   BarsArrowDownIcon,
   PlusIcon,
   DocumentIcon,
-} from '@heroicons/vue/24/outline'
+} from "@heroicons/vue/24/outline";
 
-import { XMarkIcon } from '@heroicons/vue/24/solid'
+import { XMarkIcon } from "@heroicons/vue/24/solid";
 
-import {
-  computed,
-  onUnmounted,
-  onBeforeMount,
-  defineAsyncComponent,
-  ref,
-  nextTick,
-  shallowRef,
-} from 'vue'
-import { useRouter } from 'vue-router'
-import { IDRCurrency } from '../../utilities/formatter'
-import { useSalesStore } from '../../stores/sales'
-import { useLayoutStore } from '../../stores/layout'
+import { computed, onUnmounted, onBeforeMount, defineAsyncComponent, ref, nextTick, shallowRef } from "vue";
+import { useRouter } from "vue-router";
+import { IDRCurrency } from "../../utilities/formatter";
+import { useSalesStore } from "../../stores/sales";
+import { useLayoutStore } from "../../stores/layout";
 
-const CircleLoading = defineAsyncComponent(() =>
-  import('../../components/loading/CircleLoading.vue')
-)
-const ConfirmationModal = defineAsyncComponent(() =>
-  import('../../components/modal/ConfirmationModal.vue')
-)
-const LoadingModal = defineAsyncComponent(() =>
-  import('../../components/modal/LoadingModal.vue')
-)
-const DetailPenjualanDrawer = defineAsyncComponent(() =>
-  import('../../views/sales/drawer/DetailPenjualanDrawer.vue')
-)
-const FilterDrawer = defineAsyncComponent(() =>
-  import('./drawer/FilterDrawer.vue')
-)
+const CircleLoading = defineAsyncComponent(() => import("../../components/loading/CircleLoading.vue"));
+const ConfirmationModal = defineAsyncComponent(() => import("../../components/modal/ConfirmationModal.vue"));
+const LoadingModal = defineAsyncComponent(() => import("../../components/modal/LoadingModal.vue"));
+const DetailPenjualanDrawer = defineAsyncComponent(() => import("../../views/sales/drawer/DetailPenjualanDrawer.vue"));
+const FilterDrawer = defineAsyncComponent(() => import("./drawer/FilterDrawer.vue"));
 
-const router = useRouter()
-const salesStore = useSalesStore()
-const layoutStore = useLayoutStore()
+const router = useRouter();
+const salesStore = useSalesStore();
+const layoutStore = useLayoutStore();
 
-const deleteId = ref(null)
-const showConfirmationModal = ref(false)
-const lengths = ref([5, 10, 20, 30, 40, 50])
+const deleteId = ref(null);
+const showConfirmationModal = ref(false);
+const lengths = ref([5, 10, 20, 30, 40, 50]);
 
 const previousPage = computed(() => {
-  return '&page=' + (salesStore.currentPage - 1)
-})
+  return "&page=" + (salesStore.currentPage - 1);
+});
 const nextPage = computed(() => {
-  return '&page=' + (salesStore.currentPage + 1)
-})
+  return "&page=" + (salesStore.currentPage + 1);
+});
 
 salesStore.$subscribe((mutation, state) => {
-  if (mutation.events.key == 'currentLimit') {
-    salesStore.getData()
+  if (mutation.events.key == "currentLimit") {
+    salesStore.getData();
   }
-})
+});
 
 async function initRightDrawer(index) {
-  layoutStore.title = 'Detail Penjualan'
-  layoutStore.component = shallowRef(DetailPenjualanDrawer)
-  salesStore.getDrawerData(index)
-  await nextTick()
-  layoutStore.isRightDrawShow = true
+  layoutStore.title = "Highlight Penjualan";
+  layoutStore.component = shallowRef(DetailPenjualanDrawer);
+  salesStore.getDrawerData(index);
+  await nextTick();
+  layoutStore.isRightDrawShow = true;
 }
 async function filterDraw() {
-  await nextTick()
-  layoutStore.component = shallowRef(FilterDrawer)
-  layoutStore.title = 'Filter Data'
-  layoutStore.isRightDrawShow = true
+  await nextTick();
+  layoutStore.component = shallowRef(FilterDrawer);
+  layoutStore.title = "Filter Data";
+  layoutStore.isRightDrawShow = true;
 }
 
 async function paymentCreditView(id) {
-  layoutStore.isRightDrawShow = false
-  await nextTick()
+  layoutStore.isRightDrawShow = false;
+  await nextTick();
   router.push({
-    name: 'payment-credit',
+    name: "payment-credit",
     params: { id: id },
-  })
+  });
+}
+async function detail(uuid) {
+  router.push({ name: "detail-sale", params: { uuid: uuid } });
 }
 
 async function destroyData(id) {
-  showConfirmationModal.value = false
-  await nextTick()
-  await salesStore.destroyData(deleteId.value) // memanggil action deleteData pada store
+  showConfirmationModal.value = false;
+  await nextTick();
+  await salesStore.destroyData(deleteId.value); // memanggil action deleteData pada store
 }
 
 function invoice(id) {
-  router.push({ name: 'invoice', params: { id } })
+  router.push({ name: "invoice", params: { id } });
 }
 
 function editData(id) {
-  router.push({ name: 'edit-sale', params: { id } })
+  router.push({ name: "edit-sale", params: { id } });
 }
 
 function deleteData(id) {
-  deleteId.value = id
-  showConfirmationModal.value = true
+  deleteId.value = id;
+  showConfirmationModal.value = true;
 }
 
 onBeforeMount(() => {
-  salesStore.getData()
-})
+  salesStore.getData();
+});
 
 onUnmounted(() => {
-  salesStore.$reset()
-})
+  salesStore.$reset();
+});
 </script>

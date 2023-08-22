@@ -1,5 +1,9 @@
 <template>
-  <Menu v-slot="{ open }" as="div" class="text-gray-500 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-700 rounded-lg text-sm p-2.5 h-12">
+  <Menu
+    v-slot="{ open }"
+    as="div"
+    class="text-gray-500 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-700 rounded-lg text-sm p-2.5 h-12"
+  >
     <MenuButton @click="getData(open)" as="button" class="relative inline-flex items-center">
       <span class="sr-only">Notification </span>
       <BellIcon class="w-6 h-6" />
@@ -22,7 +26,9 @@
       <MenuItems
         class="absolute right-20 top-16 max-w-sm md:w-full text-base list-none bg-white divide-y divide-gray-100 shadow-lg dark:divide-gray-600 dark:bg-gray-700 rounded-lg"
       >
-        <div class="block py-2 px-4 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-600 dark:text-gray-300 rounded-t-lg">
+        <div
+          class="block py-2 px-4 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-600 dark:text-gray-300 rounded-t-lg"
+        >
           Notifications
         </div>
         <template v-if="notificationStore.isLoading">
@@ -98,33 +104,37 @@
 </template>
 
 <script setup>
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-import { BellIcon, UserIcon } from '@heroicons/vue/24/solid'
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import { BellIcon, UserIcon } from "@heroicons/vue/24/solid";
 
-import { useNotificationStore } from '../../stores/notification'
-import { onMounted, ref } from 'vue'
-import CircleLoading from '../../components/loading/CircleLoading.vue'
-import _ from 'lodash'
+import { useNotificationStore } from "../../stores/notification";
+import { onMounted, ref } from "vue";
+import CircleLoading from "../../components/loading/CircleLoading.vue";
+import _ from "lodash";
+import { useRouter } from "vue-router";
 
-const notificationStore = useNotificationStore()
+const notificationStore = useNotificationStore();
+const router = useRouter();
 
 // Throttle pemanggilan data setiap 10 detik
 async function openNotif(item) {
-  if (item.status == 'unread') {
-    await notificationStore.update(item)
+  console.info(item.link);
+  await router.push({ path: item.link });
+
+  if (item.status == "unread") {
+    await notificationStore.update(item);
   }
 }
 
 function getData(x) {
-  console.info(x)
   if (x == false) {
-    notificationStore.getData()
+    notificationStore.getData();
   }
 }
 
 onMounted(() => {
-  notificationStore.getUnread()
+  notificationStore.getUnread();
   // setInterval(() => {
   // }, 1000)
-})
+});
 </script>

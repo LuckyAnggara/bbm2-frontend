@@ -1,6 +1,16 @@
 <template>
-  <section class="w-full flex flex-col relative justify-between">
-    <div class="bg-white shadow-md dark:bg-gray-800 rounded-lg px-6 py-6 mb-4">
+  <section class="w-full flex flex-col relative justify-between space-y-4">
+    <div class="flex items-center space-x-4 justify-end">
+      <button
+        @click="nextStep"
+        type="submit"
+        class="text-blue-600 inline-flex items-center hover:text-white border hover:scale-105 ease-in-out duration-300 border-blue-600 hover:bg-blue-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600"
+      >
+        Lanjut
+        <PaperAirplaneIcon class="h-5 w-5 ml-2" />
+      </button>
+    </div>
+    <div class="bg-white shadow-md dark:bg-gray-800 rounded-lg px-6 py-6">
       <div class="flex items-center">
         <input
           v-model="salesStore.currentData.customerData.withoutCustomer"
@@ -9,7 +19,9 @@
           value=""
           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
         />
-        <label for="checkbox-1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Without Customer Data </label>
+        <label for="checkbox-1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          >Without Customer Data
+        </label>
       </div>
     </div>
     <div
@@ -45,7 +57,9 @@
                 placeholder="Customer Name"
               />
               <div v-if="canSubmit == true || isEdit == true">
-                <span v-if="salesStore.currentData.customerData.isCustomer" class="text-blue-400 py-2">Pelanggan Tetap</span>
+                <span v-if="salesStore.currentData.customerData.isCustomer" class="text-blue-400 py-2"
+                  >Pelanggan Tetap</span
+                >
                 <span v-else class="text-green-400 py-2">Pelanggan Baru</span>
               </div>
             </div>
@@ -62,7 +76,9 @@
               </select>
             </div>
             <div>
-              <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
+              <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Phone Number</label
+              >
               <input
                 required
                 :disabled="formDisabled"
@@ -75,7 +91,9 @@
             </div>
 
             <div class="sm:col-span-2">
-              <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
+              <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Address</label
+              >
               <textarea
                 required
                 :class="[formDisabled == true ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-900']"
@@ -87,7 +105,10 @@
               ></textarea>
             </div>
 
-            <div v-if="!salesStore.currentData.customerData.isCustomer && salesStore.currentData.customerData.name !== ''" class="flex items-center mb-4">
+            <div
+              v-if="!salesStore.currentData.customerData.isCustomer && salesStore.currentData.customerData.name !== ''"
+              class="flex items-center mb-4"
+            >
               <input
                 v-model="salesStore.currentData.customerData.saveCustomer"
                 id="checkbox-3"
@@ -95,7 +116,9 @@
                 value=""
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
               />
-              <label for="checkbox-3" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Simpan pelanggan </label>
+              <label for="checkbox-3" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >Simpan pelanggan
+              </label>
             </div>
 
             <small class="text-red-500 font-medium text-start" v-if="salesStore.currentData.customerData.saveCustomer"
@@ -106,7 +129,10 @@
             <div class="flex space-x-4">
               <button
                 :disabled="customerStore.isEditLoading"
-                :class="[canSubmit == true ? '' : isEdit ? '' : 'hidden', customerStore.isEditLoading ? 'cursor-wait' : '']"
+                :class="[
+                  canSubmit == true ? '' : isEdit ? '' : 'hidden',
+                  customerStore.isEditLoading ? 'cursor-wait' : '',
+                ]"
                 @click="clearData"
                 ref="submit"
                 type="button"
@@ -126,7 +152,10 @@
               <button
                 :disabled="customerStore.isEditLoading"
                 @click="editData"
-                :class="[salesStore.currentData.customerData.isCustomer == true ? '' : 'hidden', customerStore.isEditLoading ? 'cursor-wait' : '']"
+                :class="[
+                  salesStore.currentData.customerData.isCustomer == true ? '' : 'hidden',
+                  customerStore.isEditLoading ? 'cursor-wait' : '',
+                ]"
                 ref="submit"
                 type="button"
                 class="text-white-600 inline-flex items-center hover:text-white border border-green-600 hover:bg-green-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600"
@@ -137,7 +166,7 @@
                     Prosessing</span
                   >
                   <span v-else class="flex">
-                    {{ isEdit ? 'Update' : 'Edit' }}
+                    {{ isEdit ? "Update" : "Edit" }}
                     <PencilSquareIcon class="h-5 w-5 ml-2" />
                   </span>
                 </div>
@@ -147,177 +176,174 @@
         </div>
       </form>
     </div>
-    <div class="flex items-center space-x-4 justify-end mt-4">
-      <button
-        @click="nextStep"
-        type="submit"
-        class="text-blue-600 inline-flex items-center hover:text-white border hover:scale-105 ease-in-out duration-300 border-blue-600 hover:bg-blue-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600"
-      >
-        Lanjut
-        <PaperAirplaneIcon class="h-5 w-5 ml-2" />
-      </button>
-    </div>
   </section>
 </template>
 
 <script setup>
-import { PaperAirplaneIcon, TrashIcon, PencilSquareIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import { nextTick, ref, computed, watch, onUnmounted } from 'vue'
-import { useCustomerStore } from '../../../stores/customer'
-import { useSalesStore } from '../../../stores/sales'
-import { useAuthStore } from '../../../stores/auth'
-import { useToast } from 'vue-toastification'
+import { PaperAirplaneIcon, TrashIcon, PencilSquareIcon, XMarkIcon } from "@heroicons/vue/24/outline";
+import { nextTick, ref, computed, watch, onUnmounted } from "vue";
+import { useCustomerStore } from "../../../stores/customer";
+import { useSalesStore } from "../../../stores/sales";
+import { useAuthStore } from "../../../stores/auth";
+import { useToast } from "vue-toastification";
 
-import Searchbar from '../../../components/input/Searchbar.vue'
-import CircleLoading from '../../../components/loading/CircleLoading.vue'
+import Searchbar from "../../../components/input/Searchbar.vue";
+import CircleLoading from "../../../components/loading/CircleLoading.vue";
 
-const emit = defineEmits(['next'])
+const emit = defineEmits(["next"]);
 
-const namaLengkap = ref(null)
-const submit = ref(null)
-const toast = useToast()
-const customerStore = useCustomerStore()
-const salesStore = useSalesStore()
-const authStore = useAuthStore()
+const namaLengkap = ref(null);
+const submit = ref(null);
+const toast = useToast();
+const customerStore = useCustomerStore();
+const salesStore = useSalesStore();
+const authStore = useAuthStore();
 
-const isEdit = ref(false)
-const canClose = ref(true)
+const isEdit = ref(false);
+const canClose = ref(true);
 
 function nextStep() {
   if (salesStore.currentData.customerData.withoutCustomer) {
-    emit('next')
+    emit("next");
   } else if (!canNext.value) {
-    toast.error('Lengkapi data customer', {
+    toast.error("Lengkapi data customer", {
       timeout: 1000,
-      position: 'top-center',
-    })
+      position: "top-center",
+    });
   } else {
-    emit('next')
+    emit("next");
   }
 }
 function cariData() {
-  customerStore.currentLimit = 5
-  customerStore.getData()
+  customerStore.currentLimit = 5;
+  customerStore.getData();
 }
 
 function clearData() {
   if (isEdit.value) {
-    isEdit.value = false
+    isEdit.value = false;
   } else {
-    canClose.value = true
-    salesStore.currentData.customerData.isCustomer = false
-    isEdit.value = false
-    customerStore.searchName = ''
+    canClose.value = true;
+    salesStore.currentData.customerData.isCustomer = false;
+    isEdit.value = false;
+    customerStore.searchName = "";
     salesStore.currentData.customerData = {
       id: 1,
-      name: '',
-      address: '',
-      phone_number: '',
+      name: "",
+      address: "",
+      phone_number: "",
       saveCustomer: false,
       user: {
         id: authStore.userData.id,
         branchId: authStore.userData.branch_id,
       },
-    }
+    };
 
-    toast.info('Data pelanggan di hapus', {
+    toast.info("Data pelanggan di hapus", {
       timeout: 2000,
-      position: 'bottom-center',
-    })
+      position: "bottom-center",
+    });
   }
 }
 
 async function editData() {
   if (isEdit.value == false) {
-    isEdit.value = true
-    await nextTick()
-    namaLengkap.value.focus()
+    isEdit.value = true;
+    await nextTick();
+    namaLengkap.value.focus();
   } else {
-    await customerStore.updateCustomer(salesStore.currentData.customerData)
-    isEdit.value = false
+    await customerStore.update(salesStore.currentData.customerData);
+    isEdit.value = false;
   }
 }
 
 function addData(item) {
-  console.info(item)
-  canClose.value = false
+  console.info(item);
+  canClose.value = false;
   salesStore.$patch((state) => {
-    state.currentData.customerData = item
+    state.currentData.customerData = item;
+    state.currentData.customerData.id = item.id;
+    state.currentData.customerData.saveCustomer = false;
     state.currentData.customerData.user = {
       id: authStore.userData.id,
       branchId: authStore.userData.branch_id,
-    }
-  })
+    };
+  });
 
-  salesStore.currentData.customerData.isCustomer = true
+  salesStore.currentData.customerData.isCustomer = true;
 
-  toast.success(item.name + ' menjadi pelanggan transaksi ini', {
+  toast.success(item.name + " menjadi pelanggan transaksi ini", {
     timeout: 2000,
-    position: 'bottom-center',
-  })
+    position: "bottom-center",
+  });
 }
 
 const canNext = computed(() => {
+  const customer = salesStore.currentData.customerData;
   if (
-    salesStore.currentData.customerData.name !== '' &&
-    salesStore.currentData.customerData.type !== '' &&
-    salesStore.currentData.customerData.address !== '' &&
-    salesStore.currentData.customerData.phone_number !== ''
+    customer.name == null ||
+    customer.name === "" ||
+    customer.type == null ||
+    customer.type === "" ||
+    customer.address == null ||
+    customer.address === "" ||
+    customer.phone_number == null ||
+    customer.phone_number === 0
   ) {
-    return true
+    return false;
   }
 
-  return false
-})
+  return true;
+});
 
 const canSubmit = computed(() => {
   if (salesStore.currentData.customerData) {
     return (
-      salesStore.currentData.customerData.name !== '' &&
-      salesStore.currentData.customerData.type !== '' &&
-      salesStore.currentData.customerData.address !== '' &&
-      salesStore.currentData.customerData.phone_number !== ''
-    )
+      salesStore.currentData.customerData.name !== "" &&
+      salesStore.currentData.customerData.type !== "" &&
+      salesStore.currentData.customerData.address !== "" &&
+      salesStore.currentData.customerData.phone_number !== ""
+    );
   }
-  return false
-})
+  return false;
+});
 
 const formDisabled = computed(() => {
-  if (salesStore.currentData.customerData.isCustomer == true && isEdit.value == false) return true
-  return false
-})
+  if (salesStore.currentData.customerData.isCustomer == true && isEdit.value == false) return true;
+  return false;
+});
 
 watch(
   () => salesStore.currentData.customerData.saveCustomer,
   (newValue, oldValue) => {
     if (newValue == true) {
-      toast.info('Data pelanggan akan di simpan!!', {
+      toast.info("Data pelanggan akan di simpan!!", {
         timeout: 2000,
-        position: 'bottom-center',
-      })
+        position: "bottom-center",
+      });
     }
   },
   { deep: true }
-)
+);
 
 watch(
   () => salesStore.currentData.customerData.withoutCustomer,
   (newValue, oldValue) => {
     if (newValue == true) {
-      salesStore.currentData.customerData.id = 1
+      salesStore.currentData.customerData.id = 1;
     } else {
       salesStore.$patch((state) => {
         //   state.currentData.customerData.name = ''
         //   state.currentData.customerData.address = ''
         //   state.currentData.customerData.phone_number = ''
-        salesStore.currentData.customerData.id = 0
-      })
+        salesStore.currentData.customerData.id = 0;
+      });
     }
   },
   { deep: true }
-)
+);
 
 onUnmounted(() => {
-  customerStore.$reset()
-})
+  customerStore.$reset();
+});
 </script>

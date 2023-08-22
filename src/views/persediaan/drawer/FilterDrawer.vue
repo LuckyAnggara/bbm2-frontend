@@ -2,10 +2,7 @@
   <div>
     <div class="space-y-6 flex flex-col mb-8">
       <div>
-        <label
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Min Harga Jual</label
-        >
+        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Min Harga Jual</label>
         <InputCurrency
           :options="{ currency: 'IDR' }"
           v-model="itemStore.filter.minSellingPrice"
@@ -14,10 +11,7 @@
       </div>
 
       <div>
-        <label
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Min Harga Beli</label
-        >
+        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Min Harga Beli</label>
         <InputCurrency
           :options="{ currency: 'IDR' }"
           v-model="itemStore.filter.minBuyingPrice"
@@ -26,10 +20,7 @@
       </div>
 
       <div>
-        <label
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Min Saldo Persediaan</label
-        >
+        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Min Saldo Persediaan</label>
         <input
           v-model="itemStore.filter.minStock"
           type="text"
@@ -39,10 +30,7 @@
       </div>
 
       <div>
-        <label
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Unit Product
-        </label>
+        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit Product </label>
         <DotLoading v-if="itemUnitStore.isLoading" />
         <select
           v-model="itemStore.filter.unit"
@@ -50,20 +38,13 @@
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         >
           <option value="0">Semua</option>
-          <option
-            v-for="item in itemUnitStore.items"
-            :key="item.id"
-            :value="item.id"
-          >
+          <option v-for="item in itemUnitStore.items" :key="item.id" :value="item.id">
             {{ item.name }}
           </option>
         </select>
       </div>
       <div>
-        <label
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Category Product</label
-        >
+        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category Product</label>
         <DotLoading v-if="itemCategoryStore.isLoading" />
         <select
           v-model="itemStore.filter.category"
@@ -71,13 +52,20 @@
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         >
           <option value="0">Semua</option>
-          <option
-            v-for="item in itemCategoryStore.items"
-            :key="item.id"
-            :value="item.id"
-          >
+          <option v-for="item in itemCategoryStore.items" :key="item.id" :value="item.id">
             {{ item.name }}
           </option>
+        </select>
+      </div>
+      <div>
+        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type Product</label>
+        <select
+          v-model="itemStore.filter.type"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        >
+          <option value="all">Semua</option>
+          <option value="sell">Jual</option>
+          <option value="buy">Beli</option>
         </select>
       </div>
     </div>
@@ -113,27 +101,27 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
-import InputCurrency from '../../../components/input/InputCurrency.vue'
+import { onMounted } from "vue";
+import InputCurrency from "../../../components/input/InputCurrency.vue";
 
-import { useItemUnitStore } from '../../../stores/itemUnit'
-import DotLoading from '../../../components/loading/DotLoading.vue'
-import { useItemCategoryStore } from '../../../stores/itemCategory'
-import { useItemStore } from '../../../stores/items'
+import { useItemUnitStore } from "../../../stores/itemUnit";
+import DotLoading from "../../../components/loading/DotLoading.vue";
+import { useItemCategoryStore } from "../../../stores/itemCategory";
+import { useItemStore } from "../../../stores/items";
 
-const itemStore = useItemStore()
-const itemUnitStore = useItemUnitStore()
-const itemCategoryStore = useItemCategoryStore()
+const itemStore = useItemStore();
+const itemUnitStore = useItemUnitStore();
+const itemCategoryStore = useItemCategoryStore();
 
 const porps = defineProps({
   show: {
     type: Boolean,
     default: false,
   },
-})
+});
 
 onMounted(() => {
-  itemUnitStore.getData()
-  itemCategoryStore.getData()
-})
+  itemUnitStore.getData();
+  itemCategoryStore.getData();
+});
 </script>

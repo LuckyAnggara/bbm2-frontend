@@ -1,26 +1,14 @@
 <template>
-  <div
-    class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-visible"
-  >
-    <div
-      class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"
-    >
+  <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-visible">
+    <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
       <div class="w-full md:w-1/2 flex space-x-3">
         <div class="flex items-center">
-          <label
-            for="years"
-            class="block text-sm font-medium text-gray-900 dark:text-white mr-2"
-            >Show</label
-          >
+          <label for="years" class="block text-sm font-medium text-gray-900 dark:text-white mr-2">Show</label>
           <select
             v-model="itemStore.currentLimit"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block sm:w-16 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-16"
           >
-            <option
-              :selected="itemStore.currentLimit == length ? true : false"
-              v-for="length in lengths"
-              :key="length"
-            >
+            <option :selected="itemStore.currentLimit == length ? true : false" v-for="length in lengths" :key="length">
               {{ length }}
             </option>
           </select>
@@ -29,9 +17,7 @@
         <form class="flex items-center w-full" autocomplete="off">
           <label for="simple-search" class="sr-only">Search</label>
           <div class="relative w-full">
-            <div
-              class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
-            >
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg
                 aria-hidden="true"
                 class="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -60,74 +46,28 @@
       <div
         class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0"
       >
+        <ReloadButton @click="itemStore.getData()" :is-loading="itemStore.isLoading" />
         <HeadlessMenu :links="actionMenu" />
       </div>
     </div>
-    <div
-      class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700"
-    >
-      <table
-        class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 table-fixed table-striped"
-      >
-        <thead
-          class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center"
-        >
+    <div class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
+      <table class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 table-fixed table-striped">
+        <thead class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
           <tr>
             <!-- <th scope="col" class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600">No</th> -->
-            <th
-              scope="col"
-              class="px-1 py-2 w-12 border border-slate-400 dark:border-slate-600"
-            >
-              SKU
-            </th>
-            <th
-              scope="col"
-              class="px-1 py-2 w-24 border border-slate-400 dark:border-slate-600"
-            >
-              Nama
-            </th>
-            <th
-              scope="col"
-              class="px-1 py-2 w-8 border border-slate-400 dark:border-slate-600"
-            >
-              Saldo
-            </th>
-            <th
-              scope="col"
-              class="px-1 py-2 w-8 border border-slate-400 dark:border-slate-600"
-            >
-              Batas Minimum
-            </th>
-            <th
-              scope="col"
-              class="px-1 py-2 w-12 border border-slate-400 dark:border-slate-600"
-            >
-              Unit / Satuan
-            </th>
+            <th scope="col" class="px-1 py-2 w-12 border border-slate-400 dark:border-slate-600">SKU</th>
+            <th scope="col" class="px-1 py-2 w-24 border border-slate-400 dark:border-slate-600">Nama</th>
+            <th scope="col" class="px-1 py-2 w-8 border border-slate-400 dark:border-slate-600">Saldo</th>
+            <th scope="col" class="px-1 py-2 w-8 border border-slate-400 dark:border-slate-600">Batas Minimum</th>
+            <th scope="col" class="px-1 py-2 w-12 border border-slate-400 dark:border-slate-600">Unit / Satuan</th>
 
-            <th
-              scope="col"
-              class="px-1 py-2 w-10 border border-slate-400 dark:border-slate-600"
-            >
+            <th scope="col" class="px-1 py-2 w-10 border border-slate-400 dark:border-slate-600">
               Harga Beli Terakhir
             </th>
             <!-- <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Merek</th> -->
-            <th
-              scope="col"
-              class="px-1 py-2 w-10 border border-slate-400 dark:border-slate-600"
-            >
-              Harga Jual
-            </th>
-            <th
-              scope="col"
-              class="px-1 py-2 w-12 border border-slate-400 dark:border-slate-600"
-            >
-              Kategori
-            </th>
-            <th
-              scope="col"
-              class="px-1 py-2 w-4 border border-slate-400 dark:border-slate-600"
-            ></th>
+            <th scope="col" class="px-1 py-2 w-10 border border-slate-400 dark:border-slate-600">Harga Jual</th>
+            <th scope="col" class="px-1 py-2 w-12 border border-slate-400 dark:border-slate-600">Kategori</th>
+            <th scope="col" class="px-1 py-2 w-4 border border-slate-400 dark:border-slate-600"></th>
           </tr>
         </thead>
         <tbody>
@@ -146,14 +86,14 @@
             class="odd:bg-white odd:dark:bg-gray-900 odd:dark:border-gray-700 even:bg-gray-50 even:dark:bg-gray-800 even:dark:border-gray-700 border-b"
           >
             <!-- <td class="px-4 py-1 text-center">{{ itemStore.from + index }}</td> -->
-            <td class="px-4 py-1">{{ item.sku ?? '-' }}</td>
+            <td class="px-4 py-1">{{ item.sku ?? "-" }}</td>
 
             <th class="px-4 py-1">
               {{ item.name }}
             </th>
             <td class="px-4 py-1">{{ item.ending_stock ?? 0 }}</td>
-            <td class="px-4 py-1">{{ item.qty_minimum ?? '-' }}</td>
-            <td class="px-4 py-1">{{ item.unit?.name ?? '-' }}</td>
+            <td class="px-4 py-1">{{ item.qty_minimum ?? "-" }}</td>
+            <td class="px-4 py-1">{{ item.unit?.name ?? "-" }}</td>
 
             <!-- <td class="px-4 py-1">{{ item.category.name.toUpperCase() ?? '-' }}</td> -->
 
@@ -163,7 +103,7 @@
             <td class="px-4 py-1">
               {{ IDRCurrency.format(item.selling_price ?? 0) }}
             </td>
-            <td class="px-4 py-1">{{ item.category.name ?? '-' }}</td>
+            <td class="px-4 py-1">{{ item.category.name ?? "-" }}</td>
 
             <td class="px-4 py-1">
               <div>
@@ -172,10 +112,7 @@
                     <MenuButton
                       class="hover:scale-125 ease-in-out duration-300 flex w-full rounded-md font-medium text-black dark:text-white"
                     >
-                      <EllipsisVerticalIcon
-                        class="h-5 w-5 text-black dark:text-white"
-                        aria-hidden="true"
-                      />
+                      <EllipsisVerticalIcon class="h-5 w-5 text-black dark:text-white" aria-hidden="true" />
                     </MenuButton>
                   </div>
 
@@ -195,9 +132,7 @@
                           <button
                             @click="menu.function(item)"
                             :class="[
-                              active
-                                ? 'bg-blue-500 text-white'
-                                : 'text-gray-900 dark:text-white',
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
                               'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                             ]"
                           >
@@ -221,20 +156,14 @@
     >
       <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
         Showing
-        <span class="font-semibold text-gray-900 dark:text-white"
-          >{{ itemStore.from }} - {{ itemStore.to }}</span
-        >
+        <span class="font-semibold text-gray-900 dark:text-white">{{ itemStore.from }} - {{ itemStore.to }}</span>
         of
-        <span class="font-semibold text-gray-900 dark:text-white">{{
-          itemStore.total
-        }}</span>
+        <span class="font-semibold text-gray-900 dark:text-white">{{ itemStore.total }}</span>
       </span>
       <ul class="inline-flex items-stretch -space-x-px">
         <li>
           <a
-            @click="
-              itemStore.currentPage == 1 ? '' : itemStore.getData(previousPage)
-            "
+            @click="itemStore.currentPage == 1 ? '' : itemStore.getData(previousPage)"
             :disabled="itemStore.currentPage == 1 ? true : false"
             :class="
               itemStore.currentPage == 1
@@ -248,11 +177,7 @@
 
         <li>
           <a
-            @click="
-              itemStore.lastPage == itemStore.currentPage
-                ? ''
-                : itemStore.getData(nextPage)
-            "
+            @click="itemStore.lastPage == itemStore.currentPage ? '' : itemStore.getData(nextPage)"
             :class="
               itemStore.lastPage == itemStore.currentPage
                 ? 'cursor-not-allowed'
@@ -271,8 +196,8 @@
 </template>
 
 <script setup>
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-import HeadlessMenu from '../../components/menu/HeadlessMenu.vue'
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import HeadlessMenu from "../../components/menu/HeadlessMenu.vue";
 
 import {
   EllipsisVerticalIcon,
@@ -283,148 +208,138 @@ import {
   FunnelIcon,
   Bars4Icon,
   ArchiveBoxIcon,
-} from '@heroicons/vue/24/outline'
-import {
-  onMounted,
-  computed,
-  onUnmounted,
-  ref,
-  shallowRef,
-  nextTick,
-  inject,
-  defineAsyncComponent,
-} from 'vue'
-import { IDRCurrency } from '../../utilities/formatter'
-import { useItemStore } from '../../stores/items'
-import { useItemBrandStore } from '../../stores/itemBrand'
-import { useItemUnitStore } from '../../stores/itemUnit'
-import CircleLoading from '../../components/loading/CircleLoading.vue'
+} from "@heroicons/vue/24/outline";
+import { onMounted, computed, onUnmounted, ref, shallowRef, nextTick, inject, defineAsyncComponent } from "vue";
+import { IDRCurrency } from "../../utilities/formatter";
+import { useItemStore } from "../../stores/items";
+import { useItemBrandStore } from "../../stores/itemBrand";
+import { useItemUnitStore } from "../../stores/itemUnit";
+import CircleLoading from "../../components/loading/CircleLoading.vue";
 
-import CreateDrawer from './drawer/CreateDrawer.vue'
-import EditDrawer from './drawer/EditDrawer.vue'
-import { useRouter } from 'vue-router'
-import { useLayoutStore } from '../../stores/layout'
+import CreateDrawer from "./drawer/CreateDrawer.vue";
+import EditDrawer from "./drawer/EditDrawer.vue";
+import { useRouter } from "vue-router";
+import { useLayoutStore } from "../../stores/layout";
+import ReloadButton from "../../components/buttons/ReloadButton.vue";
 
-const FilterDrawer = defineAsyncComponent(() =>
-  import('./drawer/FilterDrawer.vue')
-)
+const FilterDrawer = defineAsyncComponent(() => import("./drawer/FilterDrawer.vue"));
 
-const lengths = ref([5, 10, 20, 30, 40, 50])
-const swal = inject('$swal')
-const router = useRouter()
-const itemStore = useItemStore()
-const itemBrandStore = useItemBrandStore()
-const itemUnitStore = useItemUnitStore()
-const layoutStore = useLayoutStore()
+const lengths = ref([5, 10, 20, 30, 40, 50]);
+const swal = inject("$swal");
+const router = useRouter();
+const itemStore = useItemStore();
+const itemBrandStore = useItemBrandStore();
+const itemUnitStore = useItemUnitStore();
+const layoutStore = useLayoutStore();
 
-const showCreateDrawer = ref(false)
-const showEditDrawer = ref(false)
+const showCreateDrawer = ref(false);
+const showEditDrawer = ref(false);
 
 async function filterDraw() {
-  await nextTick()
-  layoutStore.component = shallowRef(FilterDrawer)
-  layoutStore.title = 'Filter Data'
-  layoutStore.isRightDrawShow = true
+  await nextTick();
+  layoutStore.component = shallowRef(FilterDrawer);
+  layoutStore.title = "Filter Data";
+  layoutStore.isRightDrawShow = true;
 }
 
 const previousPage = computed(() => {
-  return '&page=' + (itemStore.currentPage - 1)
-})
+  return "&page=" + (itemStore.currentPage - 1);
+});
 
 const nextPage = computed(() => {
-  return '&page=' + (itemStore.currentPage + 1)
-})
+  return "&page=" + (itemStore.currentPage + 1);
+});
 
 itemStore.$subscribe((mutation, state) => {
-  if (mutation.events.key == 'currentLimit') {
-    itemStore.getData()
+  if (mutation.events.key == "currentLimit") {
+    itemStore.getData();
   }
-})
+});
 
 async function detail(item) {
-  router.push({ name: 'detail-product', params: { sku: item.sku } })
+  router.push({ name: "detail-product", params: { sku: item.sku } });
 }
 
 async function edit(id) {
-  if (!itemBrandStore.items) itemBrandStore.getData()
-  if (!itemUnitStore.items) itemUnitStore.getData()
-  await nextTick()
-  let data = itemStore.items.find((x) => x.id == id)
-  itemStore.editCurrentData = data
-  await nextTick()
-  showEditDrawer.value = true
+  if (!itemBrandStore.items) itemBrandStore.getData();
+  if (!itemUnitStore.items) itemUnitStore.getData();
+  await nextTick();
+  let data = itemStore.items.find((x) => x.id == id);
+  itemStore.editCurrentData = data;
+  await nextTick();
+  showEditDrawer.value = true;
 }
 
 async function newProduct() {
-  if (!itemBrandStore.items) itemBrandStore.getData()
-  if (!itemUnitStore.items) itemUnitStore.getData()
-  await nextTick()
-  showCreateDrawer.value = true
+  if (!itemBrandStore.items) itemBrandStore.getData();
+  if (!itemUnitStore.items) itemUnitStore.getData();
+  await nextTick();
+  showCreateDrawer.value = true;
 }
 
 function deleteData(item) {
   swal.fire({
-    title: 'Hapus?',
-    text: 'Data tidak bisa dikembalikan!',
-    icon: 'warning',
+    title: "Hapus?",
+    text: "Data tidak bisa dikembalikan!",
+    icon: "warning",
     showCancelButton: true,
-    confirmButtonText: 'Ya, hapus!',
-    cancelButtonText: 'Cancel!',
+    confirmButtonText: "Ya, hapus!",
+    cancelButtonText: "Cancel!",
     showLoaderOnConfirm: true,
     reverseButtons: true,
     preConfirm: async () => {
-      await itemStore.destroy(item.id)
+      await itemStore.destroy(item.id);
     },
     allowOutsideClick: () => !itemStore.isDestroyLoading,
     backdrop: true,
-  })
+  });
 }
 
 const actionMenu = [
   {
     function: function tambah() {
-      router.push({ name: 'new-product' })
+      router.push({ name: "new-product" });
     },
-    label: 'Baru',
+    label: "Baru",
     icon: PlusIcon,
   },
   {
     function: filterDraw,
-    label: 'Filter',
+    label: "Filter",
     icon: FunnelIcon,
   },
   {
     function: function mutasi() {
       // router.push({ name: 'new-product' })
     },
-    label: 'Mutasi',
+    label: "Mutasi",
     icon: Bars4Icon,
   },
-]
+];
 
 const itemMenu = [
   {
     function: detail,
-    label: 'Detail',
+    label: "Detail",
     icon: DocumentTextIcon,
   },
   {
     function: filterDraw,
-    label: 'Archive',
+    label: "Archive",
     icon: ArchiveBoxIcon,
   },
   {
     function: deleteData,
-    label: 'Hapus',
+    label: "Hapus",
     icon: TrashIcon,
   },
-]
+];
 
 onMounted(() => {
-  itemStore.getData()
-})
+  itemStore.getData();
+});
 
 onUnmounted(() => {
-  itemStore.$reset()
-})
+  itemStore.$reset();
+});
 </script>

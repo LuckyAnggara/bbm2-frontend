@@ -23,9 +23,7 @@
     </div>
 
     <div class="flex flex-col space-y-6">
-      <div
-        class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit w-1/2"
-      >
+      <div class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit w-1/2">
         <Searchbar
           @cari-data="cariData()"
           v-model="itemStore.searchName"
@@ -45,24 +43,16 @@
           <table
             class="w-full text-xs text-left text-gray-500 dark:text-gray-400 xl:table-fixed duration-300 ease-in-out transform"
           >
-            <thead
-              class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400"
-            >
+            <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" class="py-3 w-4 text-center">No</th>
                 <th scope="col" class="py-3 w-36">Products / Services</th>
                 <th scope="col" class="py-3 w-12">
-                  <VTooltip
-                    :distance="5"
-                    :skidding="32"
-                    :placement="'top'"
-                    :triggers="['hover']"
-                  >
+                  <VTooltip :distance="5" :skidding="32" :placement="'top'" :triggers="['hover']">
                     <div>Price</div>
                     <template #popper>
                       <div class="w-60 text-center">
-                        Click dua kali pada kolom harga, untuk melihat daftar
-                        harga product/jasa
+                        Click dua kali pada kolom harga, untuk melihat daftar harga product/jasa
                       </div>
                     </template>
                   </VTooltip>
@@ -87,9 +77,7 @@
                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
               >
                 <td colspan="9" class="px-6 text-center py-2">
-                  <span class="text-base dark:text-gray-300 text-gray-700"
-                    >Tambahkan data produk</span
-                  >
+                  <span class="text-base dark:text-gray-300 text-gray-700">Tambahkan data produk</span>
                 </td>
               </tr>
               <tr
@@ -127,9 +115,7 @@
                   class="px-2 mx-auto duration-300 ease-in-out"
                 >
                   <template v-if="salesStore.currentData.useGlobalTax">
-                    <span class="text-xs">{{
-                      IDRCurrency.format(calculateTax(item))
-                    }}</span>
+                    <span class="text-xs">{{ IDRCurrency.format(calculateTax(item)) }}</span>
                   </template>
                   <template v-else>
                     <div class="flex flex-row space-x-2 items-center">
@@ -141,9 +127,7 @@
                         :class="item.can_tax ? '' : 'invisible'"
                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
                       />
-                      <span class="text-xs">{{
-                        IDRCurrency.format(calculateTax(item))
-                      }}</span>
+                      <span class="text-xs">{{ IDRCurrency.format(calculateTax(item)) }}</span>
                     </div>
                   </template>
                 </td>
@@ -157,25 +141,17 @@
                     <input
                       min="0"
                       type="number"
-                      :class="[
-                        item.qty > item.stock
-                          ? 'dark:bg-red-400 bg-red-300'
-                          : 'dark:bg-gray-700 bg-gray-100',
-                      ]"
+                      :class="[item.qty > item.stock ? 'dark:bg-red-400 bg-red-300' : 'dark:bg-gray-700 bg-gray-100']"
                       class="sm:w-full text-xs w-20 text-black dark:text-white dark:border-gray-800 border-gray-300 text-md rounded-lg p-2 font-medium"
                       v-model="item.qty"
                     />
-                    <template #popper>
-                      Persediaan product ini kurang dari 0
-                    </template>
+                    <template #popper> Persediaan product ini kurang dari 0 </template>
                   </VTooltip>
                 </td>
                 <td class="text-xs text-gray-900 dark:text-white px-2 w-4">
                   {{ item.unit?.toUpperCase() }}
                 </td>
-                <td
-                  class="text-gray-900 dark:text-white text-xs font-bold px-2"
-                >
+                <td class="text-gray-900 dark:text-white text-xs font-bold px-2">
                   {{ IDRCurrency.format(subTotal(item)) }}
                 </td>
                 <td class="mx-auto">
@@ -215,10 +191,7 @@
         </div>
       </div>
 
-      <div
-        v-if="canSubmit"
-        class="bg-white shadow-md dark:bg-gray-800 rounded-lg px-4 py-4 max-w-md"
-      >
+      <div v-if="canSubmit" class="bg-white shadow-md dark:bg-gray-800 rounded-lg px-4 py-4 max-w-md">
         <div class="flex flex-col items-start space-y-4">
           <div class="flex flex-row justify-center items-center">
             <input
@@ -228,16 +201,12 @@
               value=""
               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
             />
-            <label
-              for="checkbox-1"
-              class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            <label for="checkbox-1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >use global tax
             </label>
           </div>
           <div class="w-full" v-if="salesStore.currentData.useGlobalTax">
-            <label
-              for="countries"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >Choose Tax</label
             >
             <DotLoading v-if="taxStore.isLoading" />
@@ -247,11 +216,7 @@
               id="countries"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
-              <option
-                v-for="item in taxStore.items"
-                :key="item.id"
-                :value="item"
-              >
+              <option v-for="item in taxStore.items" :key="item.id" :value="item">
                 {{ item.name.toUpperCase() }} ({{ item.value * 100 }}%)
               </option>
             </select>
@@ -261,92 +226,75 @@
     </div>
 
     <Teleport to="body">
-      <PriceModal
-        :show="showPriceModal"
-        @close="showPriceModal = false"
-        @set-item="setPrice"
-        :item-title="itemTitle"
-      />
+      <PriceModal :show="showPriceModal" @close="showPriceModal = false" @set-item="setPrice" :item-title="itemTitle" />
     </Teleport>
   </section>
 </template>
 
 <script setup>
-import {
-  TrashIcon,
-  PaperAirplaneIcon,
-  ArrowUturnLeftIcon,
-} from '@heroicons/vue/24/outline'
+import { TrashIcon, PaperAirplaneIcon, ArrowUturnLeftIcon } from "@heroicons/vue/24/outline";
 
-import {
-  ref,
-  reactive,
-  computed,
-  onUnmounted,
-  defineAsyncComponent,
-  onMounted,
-  watch,
-} from 'vue'
-import { useItemStore } from '../../../stores/items'
-import { IDRCurrency } from '../../../utilities/formatter'
-import { useToast } from 'vue-toastification'
+import { ref, reactive, computed, onUnmounted, defineAsyncComponent, onMounted, watch } from "vue";
+import { useItemStore } from "../../../stores/items";
+import { IDRCurrency } from "../../../utilities/formatter";
+import { useToast } from "vue-toastification";
 
-import Searchbar from '../../../components/input/Searchbar.vue'
-import InputCurrency from '../../../components/input/InputCurrency.vue'
-import { useSalesStore } from '../../../stores/sales'
-import { useItemSellingPriceStore } from '../../../stores/itemSellingPrice'
-import DotLoading from '../../../components/loading/DotLoading.vue'
-import { useTaxDetailStore } from '../../../stores/taxDetail'
+import Searchbar from "../../../components/input/Searchbar.vue";
+import InputCurrency from "../../../components/input/InputCurrency.vue";
+import { useSalesStore } from "../../../stores/sales";
+import { useItemSellingPriceStore } from "../../../stores/itemSellingPrice";
+import DotLoading from "../../../components/loading/DotLoading.vue";
+import { useTaxDetailStore } from "../../../stores/taxDetail";
 
-const emit = defineEmits(['next', 'previous'])
+const emit = defineEmits(["next", "previous"]);
 
-const toast = useToast()
-const itemStore = useItemStore()
-const salesStore = useSalesStore()
-const itemSellingPriceStore = useItemSellingPriceStore()
-const taxStore = useTaxDetailStore()
-const showPriceModal = ref(false)
-const itemTitle = ref('')
-const itemIndex = ref(0)
+const toast = useToast();
+const itemStore = useItemStore();
+const salesStore = useSalesStore();
+const itemSellingPriceStore = useItemSellingPriceStore();
+const taxStore = useTaxDetailStore();
+const showPriceModal = ref(false);
+const itemTitle = ref("");
+const itemIndex = ref(0);
 
 const canSubmit = computed(() => {
   if (salesStore.currentData.currentCart.length > 0) {
-    return true
+    return true;
   }
-  return false
-})
-const PriceModal = defineAsyncComponent(() => import('../modal/PriceModal.vue'))
+  return false;
+});
+const PriceModal = defineAsyncComponent(() => import("../modal/PriceModal.vue"));
 
 // Function
 function cariData() {
-  itemStore.currentLimit = 5
-  itemStore.getData()
+  itemStore.currentLimit = 5;
+  itemStore.getData();
 }
 function subTotal(item) {
-  const dasarPajak = item.price - item.disc
+  const dasarPajak = item.price - item.disc;
   const value =
     salesStore.currentData.useGlobalTax == false
       ? item.tax_status
         ? item.tax_value
         : 0
-      : salesStore.currentData.tax.value
-  const a = dasarPajak * value + dasarPajak
-  return a * item.qty
+      : salesStore.currentData.tax.value;
+  const a = dasarPajak * value + dasarPajak;
+  return a * item.qty;
 }
 function calculateTax(item) {
-  const dasarPajak = item.price - item.disc
-  var a
+  const dasarPajak = item.price - item.disc;
+  var a;
   if (salesStore.currentData.useGlobalTax == true) {
-    const value = salesStore.currentData.tax.value
-    a = dasarPajak * value
+    const value = salesStore.currentData.tax.value;
+    a = dasarPajak * value;
   } else {
-    const value = item.tax_status ? item.tax_value : 0
-    a = dasarPajak * value
+    const value = item.tax_status ? item.tax_value : 0;
+    a = dasarPajak * value;
   }
-  const result = a * item.qty
-  item.tax = result
+  const result = a * item.qty;
+  item.tax = result;
 
-  return result
+  return result;
 }
 function addItem(item) {
   if (!checkItem(item.id)) {
@@ -362,55 +310,60 @@ function addItem(item) {
       tax: item.sell_tax.id == 1 ? false : true,
       qty: 1,
       disc: 0,
-    })
-    toast.success('Item baru di tambahkan', {
+    });
+    toast.success("Item baru di tambahkan", {
       timeout: 1000,
-      position: 'bottom-left',
-    })
+      position: "bottom-left",
+    });
   } else {
-    toast.error('Item sudah ada', {
+    toast.error("Item sudah ada", {
       timeout: 1000,
-      position: 'bottom-left',
-    })
+      position: "bottom-left",
+    });
   }
 }
 function removeItem(index) {
-  salesStore.currentData.currentCart.splice(index, 1)
-  toast.info('Item dihapus', {
+  salesStore.currentData.currentCart.splice(index, 1);
+  toast.info("Item dihapus", {
     timeout: 1000,
-    position: 'bottom-right',
-  })
+    position: "bottom-right",
+  });
 }
 function checkItem(id) {
-  const b = salesStore.currentData.currentCart.find((e) => e.id == id)
+  const b = salesStore.currentData.currentCart.find((e) => e.id == id);
   if (b) {
-    return true
+    return true;
   }
-  return false
+  return false;
 }
 function setPrice(x) {
-  salesStore.currentData.currentCart[itemIndex.value].price = x
-  showPriceModal.value = false
+  salesStore.currentData.currentCart[itemIndex.value].price = x;
+  showPriceModal.value = false;
 }
 function showPrice(item, index) {
-  showPriceModal.value = true
-  itemSellingPriceStore.getData(item.id)
-  itemTitle.value = item.name
-  itemIndex.value = index
+  showPriceModal.value = true;
+  itemSellingPriceStore.getData(item.id);
+  itemTitle.value = item.name;
+  itemIndex.value = index;
 }
 watch(
   () => salesStore.currentData.useGlobalTax,
   (newValue, oldValue) => {
     if (newValue == false) {
-      salesStore.currentData.tax = { id: 1, name: 'Tanpa Pajak', value: 0 }
+      salesStore.currentData.tax = { id: 1, name: "Tanpa Pajak", value: 0 };
     }
   }
-)
+);
 
 onMounted(() => {
-  taxStore.getData()
-})
+  itemStore.$patch((state) => {
+    state.filter.type = "sell";
+  });
+  if (taxStore.items.length == 0 || taxStore.items.length == null) {
+    taxStore.getData();
+  }
+});
 onUnmounted(() => {
-  itemStore.$reset()
-})
+  itemStore.$reset();
+});
 </script>

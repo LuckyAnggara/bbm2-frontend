@@ -8,7 +8,11 @@
             v-model="customerStore.currentLimit"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block sm:w-16 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-16"
           >
-            <option :selected="customerStore.currentLimit == length ? true : false" v-for="length in lengths" :key="length">
+            <option
+              :selected="customerStore.currentLimit == length ? true : false"
+              v-for="length in lengths"
+              :key="length"
+            >
               {{ length }}
             </option>
           </select>
@@ -43,7 +47,10 @@
           </div>
         </form>
       </div>
-      <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+      <div
+        class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0"
+      >
+        <ReloadButton @click="customerStore.getData" :is-loading="customerStore.isLoading" />
         <HeadlessMenu :links="actionMenu" />
       </div>
     </div>
@@ -52,8 +59,8 @@
         <thead class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
           <tr>
             <th scope="col" class="px-2 py-2 w-2 border border-slate-400 dark:border-slate-600">No</th>
-            <th scope="col" class="px-1 py-2 w-24 border border-slate-400 dark:border-slate-600">Member Number</th>
-            <th scope="col" class="px-1 py-2 w-24 border border-slate-400 dark:border-slate-600">Nama</th>
+            <th scope="col" class="px-1 py-2 w-16 border border-slate-400 dark:border-slate-600">UUID</th>
+            <th scope="col" class="px-1 py-2 w-20 border border-slate-400 dark:border-slate-600">Nama</th>
             <th scope="col" class="px-1 py-2 w-8 border border-slate-400 dark:border-slate-600">Type</th>
             <th scope="col" class="px-1 py-2 w-8 border border-slate-400 dark:border-slate-600">Member Since</th>
             <th scope="col" class="px-1 py-2 w-4 border border-slate-400 dark:border-slate-600"></th>
@@ -74,20 +81,26 @@
             :key="item.id"
             class="odd:bg-white odd:dark:bg-gray-900 odd:dark:border-gray-700 even:bg-gray-50 even:dark:bg-gray-800 even:dark:border-gray-700 border-b"
           >
-            <td class="px-4 py-1 text-center w-2">{{ customerStore.from + index }}</td>
+            <td class="px-4 py-1 text-center w-2">
+              {{ customerStore.from + index }}
+            </td>
             <td class="px-4 py-1 text-center">{{ item.uuid }}</td>
 
             <th class="px-4 py-1">
               {{ item.name }}
             </th>
             <td class="px-4 py-1 text-center">{{ item.type }}</td>
-            <td class="px-4 py-1 text-center">{{ moment(item.created_at).format('DD-MMM-YYYY') }}</td>
+            <td class="px-4 py-1 text-center">
+              {{ moment(item.created_at).format("DD-MMM-YYYY") }}
+            </td>
 
             <td class="px-4 py-1">
               <div>
                 <Menu as="div" class="relative inline-block text-left">
                   <div>
-                    <MenuButton class="hover:scale-125 ease-in-out duration-300 flex w-full rounded-md font-medium text-black dark:text-white">
+                    <MenuButton
+                      class="hover:scale-125 ease-in-out duration-300 flex w-full rounded-md font-medium text-black dark:text-white"
+                    >
                       <EllipsisVerticalIcon class="h-5 w-5 text-black dark:text-white" aria-hidden="true" />
                     </MenuButton>
                   </div>
@@ -126,10 +139,15 @@
         </tbody>
       </table>
     </div>
-    <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
+    <nav
+      class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
+      aria-label="Table navigation"
+    >
       <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
         Showing
-        <span class="font-semibold text-gray-900 dark:text-white">{{ customerStore.from }} - {{ customerStore.to }}</span>
+        <span class="font-semibold text-gray-900 dark:text-white"
+          >{{ customerStore.from }} - {{ customerStore.to }}</span
+        >
         of
         <span class="font-semibold text-gray-900 dark:text-white">{{ customerStore.total }}</span>
       </span>
@@ -166,8 +184,8 @@
 </template>
 
 <script setup>
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-import HeadlessMenu from '../../components/menu/HeadlessMenu.vue'
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import HeadlessMenu from "../../components/menu/HeadlessMenu.vue";
 
 import {
   EllipsisVerticalIcon,
@@ -179,111 +197,113 @@ import {
   Bars4Icon,
   ArchiveBoxIcon,
   ShoppingCartIcon,
-} from '@heroicons/vue/24/outline'
-import { onMounted, computed, onUnmounted, ref, shallowRef, nextTick, inject, defineAsyncComponent } from 'vue'
+  ArrowPathIcon,
+} from "@heroicons/vue/24/outline";
+import { onMounted, computed, onUnmounted, ref, shallowRef, nextTick, inject, defineAsyncComponent } from "vue";
 
-import CircleLoading from '../../components/loading/CircleLoading.vue'
+import CircleLoading from "../../components/loading/CircleLoading.vue";
+import ReloadButton from "../../components/buttons/ReloadButton.vue";
 
-import { useRouter } from 'vue-router'
-import { useLayoutStore } from '../../stores/layout'
-import { useCustomerStore } from '../../stores/customer'
-import { useSalesStore } from '../../stores/sales'
-import { useAuthStore } from '../../stores/Auth'
-import { useToast } from 'vue-toastification'
+import { useRouter } from "vue-router";
+import { useLayoutStore } from "../../stores/layout";
+import { useCustomerStore } from "../../stores/customer";
+import { useSalesStore } from "../../stores/sales";
+import { useAuthStore } from "../../stores/Auth";
+import { useToast } from "vue-toastification";
 
-const lengths = ref([5, 10, 20, 30, 40, 50])
-const swal = inject('$swal')
-const router = useRouter()
-const customerStore = useCustomerStore()
-const salesStore = useSalesStore()
-const authStore = useAuthStore()
-const toast = useToast()
+const lengths = ref([5, 10, 20, 30, 40, 50]);
+const swal = inject("$swal");
+const router = useRouter();
+const customerStore = useCustomerStore();
+const salesStore = useSalesStore();
+const authStore = useAuthStore();
+const toast = useToast();
 
 const previousPage = computed(() => {
-  return '&page=' + (customerStore.currentPage - 1)
-})
+  return "&page=" + (customerStore.currentPage - 1);
+});
 
 const nextPage = computed(() => {
-  return '&page=' + (customerStore.currentPage + 1)
-})
+  return "&page=" + (customerStore.currentPage + 1);
+});
 
 customerStore.$subscribe((mutation, state) => {
-  if (mutation.events.key == 'currentLimit') {
-    customerStore.getData()
+  if (mutation.events.key == "currentLimit") {
+    customerStore.getData();
   }
-})
+});
 
 async function detail(item) {
-  router.push({ name: 'detail-customer', params: { uuid: item.uuid } })
+  router.push({ name: "detail-customer", params: { uuid: item.uuid } });
 }
 
 function deleteData(item) {
   swal.fire({
-    title: 'Hapus?',
-    text: 'Data tidak bisa dikembalikan!',
-    icon: 'warning',
+    title: "Hapus?",
+    text: "Data tidak bisa dikembalikan!",
+    icon: "warning",
     showCancelButton: true,
-    confirmButtonText: 'Ya, hapus!',
-    cancelButtonText: 'Cancel!',
+    confirmButtonText: "Ya, hapus!",
+    cancelButtonText: "Cancel!",
     showLoaderOnConfirm: true,
     reverseButtons: true,
     preConfirm: async () => {
-      await customerStore.destroy(item.id)
+      await customerStore.destroy(item.id);
     },
     allowOutsideClick: () => !customerStore.isDestroyLoading,
     backdrop: true,
-  })
+  });
 }
 
 const actionMenu = [
   {
     function: function tambah() {
-      router.push({ name: 'new-customer' })
+      router.push({ name: "new-customer" });
     },
-    label: 'Baru',
+    label: "Baru",
     icon: PlusIcon,
   },
-]
+];
 
 const itemMenu = [
   {
     function: detail,
-    label: 'Detail',
+    label: "Detail",
     icon: DocumentTextIcon,
   },
   {
     function: toTransaction,
-    label: 'Transaction',
+    label: "Transaction",
     icon: ShoppingCartIcon,
   },
   {
     function: deleteData,
-    label: 'Hapus',
+    label: "Hapus",
     icon: TrashIcon,
   },
-]
+];
 
 async function toTransaction(item) {
   salesStore.$patch((state) => {
-    state.currentData.fromCustomer = true
-    state.currentData.customerData = item
-    state.currentData.customerData.isCustomer = true
-    state.currentData.customerData.withoutCustomer = false
-    state.currentData.customerData.userId = authStore.userData.id
-    state.currentData.customerData.saveCustomer = false
-  })
-  toast.info('Penjualan baru untuk ' + item.name, {
+    state.currentData.fromCustomer = true;
+    state.currentData.customerData = item;
+    state.currentData.customerData.isCustomer = true;
+    state.currentData.customerData.withoutCustomer = false;
+    state.currentData.customerData.userId = authStore.userData.id;
+    state.currentData.customerData.saveCustomer = false;
+  });
+  toast.info("Penjualan baru untuk " + item.name, {
     timeout: 2000,
-    position: 'bottom-center',
-  })
-  await nextTick()
-  router.push({ name: 'new-sale' })
+    position: "bottom-center",
+  });
+  await nextTick();
+  router.push({ name: "new-sale" });
 }
 onMounted(() => {
-  customerStore.getData()
-})
+  customerStore.getData();
+});
 
 onUnmounted(() => {
-  customerStore.$reset()
-})
+  customerStore.$reset();
+});
 </script>
