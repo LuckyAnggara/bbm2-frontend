@@ -35,10 +35,11 @@
                 </VTooltip>
               </th>
               <th scope="col" class="py-3 w-12 px-2">Discount</th>
+              <th scope="col" class="py-3 w-6">Qty</th>
+
               <th scope="col" :class="useGlobalTax ? 'w-8' : 'w-10'" class="px-2 mx-auto duration-300 ease-in-out">
                 Tax
               </th>
-              <th scope="col" class="py-3 w-6">Qty</th>
               <th scope="col" class="py-3 w-10 px-2">Unit</th>
               <th scope="col" class="py-3 w-12 px-2">Subtotal</th>
               <th scope="col" class="py-3 w-1 px-2"></th>
@@ -92,26 +93,7 @@
                   {{ IDRCurrency.format(item.discount) }}
                 </span>
               </td>
-              <td
-                :class="salesStore.singleResponses.global_tax ? 'w-8' : 'w-10'"
-                class="px-2 mx-auto duration-300 ease-in-out"
-              >
-                <template v-if="salesStore.singleResponses.global_tax">
-                  <span class="text-xs">{{ IDRCurrency.format(calculateTax(item)) }}</span>
-                </template>
-                <template v-else>
-                  <div class="flex flex-row space-x-2 items-center">
-                    <input
-                      v-model="item.item.tax_status"
-                      :disabled="!item.item.can_tax"
-                      type="checkbox"
-                      :class="item.item.can_tax ? 'bg-gray-100 dark:bg-gray-600' : 'bg-gray-400  dark:bg-gray-900'"
-                      class="w-4 h-4 text-blue-600 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <span class="text-xs">{{ IDRCurrency.format(calculateTax(item)) }}</span>
-                  </div>
-                </template>
-              </td>
+
               <td class="">
                 <VTooltip
                   :disabled="item.stock > item.qty"
@@ -132,6 +114,26 @@
                   </span>
                   <template #popper> Persediaan product ini kurang dari 0 </template>
                 </VTooltip>
+              </td>
+              <td
+                :class="salesStore.singleResponses.global_tax ? 'w-8' : 'w-10'"
+                class="px-2 mx-auto duration-300 ease-in-out"
+              >
+                <template v-if="salesStore.singleResponses.global_tax">
+                  <span class="text-xs">{{ IDRCurrency.format(calculateTax(item)) }}</span>
+                </template>
+                <template v-else>
+                  <div class="flex flex-row space-x-2 items-center">
+                    <input
+                      v-model="item.item.tax_status"
+                      :disabled="!item.item.can_tax"
+                      type="checkbox"
+                      :class="item.item.can_tax ? 'bg-gray-100 dark:bg-gray-600' : 'bg-gray-400  dark:bg-gray-900'"
+                      class="w-4 h-4 text-blue-600 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
+                    />
+                    <span class="text-xs">{{ IDRCurrency.format(calculateTax(item)) }}</span>
+                  </div>
+                </template>
               </td>
               <td class="text-xs text-gray-900 dark:text-white px-2 w-4">
                 {{ item.item.unit?.name.toUpperCase() }}
@@ -157,13 +159,15 @@
               <td class="py-3 w-12 px-4">
                 {{ IDRCurrency.format(salesStore.editDiscount) }}
               </td>
+
+              <td scope="row"></td>
               <td
+                colspan="2"
                 :class="salesStore.singleResponses.global_tax ? 'w-8' : 'w-10'"
                 class="px-2 mx-auto duration-300 ease-in-out"
               >
                 <span>{{ IDRCurrency.format(salesStore.editTax) }}</span>
               </td>
-              <td scope="row" colspan="2"></td>
               <td class="py-3 w-12 px-2">
                 <span>{{ IDRCurrency.format(salesStore.editGrandTotal) }}</span>
               </td>

@@ -4,6 +4,7 @@ import { useToast } from "vue-toastification";
 
 import { useAuthStore } from "./auth";
 import { useNotificationStore } from "./notification";
+import { useSalesReturStore } from "./salesRetur";
 const toast = useToast();
 const userData = JSON.parse(localStorage.getItem("userData"));
 
@@ -15,8 +16,10 @@ export const useSalesStore = defineStore("salesStore", {
       singleResponses: null,
       originalSingleResponses: null,
       showDrawerData: null,
+      forReturOriginal: [],
       isStoreLoading: false,
       isDestroyLoading: false,
+      isUpdateLoading: false,
       isPaymentLoading: false,
       isDrawerLoading: false,
       isTransactionSuccess: false,
@@ -217,6 +220,7 @@ export const useSalesStore = defineStore("salesStore", {
       return state.editSubTotal - state.editDiscount;
     },
     editTax(state) {
+      // return 0;
       let sum = state.singleResponses?.detail.reduce((accumulator, item) => {
         return accumulator + item.tax;
       }, 0);
@@ -232,28 +236,58 @@ export const useSalesStore = defineStore("salesStore", {
         totalBeforeTax: state.editTotalBeforeTax,
         tax: state.editTax,
         grandTotal: state.editGrandTotal,
+        etc_desc: "",
+        etc: 0,
       };
     },
+    editCartPermission(state) {
+      const list1 = JSON.stringify(state.singleResponses?.detail);
+      const list2 = JSON.stringify(state.originalSingleResponses?.detail);
+      if (list1 == list2) {
+        return false;
+      }
+      return true;
+    },
+    editCreditPermission(state) {
+      if (String(state.singleResponses?.credit) == String(state.originalSingleResponses?.credit)) {
+        return false;
+      }
+      return true;
+    },
+    editShippingPermission(state) {
+      return true;
+    },
     dataEdit(state) {
+      const authStore = useAuthStore();
       if (state.singleResponses == null) {
         return null;
       }
       return {
-        currentData: {
-          useGlobalTax: state.singleResponses.global_tax,
-          transaction: {
-            bank: {},
-          },
-          customerData: state.singleResponses.customer,
-          currentCart: state.singleResponses.detail,
-          total: state.editTotal,
-          tax: state.singleResponses.global_tax_id,
-          credit: {
-            due_date: state.singleResponses.due_date,
-            isCredit: state.singleResponses.credit,
-          },
-          shipping: state.singleResponses.shipping,
+        useGlobalTax: state.singleResponses.global_tax,
+        transaction: {
+          bank: {},
         },
+        editCartPermission: state.editCartPermission,
+        editCreditPermission: state.editCreditPermission,
+        editShippingPermission: state.editShippingPermission,
+        customerData: state.singleResponses.customer,
+        currentCart: state.singleResponses.detail,
+        total: state.editTotal,
+        tax: state.singleResponses.tax_detail,
+        credit: {
+          due_date: state.singleResponses.credit == 0 ? null : state.singleResponses.due_date,
+          isCredit: state.singleResponses.credit,
+        },
+        shipping: {
+          type: state.singleResponses.shipping_type,
+          cost: state.singleResponses.shipping_cost,
+          id: state.singleResponses.shipping,
+        },
+        transaction: {
+          paymentStatus: state.singleResponses.payment_status,
+          paymentType: state.singleResponses.payment_type,
+        },
+        userData: authStore.userData,
       };
     },
   },
@@ -276,10 +310,12 @@ export const useSalesStore = defineStore("salesStore", {
     },
 
     async showData(id = "") {
+      const returData = useSalesReturStore();
       this.isLoading = true;
       try {
         const response = await axiosIns.get(`/sales/${id}`);
         this.singleResponses = JSON.parse(JSON.stringify(response.data.data));
+        returData.data = JSON.parse(JSON.stringify(response.data.data.detail));
       } catch (error) {
         toast.error("Data not found", {
           position: "bottom-right",
@@ -309,7 +345,7 @@ export const useSalesStore = defineStore("salesStore", {
     async update() {
       this.isUpdateLoading = true;
       try {
-        const response = await axiosIns.put(`/items/${this.singleResponses.id}`, this.dataEdit);
+        const response = await axiosIns.put(`/sales/${this.singleResponses.id}`, this.dataEdit);
         this.isTransactionSuccess = true;
       } catch (error) {
         toast.error(error.message, {

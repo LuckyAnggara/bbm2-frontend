@@ -7,23 +7,22 @@
         <div class="mb-2">
           <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm">Due Date</label>
           <input
-            v-if="!isEdit"
-            :value="
-              salesStore.singleResponses.due_date
-                ? moment(salesStore.singleResponses.due_date).format('DD MMMM YYYY')
-                : 'null'
-            "
+            :value="salesStore.singleResponses.due_date"
             disabled
-            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="bg-gray-200 dark:bg-gray-900 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
+        </div>
+        <div v-if="isEdit" class="mb-2">
+          <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
+            >Change Due Date</label
+          >
           <vue-tailwind-datepicker
-            v-else
             :disable-date="dDate"
             :auto-apply="true"
             :shortcuts="false"
             :formatter="formatter"
             v-model="dateValue"
-            placeholder="Choose due date"
+            placeholder="Change due date"
             as-single
             :class="isEdit ? 'bg-gray-50 dark:bg-gray-900' : 'bg-gray-200 dark:bg-gray-700'"
             input-classes="border border-gray-300 text-gray-700  rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full py-2.5 px-4  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -34,7 +33,7 @@
           <input
             :value="IDRCurrency.format(salesStore.editGrandTotal)"
             disabled
-            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="bg-gray-200 dark:bg-gray-900 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
         <div class="mb-2">
@@ -42,7 +41,7 @@
           <input
             :value="IDRCurrency.format(salesStore.singleResponses.total_payment ?? 0)"
             disabled
-            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="bg-gray-200 dark:bg-gray-900 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
         <div class="mb-2">
@@ -50,7 +49,7 @@
           <input
             :value="IDRCurrency.format(salesStore.editGrandTotal)"
             disabled
-            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="bg-gray-200 dark:bg-gray-900 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
       </div>
@@ -198,6 +197,7 @@ import { IDRCurrency } from "../../../utilities/formatter";
 import { useSalesStore } from "../../../stores/sales";
 import CircleLoading from "../../../components/loading/CircleLoading.vue";
 import VueTailwindDatepicker from "vue-tailwind-datepicker";
+import { useDateFormat } from "@vueuse/core";
 
 const swal = inject("$swal");
 
@@ -213,27 +213,20 @@ const route = useRoute();
 const salesStore = useSalesStore();
 const showPembayaranModal = ref(false);
 
-const column = [
-  { key: "id", label: "No", type: "number", type: "id" },
-  { key: "created_at", label: "Tanggal", class: "uppercase", type: "date" },
-  { key: "payment", label: "Pembayaran", class: "uppercase", type: "currency" },
-  { key: "notes", label: "Catatan", class: "uppercase" },
-  { key: "action", label: "Action" },
-];
-
-// const PembayaranModal = defineAsyncComponent(() => import("../sales/modal/PembayaranKreditModal.vue"));
-
-// const LoadingModal = defineAsyncComponent(() => import("../../components/modal/LoadingModal.vue"));
-// const SuccessModal = defineAsyncComponent(() => import("../../components/modal/SuccessModal.vue"));
-
 const formatter = ref({
-  date: "DD MMM YYYY",
-  month: "MMM",
+  date: "YYYY-MM-DD",
 });
 const dateValue = ref("");
 const dDate = (date) => {
   return date < new Date();
 };
+
+// const dueDate = computed(() => {
+//   if (salesStore.singleResponses.due_date == null || salesStore.singleResponses.due_date == "") {
+//     return null;
+//   }
+//   return useDateFormat(JSON.parse(JSON.stringify(salesStore.singleResponses.due_date)), "DD MMMM YYYY");
+// });
 
 watch(dateValue, (v) => {
   salesStore.singleResponses.due_date = v;

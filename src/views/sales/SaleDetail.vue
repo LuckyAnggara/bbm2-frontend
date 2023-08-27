@@ -45,7 +45,8 @@
                 class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                 type="button"
               >
-                <FolderArrowDownIcon class="h-4 w-4 mr-2" />
+                <FolderArrowDownIcon v-if="!salesStore.isUpdateLoading" class="h-4 w-4 mr-2" />
+                <ArrowPathIcon v-else class="h-4 w-4 mr-2 animate-spin" />
 
                 Update
               </button>
@@ -118,11 +119,15 @@
         </template>
       </SuccessModal>
     </Teleport>
+
+    <Teleport to="body">
+      <ReturModal :show="showReturModal" @close="showReturModal = !showReturModal" />
+    </Teleport>
   </div>
 </template>
 
 <script setup>
-import { computed, inject, onMounted, ref } from "vue";
+import { computed, inject, onMounted, ref, watch } from "vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
 import CustomerDetail from "./detailcomponent/CustomerDetail.vue";
@@ -130,7 +135,14 @@ import CustomerDetail from "./detailcomponent/CustomerDetail.vue";
 import HeadlessMenu from "../../components/menu/HeadlessMenu.vue";
 import { useTaxDetailStore } from "../../stores/taxDetail";
 import { useSalesStore } from "../../stores/sales";
-import { ArchiveBoxIcon, FolderArrowDownIcon, PencilSquareIcon, TrashIcon, XMarkIcon } from "@heroicons/vue/24/outline";
+import {
+  ArchiveBoxIcon,
+  ArrowPathIcon,
+  FolderArrowDownIcon,
+  PencilSquareIcon,
+  TrashIcon,
+  XMarkIcon,
+} from "@heroicons/vue/24/outline";
 
 import LoadingModal from "../../components/modal/LoadingModal.vue";
 import SuccessModal from "../../components/modal/SuccessModal.vue";
@@ -141,6 +153,7 @@ import SalesPaymentDetail from "./detailcomponent/SalesPaymentDetail.vue";
 import CartDetail from "./detailcomponent/CartDetail.vue";
 import CreditDetail from "./detailcomponent/CreditDetail.vue";
 import ShippingDetail from "./detailcomponent/ShippingDetail.vue";
+import ReturModal from "./modal/ReturModal.vue";
 
 const toast = useToast();
 const router = useRouter();
@@ -149,6 +162,8 @@ const swal = inject("$swal");
 
 const taxStore = useTaxDetailStore();
 const salesStore = useSalesStore();
+
+const showReturModal = ref(false);
 
 const activeTab = ref(0);
 const isEdit = ref(false);
@@ -167,7 +182,7 @@ const actionMenu = [
     icon: PencilSquareIcon,
   },
   {
-    function: salesStore.clearData,
+    function: returModal,
     label: "Retur",
     icon: ArchiveBoxIcon,
   },
@@ -177,6 +192,10 @@ const actionMenu = [
     icon: TrashIcon,
   },
 ];
+
+function returModal() {
+  showReturModal.value = true;
+}
 
 function changeTab(index) {
   activeTab.value = index;
@@ -343,7 +362,6 @@ const shipping = computed(() => {
       return false;
     }
   }
-
   return true;
 });
 
