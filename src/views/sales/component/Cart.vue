@@ -245,6 +245,7 @@ import { useSalesStore } from "../../../stores/sales";
 import { useItemSellingPriceStore } from "../../../stores/itemSellingPrice";
 import DotLoading from "../../../components/loading/DotLoading.vue";
 import { useTaxDetailStore } from "../../../stores/taxDetail";
+import { useArrayFindIndex } from "@vueuse/core";
 
 const emit = defineEmits(["next", "previous"]);
 
@@ -316,9 +317,9 @@ function addItem(item) {
       position: "bottom-left",
     });
   } else {
-    toast.error("Item sudah ada", {
-      timeout: 1000,
-      position: "bottom-left",
+    const b = useArrayFindIndex(salesStore.currentData.currentCart, (i) => i.id == i.id);
+    salesStore.$patch((state) => {
+      state.currentData.currentCart[b.value].qty++;
     });
   }
 }

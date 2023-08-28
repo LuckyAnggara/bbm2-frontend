@@ -315,7 +315,7 @@ export const useSalesStore = defineStore("salesStore", {
       try {
         const response = await axiosIns.get(`/sales/${id}`);
         this.singleResponses = JSON.parse(JSON.stringify(response.data.data));
-        returData.data = JSON.parse(JSON.stringify(response.data.data.detail));
+        returData.fromSalesStore(JSON.parse(JSON.stringify(response.data.data.detail)));
       } catch (error) {
         toast.error("Data not found", {
           position: "bottom-right",

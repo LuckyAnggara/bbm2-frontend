@@ -54,7 +54,7 @@
                       </tr>
                       <tr
                         v-else
-                        v-for="(item, index) in items"
+                        v-for="(item, index) in returStore.dataRetur"
                         :key="item.id"
                         class="bg-white border-b dark:border-gray-700 text-sm dark:bg-gray-800"
                       >
@@ -78,6 +78,7 @@
                         <td class="">
                           <input
                             min="0"
+                            v-bind:max="item.qty"
                             type="number"
                             :class="
                               item.retur_qty > item.qty ? 'dark:bg-red-700 bg-red-200' : 'dark:bg-gray-900 bg-gray-50'
@@ -113,7 +114,7 @@
             </div>
 
             <!-- Modal Footer -->
-            <div class="justify-between items-center pt-0 space-y-4 sm:flex sm:space-y-0">
+            <div class="justify-between items-center pt-0 space-y-4 sm:flex sm:space-y-0 px-4">
               <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline"></a>
               <div class="items-center space-y-4 sm:space-x-4 sm:flex sm:space-y-0">
                 <button
@@ -159,20 +160,7 @@ const toast = useToast();
 const salesStore = useSalesStore();
 const returStore = useSalesReturStore();
 const route = useRoute();
-const items = computed(() => {
-  return returStore.data.map(function (item) {
-    return {
-      id: item.id,
-      name: item.item.name,
-      item_id: item.item_id,
-      qty: item.qty,
-      retur_qty: 0,
-      type: 1, // Tambahkan nilai default untuk 'retur_qty'
-      notes: "",
-      // Tambahkan nilai default untuk 'notes'
-    };
-  });
-});
+const items = computed(() => {});
 
 const uuid = computed(() => {
   return route.params.uuid ?? null;
