@@ -23,7 +23,7 @@ export const useSalesReturStore = defineStore("salesReturStore", {
     async store() {
       this.isStoreLoading = true;
       try {
-        const response = await axiosIns.post(`/sales-retur`, this.dataRetur);
+        const response = await axiosIns.post(`/sales-retur`, this.data);
         toast.success("Retur berhasil di proses", {
           timeout: 3000,
         });
@@ -44,6 +44,7 @@ export const useSalesReturStore = defineStore("salesReturStore", {
           item_id: item.item_id,
           qty: item.qty,
           retur_qty: 0,
+          price: item.price,
           type: 1, // Tambahkan nilai default untuk 'retur_qty'
           notes: "",
           // Tambahkan nilai default untuk 'notes'

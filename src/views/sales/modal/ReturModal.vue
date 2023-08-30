@@ -92,8 +92,8 @@
                             v-model="item.type"
                             class="dark:bg-gray-900 bg-gray-50 sm:w-full text-xs text-black dark:text-white dark:border-gray-800 border-gray-300 text-md rounded-lg p-2 font-medium"
                           >
-                            <option value="1">Normal</option>
-                            <option value="2">Defect</option>
+                            <option value="NORMAL">Normal</option>
+                            <option value="DEFECT">Defect</option>
                           </select>
                         </td>
                         <td class="">
@@ -118,19 +118,14 @@
               <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline"></a>
               <div class="items-center space-y-4 sm:space-x-4 sm:flex sm:space-y-0">
                 <button
-                  id="close-modal"
+                  @click="emit('close')"
                   type="button"
                   class="py-2 px-4 w-full text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 sm:w-auto hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
                 >
                   Cancel
                 </button>
-                <button
-                  @click="canSubmit"
-                  type="button"
-                  class="py-2 px-4 w-full text-sm font-medium text-center text-white rounded-lg bg-blue-700 sm:w-auto hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  Confirm
-                </button>
+                <ButtonLoader :loading="returStore.isStoreLoading" @proses="canSubmit">Submit</ButtonLoader>
+                <!-- <button @click="canSubmit" type="button">Confirm</button> -->
               </div>
             </div>
           </div>
@@ -148,8 +143,10 @@ import { useSalesStore } from "../../../stores/sales";
 import { useToast } from "vue-toastification";
 
 import { useSalesReturStore } from "../../../stores/salesRetur";
-import { useArraySome } from "@vueuse/core";
+import { useArrayFilter, useArraySome } from "@vueuse/core";
 import { useRoute } from "vue-router";
+
+import ButtonLoader from "../../../components/buttons/ButtonLoader.vue";
 
 const props = defineProps({
   show: Boolean,
@@ -160,18 +157,17 @@ const toast = useToast();
 const salesStore = useSalesStore();
 const returStore = useSalesReturStore();
 const route = useRoute();
-const items = computed(() => {});
 
 const uuid = computed(() => {
   return route.params.uuid ?? null;
 });
 
 function canSubmit() {
-  const b = useArraySome(items, (i) => i.retur_qty > 0 && i.retur_qty <= i.qty);
+  const b = useArraySome(returStore.dataRetur, (i) => i.retur_qty > 0 && i.retur_qty <= i.qty);
   if (b.value == true) {
-    returStore.dataRetur.data = items.value;
-    returStore.dataRetur.uuid = uuid.value;
-    returStore.store();
+    returStore.data.dataRetur = useArrayFilter(returStore.dataRetur, (i) => i.retur_qty > 0);
+    returStore.data.uuid = uuid.value;
+    returStore.store(uuid.value);
   } else {
     toast.error("Check your retur quantity", {
       position: "bottom-right",
