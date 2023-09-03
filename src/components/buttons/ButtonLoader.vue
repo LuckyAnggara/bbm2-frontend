@@ -7,7 +7,7 @@
   >
     <span v-if="!loading">Update</span>
 
-    <ArrowPathIcon v-else class="h-4 w-4 mr-2 animate-spin" />
+    <ArrowPathIcon v-else class="h-4 w-4 animate-spin" />
   </button>
 </template>
 

@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import axiosIns from "../services/axios";
 import { useToast } from "vue-toastification";
+import { useSalesStore } from "./sales";
 
 const toast = useToast();
 // ITEM STORE
@@ -9,6 +10,7 @@ export const useSalesReturStore = defineStore("salesReturStore", {
     return {
       data: {},
       dataRetur: {},
+      response: {},
       isLoading: false,
       isStoreLoading: false,
       isTransactionSuccess: false,
@@ -21,13 +23,18 @@ export const useSalesReturStore = defineStore("salesReturStore", {
   },
   actions: {
     async store() {
+      const salesStore = useSalesStore();
       this.isStoreLoading = true;
       try {
-        const response = await axiosIns.post(`/sales-retur`, this.data);
+        const returResponse = await axiosIns.post(`/sales-retur`, this.data);
         toast.success("Retur berhasil di proses", {
           timeout: 3000,
         });
         this.isTransactionSuccess = true;
+        salesStore.$patch((state) => {
+          state.singleResponses.retur = 1;
+          state.singleResponses.total_retur = returResponse.data.data;
+        });
       } catch (error) {
         toast.error(error.message, {
           timeout: 3000,
@@ -36,6 +43,7 @@ export const useSalesReturStore = defineStore("salesReturStore", {
         this.isStoreLoading = false;
       }
     },
+
     async fromSalesStore(data) {
       this.dataRetur = data.map(function (item) {
         return {
@@ -45,7 +53,8 @@ export const useSalesReturStore = defineStore("salesReturStore", {
           qty: item.qty,
           retur_qty: 0,
           price: item.price,
-          type: 1, // Tambahkan nilai default untuk 'retur_qty'
+          tax: item.tax,
+          type: "NORMAL", // Tambahkan nilai default untuk 'retur_qty'
           notes: "",
           // Tambahkan nilai default untuk 'notes'
         };

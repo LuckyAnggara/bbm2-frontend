@@ -2,6 +2,11 @@
   <section>
     <div class="max-w-2xl">
       <div class="grid gap-4 mb-4 sm:grid-cols-2">
+        <div class="sm:col-span-2" v-if="salesStore.singleResponses.retur == 1">
+          <small class="text-green-500 font-medium text-start"
+            >Transaksi ini pernah melakukan <i>Retur Product</i></small
+          >
+        </div>
         <div>
           <label for="invoice" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Invoice</label>
           <input
@@ -171,20 +176,15 @@
             id="grandTotal"
           />
         </div>
-        <div class="sm:col-span-2">
-          <small class="text-green-500 font-medium text-start"
-            >Transaksi ini pernah melakukan <i>Retur Product</i></small
-          >
-        </div>
-        <div>
+        <div class="sm:col-span-2" v-if="salesStore.singleResponses.retur == 1">
           <label for="grandTotal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Total Retur</label
+            >Total Retur (Include Tax)</label
           >
           <InputCurrency
             disabled
             :options="{ currency: 'IDR' }"
             :custom-class="'bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'"
-            v-model="salesStore.editTax"
+            v-model="salesStore.singleResponses.total_retur"
             name="grandTotal"
             id="grandTotal"
           />

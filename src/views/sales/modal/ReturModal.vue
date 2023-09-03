@@ -118,6 +118,7 @@
               <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline"></a>
               <div class="items-center space-y-4 sm:space-x-4 sm:flex sm:space-y-0">
                 <button
+                  :disabled="returStore.isStoreLoading"
                   @click="emit('close')"
                   type="button"
                   class="py-2 px-4 w-full text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 sm:w-auto hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
@@ -137,19 +138,20 @@
 
 <script setup>
 import { PaperAirplaneIcon, XMarkIcon } from "@heroicons/vue/24/outline";
-import { computed, ref } from "vue";
+import { computed, onActivated, onMounted, ref } from "vue";
 
 import { useSalesStore } from "../../../stores/sales";
 import { useToast } from "vue-toastification";
 
 import { useSalesReturStore } from "../../../stores/salesRetur";
-import { useArrayFilter, useArraySome } from "@vueuse/core";
+import { useArrayFilter, useArraySome, watchImmediate, whenever } from "@vueuse/core";
 import { useRoute } from "vue-router";
 
 import ButtonLoader from "../../../components/buttons/ButtonLoader.vue";
 
 const props = defineProps({
   show: Boolean,
+  default: false,
 });
 const emit = defineEmits(["close", "next"]);
 
@@ -162,12 +164,13 @@ const uuid = computed(() => {
   return route.params.uuid ?? null;
 });
 
-function canSubmit() {
+async function canSubmit() {
   const b = useArraySome(returStore.dataRetur, (i) => i.retur_qty > 0 && i.retur_qty <= i.qty);
   if (b.value == true) {
     returStore.data.dataRetur = useArrayFilter(returStore.dataRetur, (i) => i.retur_qty > 0);
     returStore.data.uuid = uuid.value;
-    returStore.store(uuid.value);
+    await returStore.store(uuid.value);
+    emit("close");
   } else {
     toast.error("Check your retur quantity", {
       position: "bottom-right",

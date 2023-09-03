@@ -127,7 +127,7 @@
 </template>
 
 <script setup>
-import { computed, inject, onMounted, ref, watch } from "vue";
+import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from "vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
 import CustomerDetail from "./detailcomponent/CustomerDetail.vue";
@@ -153,7 +153,8 @@ import SalesPaymentDetail from "./detailcomponent/SalesPaymentDetail.vue";
 import CartDetail from "./detailcomponent/CartDetail.vue";
 import CreditDetail from "./detailcomponent/CreditDetail.vue";
 import ShippingDetail from "./detailcomponent/ShippingDetail.vue";
-import ReturModal from "./modal/ReturModal.vue";
+
+const ReturModal = defineAsyncComponent(() => import("./modal/ReturModal.vue"));
 
 const toast = useToast();
 const router = useRouter();
@@ -170,7 +171,7 @@ const isEdit = ref(false);
 const tabs = [
   { id: 1, label: "Info" },
   { id: 2, label: "Customer" },
-  { id: 3, label: "Cart" },
+  { id: 3, label: "Cart & Retur" },
   { id: 4, label: "Credit" },
   { id: 5, label: "Shipping" },
 ];
