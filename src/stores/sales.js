@@ -5,6 +5,7 @@ import { useToast } from "vue-toastification";
 import { useAuthStore } from "./auth";
 import { useNotificationStore } from "./notification";
 import { useSalesReturStore } from "./salesRetur";
+import { useArrayDifference } from "@vueuse/core";
 const toast = useToast();
 const userData = JSON.parse(localStorage.getItem("userData"));
 
@@ -23,6 +24,7 @@ export const useSalesStore = defineStore("salesStore", {
       isPaymentLoading: false,
       isDrawerLoading: false,
       isTransactionSuccess: false,
+      editReturDetail: {},
       sortBy: "created_at",
       isAscending: false,
       currentLimit: 10,
@@ -257,19 +259,36 @@ export const useSalesStore = defineStore("salesStore", {
     editShippingPermission(state) {
       return true;
     },
+    editReturPermission(state) {
+      const list1 = JSON.stringify(state.singleResponses?.detail_retur);
+      const list2 = JSON.stringify(state.originalSingleResponses?.detail_retur);
+      if (list1 == list2) {
+        return false;
+      }
+      return true;
+    },
+    editRetur(state) {
+      return state.singleResponses?.detail_retur.length > 0 ? 1 : 0;
+    },
+
     dataEdit(state) {
       const authStore = useAuthStore();
       if (state.singleResponses == null) {
         return null;
       }
       return {
+        editCartPermission: state.editCartPermission,
+        editCreditPermission: state.editCreditPermission,
+        editShippingPermission: state.editShippingPermission,
+        editReturPermission: state.editReturPermission,
         useGlobalTax: state.singleResponses.global_tax,
         transaction: {
           bank: {},
         },
-        editCartPermission: state.editCartPermission,
-        editCreditPermission: state.editCreditPermission,
-        editShippingPermission: state.editShippingPermission,
+        retur: {
+          returStatus: state.editRetur,
+          returDetail: state.editReturDetail,
+        },
         customerData: state.singleResponses.customer,
         currentCart: state.singleResponses.detail,
         total: state.editTotal,
@@ -315,7 +334,10 @@ export const useSalesStore = defineStore("salesStore", {
       try {
         const response = await axiosIns.get(`/sales/${id}`);
         this.singleResponses = JSON.parse(JSON.stringify(response.data.data));
-        returData.fromSalesStore(JSON.parse(JSON.stringify(response.data.data.detail)));
+        returData.fromSalesStore(
+          JSON.parse(JSON.stringify(response.data.data.detail)),
+          JSON.parse(JSON.stringify(response.data.data.detail_retur))
+        );
       } catch (error) {
         toast.error("Data not found", {
           position: "bottom-right",

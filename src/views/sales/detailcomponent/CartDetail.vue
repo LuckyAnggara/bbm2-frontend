@@ -154,10 +154,10 @@
             <tfoot class="text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400 text-sm">
               <tr class="text-gray-900 dark:text-white">
                 <th scope="row" colspan="2" class="px-6 py-3">Total</th>
-                <td class="py-3 w-12 px-2">
+                <td class="py-3 w-12">
                   {{ IDRCurrency.format(salesStore.editSubTotal) }}
                 </td>
-                <td class="py-3 w-12 px-4">
+                <td class="py-3 w-12 px-2">
                   {{ IDRCurrency.format(salesStore.editDiscount) }}
                 </td>
 
@@ -218,29 +218,39 @@
         </div>
       </div>
     </div>
-    <div class="">
-      <span>Retur Detail</span>
+    <hr class="py-2" />
+    <div v-if="salesStore.singleResponses.retur == 1">
+      <div class="px-4 text-bold text-lg">Retur Detail</div>
+      <!-- <div class="px-4 pt-4 max-w-md" v-if="isEdit">
+        <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status Retur</label>
+        <select
+          v-model="returEdit"
+          id="retur_edit"
+          class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        >
+          <option value="1">RETUR</option>
+          <option value="0">TIDAK</option>
+        </select>
+      </div> -->
       <div class="flex flex-col space-y-4 items-end w-full p-4">
         <div
           class="overflow-auto rounded-lg w-full h-fit scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700"
         >
           <table
-            class="w-full text-xs text-left text-gray-500 dark:text-gray-400 md:table-fixed duration-300 ease-in-out transform"
+            class="w-full text-xs text-left text-gray-500 dark:text-gray-400 md:table-auto duration-300 ease-in-out transform"
           >
             <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" class="py-3 w-4 text-center">No</th>
-                <th scope="col" class="py-3 w-36">Products / Services</th>
+                <th scope="col" class="py-3 w-24">Products / Services</th>
 
-                <th scope="col" class="py-3 w-6">Qty</th>
+                <th scope="col" class="py-3 w-4">Qty</th>
                 <th scope="col" class="py-3 w-6">Price</th>
 
-                <th scope="col" :class="useGlobalTax ? 'w-8' : 'w-10'" class="px-2 mx-auto duration-300 ease-in-out">
-                  Tax
-                </th>
-                <th scope="col" class="py-3 w-12 px-2">Subtotal</th>
-                <th scope="col" class="py-3 w-12 px-2">Type</th>
-                <th scope="col" class="py-3 w-12 px-2">Notes</th>
+                <th scope="col" class="py-3 w-6">Tax</th>
+                <th scope="col" class="py-3 w-6">Total</th>
+                <th scope="col" class="py-3 w-12">Type</th>
+                <th scope="col" class="py-3 w-1 px-2"></th>
               </tr>
             </thead>
             <tbody class="duration-300 ease-in-out transform">
@@ -253,42 +263,54 @@
                   <span>{{ 1 + index }}</span>
                 </td>
                 <td class="">
-                  <span class="text-ellipsis">
-                    {{ item.item.name.toUpperCase() }}
-                  </span>
+                  <span class="text-ellipsis"> {{ item.item.name.toUpperCase() }}</span>
                 </td>
                 <td class="">
-                  <span class="text-ellipsis">
-                    {{ item.qty }}
-                  </span>
+                  {{ item.qty }}
                 </td>
                 <td class="">
-                  <span class="text-ellipsis">
-                    {{ item.price }}
-                  </span>
+                  {{ IDRCurrency.format(item.price) }}
                 </td>
                 <td class="">
-                  <span class="text-ellipsis">
-                    {{ item.tax }}
-                  </span>
+                  {{ IDRCurrency.format(item.tax * item.qty) }}
                 </td>
                 <td class="">
-                  <span class="text-ellipsis">
-                    {{ item.grand_total }}
-                  </span>
+                  {{ IDRCurrency.format(item.grand_total) }}
                 </td>
-                <td class="">
-                  <span class="text-ellipsis">
-                    {{ item.type }}
-                  </span>
+                <td
+                  v-tooltip="{
+                    content: item.notes,
+                    disabled: item.notes == '' ? true : false,
+                  }"
+                  class=""
+                >
+                  {{ item.type }}
                 </td>
-                <td class="">
-                  <span class="text-ellipsis">
-                    {{ item.notes }}
-                  </span>
+                <td class="mx-auto">
+                  <TrashIcon
+                    v-if="isEdit"
+                    @click="removeRetur(index)"
+                    class="h-6 w-6 hover:text-red-500 cursor-pointer hover:scale-105 duration-300 ease-in-out"
+                  />
                 </td>
               </tr>
             </tbody>
+            <tfoot class="text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400 text-sm">
+              <tr class="text-gray-900 dark:text-white">
+                <th scope="row" colspan="3" class="px-6 py-3">Total</th>
+                <td class="py-3 w-12">
+                  {{ IDRCurrency.format(editReturTotal) }}
+                </td>
+                <td class="py-3 w-12">
+                  {{ IDRCurrency.format(editReturTax) }}
+                </td>
+                <td class="py-3 w-12">
+                  {{ IDRCurrency.format(editReturGrandTotal) }}
+                </td>
+
+                <td scope="row" colspan="2"></td>
+              </tr>
+            </tfoot>
           </table>
         </div>
       </div>
@@ -303,7 +325,7 @@ import { useItemStore } from "../../../stores/items";
 import { IDRCurrency } from "../../../utilities/formatter";
 import InputCurrency from "../../../components/input/InputCurrency.vue";
 import { useToast } from "vue-toastification";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import DotLoading from "../../../components/loading/DotLoading.vue";
 import Searchbar from "../../../components/input/Searchbar.vue";
 
@@ -314,6 +336,27 @@ const itemStore = useItemStore();
 const toast = useToast();
 const useGlobalTax = ref(false);
 const canSubmit = ref(true);
+
+const editReturTotal = computed(() => {
+  let sum = salesStore.singleResponses?.detail_retur.reduce((accumulator, item) => {
+    return accumulator + item.price * item.qty;
+  }, 0);
+  return sum;
+});
+
+const editReturTax = computed(() => {
+  let sum = salesStore.singleResponses?.detail_retur.reduce((accumulator, item) => {
+    return accumulator + item.tax * item.qty;
+  }, 0);
+  return sum;
+});
+
+const editReturGrandTotal = computed(() => {
+  let sum = salesStore.singleResponses?.detail_retur.reduce((accumulator, item) => {
+    return accumulator + item.grand_total;
+  }, 0);
+  return sum;
+});
 
 function cariData() {
   itemStore.currentLimit = 5;
@@ -383,6 +426,25 @@ function removeItem(index) {
     timeout: 1000,
     position: "bottom-right",
   });
+}
+
+function removeRetur(index) {
+  toast.info("Data retur dihapus", {
+    timeout: 1000,
+    position: "bottom-right",
+  });
+  // DI REMOVE PADA STATE ORIGNAL, dan DIPINDAH KE STATE EDIT
+  salesStore.$patch((state) => {
+    state.editReturDetail = salesStore.singleResponses.detail_retur[index];
+    state.singleResponses.detail_retur.splice(index, 1);
+  });
+
+  if (salesStore.singleResponses.detail_retur.length < 1) {
+    toast.info("Status retur akan dihilangkan", {
+      timeout: 2000,
+      position: "bottom-center",
+    });
+  }
 }
 
 const props = defineProps({

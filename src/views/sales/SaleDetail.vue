@@ -127,7 +127,7 @@
 </template>
 
 <script setup>
-import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from "vue";
+import { computed, defineAsyncComponent, inject, onMounted, reactive, ref, watch } from "vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
 import CustomerDetail from "./detailcomponent/CustomerDetail.vue";
@@ -176,7 +176,7 @@ const tabs = [
   { id: 5, label: "Shipping" },
 ];
 
-const actionMenu = [
+const actionMenu = reactive([
   {
     function: editMode,
     label: "Edit",
@@ -192,10 +192,14 @@ const actionMenu = [
     label: "Hapus",
     icon: TrashIcon,
   },
-];
+]);
 
 function returModal() {
-  showReturModal.value = true;
+  if (isEdit.value) {
+    swal.fire("Sedang dalam mode edit");
+  } else {
+    showReturModal.value = true;
+  }
 }
 
 function changeTab(index) {
@@ -216,22 +220,26 @@ function cancelEdit() {
   isEdit.value = !isEdit.value;
 }
 function deleteData(item) {
-  swal.fire({
-    title: "Hapus?",
-    text: "Data tidak bisa dikembalikan!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Ya, hapus!",
-    cancelButtonText: "Cancel!",
-    showLoaderOnConfirm: true,
-    reverseButtons: true,
-    preConfirm: async () => {
-      await salesStore.destroy(salesStore.singleResponses.id, false);
-      router.push({ name: "list-product" });
-    },
-    allowOutsideClick: () => !salesStore.isDestroyLoading,
-    backdrop: true,
-  });
+  if (isEdit.value) {
+    swal.fire("Sedang dalam mode edit");
+  } else {
+    swal.fire({
+      title: "Hapus?",
+      text: "Data tidak bisa dikembalikan!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya, hapus!",
+      cancelButtonText: "Cancel!",
+      showLoaderOnConfirm: true,
+      reverseButtons: true,
+      preConfirm: async () => {
+        await salesStore.destroy(salesStore.singleResponses.id, false);
+        router.push({ name: "list-product" });
+      },
+      allowOutsideClick: () => !salesStore.isDestroyLoading,
+      backdrop: true,
+    });
+  }
 }
 function update() {
   if (canUpdate.value) {

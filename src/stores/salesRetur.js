@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import axiosIns from "../services/axios";
 import { useToast } from "vue-toastification";
 import { useSalesStore } from "./sales";
+import { useArrayFind } from "@vueuse/core";
 
 const toast = useToast();
 // ITEM STORE
@@ -44,16 +45,33 @@ export const useSalesReturStore = defineStore("salesReturStore", {
       }
     },
 
-    async fromSalesStore(data) {
-      this.dataRetur = data.map(function (item) {
+    async fromSalesStore(detail, retur) {
+      const group = retur.reduce((accumulator, current) => {
+        const { item_id, qty } = current;
+        if (!accumulator[item_id]) {
+          accumulator[item_id] = { item_id, qty: 0 };
+        }
+        accumulator[item_id].qty += qty;
+        return accumulator;
+      }, {});
+
+      const groupRetur = Object.values(group);
+
+      this.dataRetur = detail.map(function (item, index) {
+        const returData = groupRetur.find((x) => x.item_id == item.item_id);
+        const returQty = returData?.qty || 0;
+        const itemQty = item.qty || 0;
+        const hasil = itemQty - returQty;
+
         return {
           id: item.id,
           name: item.item.name,
           item_id: item.item_id,
-          qty: item.qty,
+          qty: hasil,
           retur_qty: 0,
           price: item.price,
           tax: item.tax,
+          status: item.retur,
           type: "NORMAL", // Tambahkan nilai default untuk 'retur_qty'
           notes: "",
           // Tambahkan nilai default untuk 'notes'

@@ -110,6 +110,9 @@
                     </tbody>
                   </table>
                 </div>
+                <small v-if="salesStore.singleResponses.retur == 1" class="text-blue-500 text-bold place-self-start"
+                  >Transaksi ini sudah melakukan retur Product sebelumnya
+                </small>
               </div>
             </div>
 
@@ -144,7 +147,7 @@ import { useSalesStore } from "../../../stores/sales";
 import { useToast } from "vue-toastification";
 
 import { useSalesReturStore } from "../../../stores/salesRetur";
-import { useArrayFilter, useArraySome, watchImmediate, whenever } from "@vueuse/core";
+import { useArrayFilter, useArraySome } from "@vueuse/core";
 import { useRoute } from "vue-router";
 
 import ButtonLoader from "../../../components/buttons/ButtonLoader.vue";

@@ -163,7 +163,7 @@
               </div>
             </th>
             <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">Dibuat Oleh</th>
-            <th scope="col" class="px-2 py-2 w-8 border border-slate-400 dark:border-slate-600">Action</th>
+            <th scope="col" class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600"></th>
           </tr>
         </thead>
         <tbody>
