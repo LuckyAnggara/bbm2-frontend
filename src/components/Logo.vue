@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <img v-if="isDark" src="../assets/logo_dark.png" alt="Logo" :class="[size, animated ? 'animate-pulse' : '']" /> -->
-    <img src="../assets/logo.png" alt="Logo" :class="[size, animated ? 'animate-pulse' : '']" />
+    <img src="@/assets/logo.png" alt="Logo" :class="[size, animated ? 'animate-pulse' : '']" />
   </div>
 </template>
 

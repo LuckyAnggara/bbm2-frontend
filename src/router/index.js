@@ -12,7 +12,6 @@ import DaftarPenjualan from "@/views/sales/DaftarPenjualan.vue";
 import CustomerList from "@/views/customer/CustomerList.vue";
 import CustomerAdd from "@/views/customer/CustomerAdd.vue";
 import CustomerDetail from "@/views/customer/CustomerDetail.vue";
-import Login from "@/views/login/Login.vue";
 import Invoice from "@/views/invoice/SaleInvoice.vue";
 import PaymentCredit from "@/views/sales/PaymentCredit.vue";
 import IncomeStatement from "@/views/report/IncomeStatement.vue";
@@ -23,7 +22,7 @@ const routes = [
   {
     path: "/login",
     name: "login",
-    component: Login,
+    component: () => import("@/views/login/Login.vue"),
     meta: {
       requiresAuth: false,
       title: "Login Page",

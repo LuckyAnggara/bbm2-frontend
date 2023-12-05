@@ -11,25 +11,13 @@ export const useAuthStore = defineStore("auth", {
     isLoading: false,
     form: {
       username: "demo",
-      password: "123",
+      password: "12345678",
     },
     userData: null,
   }),
   getters: {
     user(state) {
       return state.userData;
-    },
-    unitID(state) {
-      return state.userData.user?.unit_id;
-    },
-    groupID(state) {
-      return state.userData.user?.unit.group_id;
-    },
-    isAdmin(state) {
-      if (state.userData.user?.role.id == 2) {
-        return true;
-      }
-      return false;
     },
   },
   actions: {
@@ -40,26 +28,18 @@ export const useAuthStore = defineStore("auth", {
           username: this.form.username,
           password: this.form.password,
         });
-        const data = response.data;
+        const payload = response.data.data;
+
+        localStorage.removeItem("userData");
+        localStorage.setItem("token", JSON.stringify(payload.token));
+        localStorage.setItem("userData", JSON.stringify(payload));
+        this.userData = payload.user;
+
         if (response.status == 200) {
-          localStorage.setItem("token", JSON.stringify(data.data.token));
-          localStorage.setItem("userData", JSON.stringify(data.data.user));
-          toast.success(data.message, {
-            timeout: 1500,
-            position: "top-left",
-          });
           return true;
         }
-        if (response.status == 202) {
-          toast.warning(data.message, {
-            timeout: 2000,
-            position: "top-left",
-          });
-        }
       } catch (error) {
-        toast.error(error.message, {
-          timeout: 2000,
-        });
+        alert(error.message);
       } finally {
         this.isLoading = false;
       }
@@ -67,20 +47,24 @@ export const useAuthStore = defineStore("auth", {
     },
     async logout() {
       this.isLoading = true;
-
       try {
         const response = await axiosIns.get(`/logout`);
         if (response.status == 200) {
-          if (response.data == "error") {
-            localStorage.clear();
-          } else {
-            localStorage.removeItem("userData");
-            localStorage.removeItem("token");
-          }
+          localStorage.removeItem("userData");
+          localStorage.removeItem("token");
+          localStorage.clear();
 
           const pinia = getActivePinia();
 
-          pinia._s.forEach((store) => console.info(store));
+          pinia._s.forEach((store) => {
+            if (store.$id !== "auth" && store.$id !== "style") {
+              console.info(store);
+              store.$reset();
+            }
+
+            // store.$reset();
+          });
+          setTimeout(() => {}, 500);
           return true;
         } else {
           return false;
@@ -95,7 +79,6 @@ export const useAuthStore = defineStore("auth", {
       const user = localStorage.getItem("userData");
       if (user) {
         this.userData = JSON.parse(user);
-        nextTick();
         return true;
       }
       return false;
