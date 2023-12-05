@@ -10,7 +10,6 @@ import moment from "moment";
 import VueSweetalert2 from "vue-sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import "@sweetalert2/themes/dark/dark.css";
-import axiosIns from "./services/axios";
 import { darkModeKey, styleKey } from "@/config.js";
 
 import FloatingVue from "floating-vue";
@@ -29,8 +28,9 @@ app.config.globalProperties = {
   moment: moment,
 };
 
-app.use(router);
 app.use(pinia);
+app.use(router);
+
 app.use(autoAnimatePlugin);
 app.use(VueSweetalert2);
 app.use(FloatingVue);
