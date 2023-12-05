@@ -1,27 +1,17 @@
 <template>
   <div>
-    <img
-      v-if="isDark"
-      src="../assets/logo_dark.png"
-      alt="Logo"
-      :class="[size, animated ? 'animate-pulse' : '']"
-    />
-    <img
-      v-else
-      src="../assets/logo_light.png"
-      alt="Logo"
-      :class="[size, animated ? 'animate-pulse' : '']"
-    />
+    <!-- <img v-if="isDark" src="../assets/logo_dark.png" alt="Logo" :class="[size, animated ? 'animate-pulse' : '']" /> -->
+    <img src="../assets/logo.png" alt="Logo" :class="[size, animated ? 'animate-pulse' : '']" />
   </div>
 </template>
 
 <script setup>
-import { BoltIcon } from '@heroicons/vue/24/outline'
+import { BoltIcon } from "@heroicons/vue/24/outline";
 
 const props = defineProps({
   size: {
     type: String,
-    default: 'w-24 h-24',
+    default: "w-24 h-24",
   },
   animated: {
     type: Boolean,
@@ -31,7 +21,7 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-})
+});
 </script>
 
 <style>

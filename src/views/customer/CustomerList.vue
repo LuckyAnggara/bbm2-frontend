@@ -185,7 +185,7 @@
 
 <script setup>
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
-import HeadlessMenu from "../../components/menu/HeadlessMenu.vue";
+import HeadlessMenu from "@/components/menu/HeadlessMenu.vue";
 
 import {
   EllipsisVerticalIcon,
@@ -201,14 +201,14 @@ import {
 } from "@heroicons/vue/24/outline";
 import { onMounted, computed, onUnmounted, ref, shallowRef, nextTick, inject, defineAsyncComponent } from "vue";
 
-import CircleLoading from "../../components/loading/CircleLoading.vue";
-import ReloadButton from "../../components/buttons/ReloadButton.vue";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
+import ReloadButton from "@/components/buttons/ReloadButton.vue";
 
 import { useRouter } from "vue-router";
-import { useLayoutStore } from "../../stores/layout";
-import { useCustomerStore } from "../../stores/customer";
-import { useSalesStore } from "../../stores/sales";
-import { useAuthStore } from "../../stores/Auth";
+import { useLayoutStore } from "@/stores/layout";
+import { useCustomerStore } from "@/stores/customer";
+import { useSalesStore } from "@/stores/sales";
+import { useAuthStore } from "@/stores/auth";
 import { useToast } from "vue-toastification";
 
 const lengths = ref([5, 10, 20, 30, 40, 50]);

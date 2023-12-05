@@ -17,7 +17,13 @@
                 type="button"
                 class="text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
               >
-                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  aria-hidden="true"
+                  class="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     fill-rule="evenodd"
                     d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -31,12 +37,16 @@
 
             <div class="flex flex-col space-y-6">
               <div class="flex items-center justify-between">
-                <label for="description" class="block mb-2 text-xl font-medium text-gray-900 dark:text-white w-1/3">Total Bayar</label>
+                <label for="description" class="block mb-2 text-xl font-medium text-gray-900 dark:text-white w-1/3"
+                  >Total Bayar</label
+                >
                 <span class="text-2xl dark:text-white text-black">{{ IDRCurrency.format(grandTotal) }}</span>
               </div>
 
               <div>
-                <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Bank</label>
+                <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Pilih Bank</label
+                >
                 <div class="flex flex-row space-x-2">
                   <div class="w-full">
                     <DotLoading v-if="bankStore.isLoading" />
@@ -62,17 +72,28 @@
               </div>
               <div v-if="!isObjectEmpty(salesStore.currentData.transaction.bank)">
                 <div class="flex items-center justify-between">
-                  <label for="description" class="block mb-2 text-xl font-medium text-gray-900 dark:text-white w-1/3">Nomor Rekening</label>
-                  <span class="text-xl dark:text-white text-black">{{ salesStore.currentData.transaction.bank?.number_account ?? '' }}</span>
+                  <label for="description" class="block mb-2 text-xl font-medium text-gray-900 dark:text-white w-1/3"
+                    >Nomor Rekening</label
+                  >
+                  <span class="text-xl dark:text-white text-black">{{
+                    salesStore.currentData.transaction.bank?.number_account ?? ""
+                  }}</span>
                 </div>
 
                 <div class="flex items-center justify-between">
-                  <label for="description" class="block mb-2 text-xl font-medium text-gray-900 dark:text-white w-1/3">Atas Nama</label>
-                  <span class="text-xl dark:text-white text-black">{{ salesStore.currentData.transaction.bank?.name_account ?? '' }}</span>
+                  <label for="description" class="block mb-2 text-xl font-medium text-gray-900 dark:text-white w-1/3"
+                    >Atas Nama</label
+                  >
+                  <span class="text-xl dark:text-white text-black">{{
+                    salesStore.currentData.transaction.bank?.name_account ?? ""
+                  }}</span>
                 </div>
               </div>
 
-              <div v-if="!isObjectEmpty(salesStore.currentData.transaction.bank)" class="flex items-center space-x-4 justify-between place-self-end">
+              <div
+                v-if="!isObjectEmpty(salesStore.currentData.transaction.bank)"
+                class="flex items-center space-x-4 justify-between place-self-end"
+              >
                 <button
                   @click="prosesRequest"
                   type="button"
@@ -91,42 +112,42 @@
 </template>
 
 <script setup>
-import { ArrowPathIcon, CheckCircleIcon, CheckIcon } from '@heroicons/vue/24/outline'
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useSalesStore } from '../../../stores/sales'
-import { IDRCurrency } from '../../../utilities/formatter'
-import { useBankStore } from '../../../stores/bank'
-import DotLoading from '../../../components/loading/DotLoading.vue'
-import { isObjectEmpty } from '../../../utilities/helpper'
+import { ArrowPathIcon, CheckCircleIcon, CheckIcon } from "@heroicons/vue/24/outline";
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { useSalesStore } from "@/stores/sales";
+import { IDRCurrency } from "@/utilities/formatter";
+import { useBankStore } from "@/stores/bank";
+import DotLoading from "@/components/loading/DotLoading.vue";
+import { isObjectEmpty } from "@/utilities/helpper";
 
 const props = defineProps({
   show: Boolean,
-})
+});
 
-const emit = defineEmits(['close', 'submitTransaction'])
+const emit = defineEmits(["close", "submitTransaction"]);
 
-const salesStore = useSalesStore()
-const bankStore = useBankStore()
+const salesStore = useSalesStore();
+const bankStore = useBankStore();
 
 async function prosesRequest() {
-  emit('submitTransaction')
+  emit("submitTransaction");
 }
 
 function closeModal() {
-  salesStore.currentData.transaction.bank = null
-  emit('close')
+  salesStore.currentData.transaction.bank = null;
+  emit("close");
 }
 
 const grandTotal = computed(() => {
   if (salesStore.currentData.credit.isCredit == true) {
-    return salesStore.currentData.credit.amount
+    return salesStore.currentData.credit.amount;
   }
-  return salesStore.total.grandTotal + salesStore.currentData.shipping.fee
-})
+  return salesStore.total.grandTotal + salesStore.currentData.shipping.fee;
+});
 
 onMounted(() => {
-  bankStore.getData()
-})
+  bankStore.getData();
+});
 </script>
 
 <style>

@@ -1,23 +1,23 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
-import HelloWorld from "../components/HelloWorld.vue";
-import DaftarProduk from "../views/persediaan/DaftarProduk.vue";
-import DetailProduct from "../views/persediaan/DetailProduct.vue";
-import AddProduct from "../views/persediaan/AddProduct.vue";
-import MutationProduk from "../views/persediaan/MutationProduk.vue";
-import WizardSale from "../views/sales/WizardSale.vue";
-import SaleDetail from "../views/sales/SaleDetail.vue";
-import WizardEditSale from "../views/sales/WizardEditSale.vue";
-import DaftarPenjualan from "../views/sales/DaftarPenjualan.vue";
-import CustomerList from "../views/customer/CustomerList.vue";
-import CustomerAdd from "../views/customer/CustomerAdd.vue";
-import CustomerDetail from "../views/customer/CustomerDetail.vue";
-import Login from "../views/Login/Login.vue";
-import Invoice from "../views/invoice/SaleInvoice.vue";
-import PaymentCredit from "../views/sales/PaymentCredit.vue";
-import IncomeStatement from "../views/report/IncomeStatement.vue";
-import { useAuthStore } from "../stores/auth";
-import { useVersionStore } from "../stores/version";
+import HelloWorld from "@/components/HelloWorld.vue";
+import DaftarProduk from "@/views/persediaan/DaftarProduk.vue";
+import DetailProduct from "@/views/persediaan/DetailProduct.vue";
+import AddProduct from "@/views/persediaan/AddProduct.vue";
+import MutationProduk from "@/views/persediaan/MutationProduk.vue";
+import WizardSale from "@/views/sales/WizardSale.vue";
+import SaleDetail from "@/views/sales/SaleDetail.vue";
+import WizardEditSale from "@/views/sales/WizardEditSale.vue";
+import DaftarPenjualan from "@/views/sales/DaftarPenjualan.vue";
+import CustomerList from "@/views/customer/CustomerList.vue";
+import CustomerAdd from "@/views/customer/CustomerAdd.vue";
+import CustomerDetail from "@/views/customer/CustomerDetail.vue";
+import Login from "@/views/login/Login.vue";
+import Invoice from "@/views/invoice/SaleInvoice.vue";
+import PaymentCredit from "@/views/sales/PaymentCredit.vue";
+import IncomeStatement from "@/views/report/IncomeStatement.vue";
+import { useAuthStore } from "@/stores/auth";
+import { useVersionStore } from "@/stores/version";
 
 const routes = [
   {
@@ -37,7 +37,7 @@ const routes = [
     meta: {
       transition: "slide-left",
       requiresAuth: true,
-      title: "Hello World",
+      title: "Dashboard",
       layout: "layout-content",
     },
   },
@@ -210,21 +210,22 @@ const routes = [
 ];
 
 const router = createRouter({
-  // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
   history: createWebHashHistory(),
-  linkExactActiveClass: "active",
+  routes,
   scrollBehavior(to, from, savedPosition) {
-    // always scroll to top
-    return { top: 0 };
+    return savedPosition || { top: 0 };
   },
-  routes, // short for `routes: routes`
 });
 
 router.beforeResolve(async (to, _, next) => {
   const auth = useAuthStore();
-  if (to.meta.requiresAuth && !auth.isLoggedIn()) return next("/login");
-  if (to.name == "login" && auth.isLoggedIn()) return next("/");
-  return next();
+  if (to.meta.requiresAuth == true && auth.isLoggedIn() == false) {
+    return next("/login");
+  } else if (to.name == "login" && auth.isLoggedIn() == true) {
+    return next("/");
+  } else {
+    return next();
+  }
 });
 
 export default router;

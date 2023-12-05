@@ -4,18 +4,10 @@
       <div class="flex">
         <div class="w-1/3 h-fit">
           <form>
-            <div
-              class="bg-white shadow-md dark:bg-gray-800 rounded-lg px-6 py-6"
-            >
-              <h5
-                class="text-xl font-medium text-gray-900 dark:text-white mb-4"
-              >
-                Detail
-              </h5>
+            <div class="bg-white shadow-md dark:bg-gray-800 rounded-lg px-6 py-6">
+              <h5 class="text-xl font-medium text-gray-900 dark:text-white mb-4">Detail</h5>
               <div class="mb-2">
-                <label
-                  for="email"
-                  class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
+                <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
                   >Nama Produk</label
                 >
 
@@ -38,11 +30,7 @@
               </div>
 
               <div class="mb-2">
-                <label
-                  for="email"
-                  class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
-                  >Merek</label
-                >
+                <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm">Merek</label>
                 <input
                   :value="itemStore.singleResponses.brand?.name"
                   disabled
@@ -50,11 +38,7 @@
                 />
               </div>
               <div class="mb-2">
-                <label
-                  for="email"
-                  class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
-                  >Unit</label
-                >
+                <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm">Unit</label>
                 <div v-if="!edit">
                   <input
                     :value="itemStore.singleResponses.unit.name"
@@ -70,11 +54,7 @@
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
                       <option value="0" disabled>Pilih satuan product</option>
-                      <option
-                        v-for="item in itemUnitStore.items"
-                        :key="item.id"
-                        :value="item.id"
-                      >
+                      <option v-for="item in itemUnitStore.items" :key="item.id" :value="item.id">
                         {{ item.name.toUpperCase() }}
                       </option>
                     </select>
@@ -98,18 +78,12 @@
               <hr class="my-5" />
 
               <div class="mb-2">
-                <label
-                  for="email"
-                  class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
+                <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
                   >Harga Jual Terakhir</label
                 >
                 <div class="flex flex-row justify-between space-x-2">
                   <input
-                    :value="
-                      IDRCurrency.format(
-                        itemStore.singleResponses.price?.price ?? 0
-                      )
-                    "
+                    :value="IDRCurrency.format(itemStore.singleResponses.price?.price ?? 0)"
                     disabled
                     class="w-full shadow-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500 dark:shadow-sm-light"
                   />
@@ -138,18 +112,12 @@
                 </div>
               </div>
               <div class="mb-2">
-                <label
-                  for="email"
-                  class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
+                <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
                   >Harga Perolehan / Modal</label
                 >
                 <div class="flex flex-row justify-between space-x-2">
                   <input
-                    :value="
-                      IDRCurrency.format(
-                        itemStore.singleResponses.price?.price ?? 0
-                      )
-                    "
+                    :value="IDRCurrency.format(itemStore.singleResponses.price?.price ?? 0)"
                     disabled
                     class="w-full shadow-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500 dark:shadow-sm-light"
                   />
@@ -178,9 +146,7 @@
                 </div>
               </div>
               <div class="mb-2">
-                <label
-                  for="email"
-                  class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
+                <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm"
                   >Persediaan</label
                 >
                 <div class="flex flex-row justify-between space-x-2">
@@ -215,11 +181,9 @@
                 </div>
               </div>
 
-              <small
-                class="flex justify-end mt-4 text-grey-800 dark:text-gray-500"
+              <small class="flex justify-end mt-4 text-grey-800 dark:text-gray-500"
                 ><i
-                  ><span>Last updated</span>
-                  <span> {{ moment().format('DD MMMM YYYY') }}</span></i
+                  ><span>Last updated</span> <span> {{ moment().format("DD MMMM YYYY") }}</span></i
                 ></small
               >
             </div>
@@ -231,14 +195,11 @@
               v-if="stateShow == 'insight'"
               class="bg-white shadow-md dark:bg-gray-800 w-full rounded-lg px-6 py-6 absolute"
             >
-              <h5 class="text-xl font-medium text-gray-900 dark:text-white">
-                Insight
-              </h5>
+              <h5 class="text-xl font-medium text-gray-900 dark:text-white">Insight</h5>
               <hr class="my-5" />
 
               <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                Dibawah ini merupakan performance penjualan atas produk ini
-                dalam 3 hari terakhir
+                Dibawah ini merupakan performance penjualan atas produk ini dalam 3 hari terakhir
               </p>
               <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
               <a
@@ -267,40 +228,23 @@
               v-else-if="stateShow == 'price'"
               class="bg-white shadow-md dark:bg-gray-800 w-full rounded-lg px-6 py-6"
             >
-              <h5 class="text-xl font-medium text-gray-900 dark:text-white">
-                Daftar Harga Jual
-              </h5>
+              <h5 class="text-xl font-medium text-gray-900 dark:text-white">Daftar Harga Jual</h5>
 
               <hr class="my-5" />
 
-              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                Dibawah ini merupakan data harga jual
-              </p>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Dibawah ini merupakan data harga jual</p>
               <div class="flex flex-col justify-between">
                 <div class="overflow-x-auto">
                   <table
                     class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 table-fixed table-striped"
                   >
-                    <thead
-                      class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center"
-                    >
+                    <thead class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
                       <tr>
-                        <th
-                          scope="col"
-                          class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600"
-                        >
-                          No
-                        </th>
-                        <th
-                          scope="col"
-                          class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600"
-                        >
+                        <th scope="col" class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600">No</th>
+                        <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">
                           Tanggal
                         </th>
-                        <th
-                          scope="col"
-                          class="px-4 py-2 w-36 border border-slate-400 dark:border-slate-600"
-                        >
+                        <th scope="col" class="px-4 py-2 w-36 border border-slate-400 dark:border-slate-600">
                           Harga Jual
                         </th>
                       </tr>
@@ -311,12 +255,7 @@
                           <CircleLoading>Prosesing ... </CircleLoading>
                         </td>
                       </tr>
-                      <tr
-                        v-else-if="
-                          !itemPriceStore.isLoading &&
-                          itemPriceStore.items.length < 1
-                        "
-                      >
+                      <tr v-else-if="!itemPriceStore.isLoading && itemPriceStore.items.length < 1">
                         <td colspan="3" class="text-center py-6">No Data</td>
                       </tr>
                       <tr
@@ -333,7 +272,7 @@
                           {{ itemPriceStore.from + index }}
                         </td>
                         <td class="px-4 py-2">
-                          {{ moment(item.created_at).format('DD MMMM YYYY') }}
+                          {{ moment(item.created_at).format("DD MMMM YYYY") }}
                         </td>
                         <td class="px-4 py-2">
                           {{ IDRCurrency.format(item.price) }}
@@ -346,29 +285,19 @@
                   class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
                   aria-label="Table navigation"
                 >
-                  <span
-                    class="text-sm font-normal text-gray-500 dark:text-gray-400"
-                  >
+                  <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
                     Showing
                     <span class="font-semibold text-gray-900 dark:text-white"
                       >{{ itemPriceStore.from }} - {{ itemPriceStore.to }}</span
                     >
                     of
-                    <span class="font-semibold text-gray-900 dark:text-white">{{
-                      itemPriceStore.total
-                    }}</span>
+                    <span class="font-semibold text-gray-900 dark:text-white">{{ itemPriceStore.total }}</span>
                   </span>
                   <ul class="inline-flex items-stretch -space-x-px">
                     <li>
                       <a
-                        @click="
-                          itemPriceStore.currentPage == 1
-                            ? ''
-                            : itemPriceStore.getData(previousPage)
-                        "
-                        :disabled="
-                          itemPriceStore.currentPage == 1 ? true : false
-                        "
+                        @click="itemPriceStore.currentPage == 1 ? '' : itemPriceStore.getData(previousPage)"
+                        :disabled="itemPriceStore.currentPage == 1 ? true : false"
                         :class="
                           itemPriceStore.currentPage == 1
                             ? 'cursor-not-allowed'
@@ -382,9 +311,7 @@
                     <li>
                       <a
                         @click="
-                          itemPriceStore.lastPage == itemPriceStore.currentPage
-                            ? ''
-                            : itemPriceStore.getData(nextPage)
+                          itemPriceStore.lastPage == itemPriceStore.currentPage ? '' : itemPriceStore.getData(nextPage)
                         "
                         :class="
                           itemPriceStore.lastPage == itemPriceStore.currentPage
@@ -399,13 +326,8 @@
                 </nav>
               </div>
             </div>
-            <div
-              v-else
-              class="bg-white shadow-md dark:bg-gray-800 w-full rounded-lg px-6 py-6 absolute"
-            >
-              <h5 class="text-xl font-medium text-gray-900 dark:text-white">
-                Data Mutasi Produk
-              </h5>
+            <div v-else class="bg-white shadow-md dark:bg-gray-800 w-full rounded-lg px-6 py-6 absolute">
+              <h5 class="text-xl font-medium text-gray-900 dark:text-white">Data Mutasi Produk</h5>
 
               <hr class="my-5" />
 
@@ -417,38 +339,15 @@
                   <table
                     class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 table-fixed table-striped"
                   >
-                    <thead
-                      class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center"
-                    >
+                    <thead class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
                       <tr>
-                        <th
-                          scope="col"
-                          class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600"
-                        >
-                          No
-                        </th>
-                        <th
-                          scope="col"
-                          class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600"
-                        >
+                        <th scope="col" class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600">No</th>
+                        <th scope="col" class="px-4 py-2 w-12 border border-slate-400 dark:border-slate-600">
                           Tanggal
                         </th>
-                        <th
-                          scope="col"
-                          class="px-4 py-2 w-8 border border-slate-400 dark:border-slate-600"
-                        >
-                          Debit
-                        </th>
-                        <th
-                          scope="col"
-                          class="px-4 py-2 w-8 border border-slate-400 dark:border-slate-600"
-                        >
-                          kredit
-                        </th>
-                        <th
-                          scope="col"
-                          class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600"
-                        >
+                        <th scope="col" class="px-4 py-2 w-8 border border-slate-400 dark:border-slate-600">Debit</th>
+                        <th scope="col" class="px-4 py-2 w-8 border border-slate-400 dark:border-slate-600">kredit</th>
+                        <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">
                           Keterangan
                         </th>
                       </tr>
@@ -459,12 +358,7 @@
                           <CircleLoading>Prosesing ... </CircleLoading>
                         </td>
                       </tr>
-                      <tr
-                        v-else-if="
-                          !itemMutationStore.isLoading &&
-                          itemMutationStore.items.length < 1
-                        "
-                      >
+                      <tr v-else-if="!itemMutationStore.isLoading && itemMutationStore.items.length < 1">
                         <td colspan="5" class="text-center py-6">No Data</td>
                       </tr>
                       <tr
@@ -481,15 +375,12 @@
                           {{ itemMutationStore.from + index }}
                         </td>
                         <td class="px-4 py-2">
-                          {{ moment(item.created_at).format('DD MMMM YYYY') }}
+                          {{ moment(item.created_at).format("DD MMMM YYYY") }}
                         </td>
                         <td class="px-4 py-2">{{ item.debit }}</td>
                         <td class="px-4 py-2">{{ item.credit }}</td>
                         <td class="px-4 py-2">
-                          <router-link
-                            :to="item.link"
-                            v-if="item.link == null ? false : true"
-                          >
+                          <router-link :to="item.link" v-if="item.link == null ? false : true">
                             <span class="text-blue-700 dark:text-blue-400">
                               {{ item.notes }}
                             </span></router-link
@@ -502,9 +393,7 @@
                     </tbody>
                   </table>
                 </div>
-                <small class="mt-3 text-grey-800 dark:text-gray-500"
-                  ><i>Klik link biru untuk melihat Invoice</i></small
-                >
+                <small class="mt-3 text-grey-800 dark:text-gray-500"><i>Klik link biru untuk melihat Invoice</i></small>
               </div>
             </div>
           </Transition>
@@ -520,15 +409,11 @@
       <div class="mx-auto">
         <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
           <div class="mx-auto max-w-screen-sm text-center">
-            <h1
-              class="mb-4 text-2xl tracking-tight font-extrabold lg:text-5xl text-green-600 dark:text-green-500"
-            >
+            <h1 class="mb-4 text-2xl tracking-tight font-extrabold lg:text-5xl text-green-600 dark:text-green-500">
               Opss!!
             </h1>
 
-            <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
-              Data yang diminta tidak ada.
-            </p>
+            <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">Data yang diminta tidak ada.</p>
           </div>
         </div>
       </div>
@@ -547,82 +432,63 @@
 </template>
 
 <script setup>
-import moment from 'moment'
-import { FunnelIcon, PlusIcon } from '@heroicons/vue/24/outline'
-import {
-  computed,
-  ref,
-  nextTick,
-  onMounted,
-  defineAsyncComponent,
-  inject,
-} from 'vue'
-import { useRoute } from 'vue-router'
-import { IDRCurrency } from '../../utilities/formatter'
-import { useItemStore } from '../../stores/items'
-import { useItemUnitStore } from '../../stores/itemUnit'
-import { useItemMutationStore } from '../../stores/itemMutation'
-import CircleLoading from '../../components/loading/CircleLoading.vue'
-import { Bar } from 'vue-chartjs'
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-} from 'chart.js'
-import { useItemSellingPriceStore } from '../../stores/itemSellingPrice'
+import moment from "moment";
+import { FunnelIcon, PlusIcon } from "@heroicons/vue/24/outline";
+import { computed, ref, nextTick, onMounted, defineAsyncComponent, inject } from "vue";
+import { useRoute } from "vue-router";
+import { IDRCurrency } from "@/utilities/formatter";
+import { useItemStore } from "@/stores/items";
+import { useItemUnitStore } from "@/stores/itemUnit";
+import { useItemMutationStore } from "@/stores/itemMutation";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
+import { Bar } from "vue-chartjs";
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from "chart.js";
+import { useItemSellingPriceStore } from "@/stores/itemSellingPrice";
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 const chartOptions = {
   responsive: true,
-}
+};
 const chartData = {
-  labels: [moment().format('dd MMMM YYYY'), 'February', 'March'],
+  labels: [moment().format("dd MMMM YYYY"), "February", "March"],
   datasets: [{ data: [40, 20, 12] }],
-}
+};
 
-const date = moment()
+const date = moment();
 
-const swal = inject('$swal')
+const swal = inject("$swal");
 
-const stateShow = ref('insight')
-const edit = ref(false)
-const route = useRoute()
-const itemStore = useItemStore()
-const itemUnitStore = useItemUnitStore()
-const itemPriceStore = useItemSellingPriceStore()
-const itemMutationStore = useItemMutationStore()
+const stateShow = ref("insight");
+const edit = ref(false);
+const route = useRoute();
+const itemStore = useItemStore();
+const itemUnitStore = useItemUnitStore();
+const itemPriceStore = useItemSellingPriceStore();
+const itemMutationStore = useItemMutationStore();
 
-const LoadingModal = defineAsyncComponent(() =>
-  import('../../components/modal/LoadingModal.vue')
-)
-const SuccessModal = defineAsyncComponent(() =>
-  import('../../components/modal/SuccessModal.vue')
-)
+const LoadingModal = defineAsyncComponent(() => import("@/components/modal/LoadingModal.vue"));
+const SuccessModal = defineAsyncComponent(() => import("@/components/modal/SuccessModal.vue"));
 
 const id = computed(() => {
-  return route.params.id ?? null
-})
+  return route.params.id ?? null;
+});
 
 function showItemPriceTable() {
-  stateShow.value = 'price'
-  itemPriceStore.getData(itemStore.singleResponses.id)
+  stateShow.value = "price";
+  itemPriceStore.getData(itemStore.singleResponses.id);
 }
 
 function showStockItemTable() {
-  stateShow.value = 'stock'
-  itemMutationStore.getData(itemStore.singleResponses.id)
+  stateShow.value = "stock";
+  itemMutationStore.getData(itemStore.singleResponses.id);
 }
 
 onMounted(() => {
   if (itemStore.singleResponses == null) {
-    itemStore.showData(id.value)
+    itemStore.showData(id.value);
   }
-})
+});
 </script>
 
 <style>

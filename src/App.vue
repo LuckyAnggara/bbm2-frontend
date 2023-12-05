@@ -1,51 +1,24 @@
-<script>
-// On page load or when changing themes, best to add inline in `head` to avoid FOUC
-document.documentElement.classList.toggle('dark', JSON.parse(localStorage.getItem('isDark')))
+<script setup>
+import LayoutFull from "@/layouts/LayoutFull.vue";
+import LayoutContent from "@/layouts/LayoutContent.vue";
+import { TransitionSlide } from "@morev/vue-transitions";
+import { computed } from "vue";
+import { useRoute } from "vue-router";
 
-import LayoutFull from './layouts/LayoutFull.vue'
-import LayoutContent from './layouts/LayoutContent.vue'
-import Logo from './components/Logo.vue'
-import { TransitionSlide } from '@morev/vue-transitions'
-import { onMounted } from 'vue'
+const route = useRoute();
 
-// initialize components based on data attribute selectors
-
-export default {
-  data() {
-    return {
-      isLoading: true,
-      isDark: JSON.parse(localStorage.getItem('isDark')),
-      openSideBar: JSON.parse(localStorage.getItem('openSideBar')),
-    }
-  },
-  components: {
-    LayoutFull,
-    LayoutContent,
-    TransitionSlide,
-    Logo,
-  },
-  computed: {
-    layout() {
-      if (this.$route.meta.layout === 'layout-full') return 'layout-full'
-      return 'layout-content'
-    },
-  },
-  created() {
-    // Melakukan proses loading di sini
-    setTimeout(() => {
-      this.isLoading = false
-    }, 100) // contoh waktu loading selama 3 detik
-  },
-}
+const layout = computed(() => {
+  if (route.meta.layout === "layout-content") return LayoutContent;
+  return LayoutFull;
+});
 </script>
 
 <template>
   <TransitionSlide mode="out-in" :duration="500">
-    <div v-if="isLoading" class="flex h-screen items-center justify-center">
-      <Logo :size="'w-64 h-64'" :animated="true" class="dark:bg-black bg-white" :is-dark="isDark" />
-    </div>
-
-    <component v-else :is="layout">
+    <!-- <div v-if="isLoading" class="flex h-screen items-center justify-center">
+      <Logo :size="'w-64 h-64'" :animated="true" class="dark:bg-black bg-white" :is-dark="styleStore.darkMode" />
+    </div> -->
+    <component :is="layout">
       <router-view />
     </component>
   </TransitionSlide>

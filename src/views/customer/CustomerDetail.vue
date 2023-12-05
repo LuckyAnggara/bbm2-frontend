@@ -295,8 +295,8 @@
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref } from "vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
-import HeadlessMenu from "../../components/menu/HeadlessMenu.vue";
-import { useTaxDetailStore } from "../../stores/taxDetail";
+import HeadlessMenu from "@/components/menu/HeadlessMenu.vue";
+import { useTaxDetailStore } from "@/stores/taxDetail";
 import {
   ArchiveBoxIcon,
   FolderArrowDownIcon,
@@ -307,14 +307,14 @@ import {
   XMarkIcon,
 } from "@heroicons/vue/24/outline";
 
-import LoadingModal from "../../components/modal/LoadingModal.vue";
-import SuccessModal from "../../components/modal/SuccessModal.vue";
+import LoadingModal from "@/components/modal/LoadingModal.vue";
+import SuccessModal from "@/components/modal/SuccessModal.vue";
 import { useToast } from "vue-toastification";
 import { useRoute, useRouter } from "vue-router";
-import CircleLoading from "../../components/loading/CircleLoading.vue";
-import { useCustomerStore } from "../../stores/customer";
-import { usePostalCodeStore } from "../../stores/postalCode";
-import PostalCodeModal from "../../components/modal/PostalCodeModal.vue";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
+import { useCustomerStore } from "@/stores/customer";
+import { usePostalCodeStore } from "@/stores/postalCode";
+import PostalCodeModal from "@/components/modal/PostalCodeModal.vue";
 
 const toast = useToast();
 const router = useRouter();

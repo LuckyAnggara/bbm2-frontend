@@ -8,16 +8,10 @@
       >
         <div class="relative p-4 w-full max-w-md h-full md:h-auto">
           <!-- Modal content -->
-          <div
-            class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
-          >
+          <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
             <!-- Modal header -->
-            <div
-              class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600"
-            >
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                Price List {{ itemName }}
-              </h3>
+            <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Price List {{ itemName }}</h3>
               <button
                 @click="emit('close')"
                 type="button"
@@ -43,31 +37,14 @@
 
             <div class="flex flex-col space-y-6">
               <div class="overflow-x-auto">
-                <table
-                  class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
-                >
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                   <thead
                     class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center"
                   >
                     <tr>
-                      <th
-                        scope="col"
-                        class="px-4 py-3 border border-slate-400 dark:border-slate-600"
-                      >
-                        No
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-4 py-3 border border-slate-400 dark:border-slate-600"
-                      >
-                        Tanggal
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-4 py-3 border border-slate-400 dark:border-slate-600"
-                      >
-                        Harga Jual
-                      </th>
+                      <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">No</th>
+                      <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">Tanggal</th>
+                      <th scope="col" class="px-4 py-3 border border-slate-400 dark:border-slate-600">Harga Jual</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -76,12 +53,7 @@
                         <CircleLoading>Prosesing ... </CircleLoading>
                       </td>
                     </tr>
-                    <tr
-                      v-else-if="
-                        !itemSellingPriceStore.isLoading &&
-                        itemSellingPriceStore.items.length < 1
-                      "
-                    >
+                    <tr v-else-if="!itemSellingPriceStore.isLoading && itemSellingPriceStore.items.length < 1">
                       <td colspan="11" class="text-center py-6">No Data</td>
                     </tr>
                     <tr
@@ -94,7 +66,7 @@
                         {{ itemSellingPriceStore.from + index }}
                       </td>
                       <td class="px-4 py-3">
-                        {{ moment(item.created_at).format('DD MMMM YYYY') }}
+                        {{ moment(item.created_at).format("DD MMMM YYYY") }}
                       </td>
                       <td class="px-4 py-3">
                         {{ IDRCurrency.format(item.price) }}
@@ -107,26 +79,19 @@
                 class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
                 aria-label="Table navigation"
               >
-                <span
-                  class="text-sm font-normal text-gray-500 dark:text-gray-400"
-                >
+                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
                   Showing
                   <span class="font-semibold text-gray-900 dark:text-white"
-                    >{{ itemSellingPriceStore.from }} -
-                    {{ itemSellingPriceStore.to }}</span
+                    >{{ itemSellingPriceStore.from }} - {{ itemSellingPriceStore.to }}</span
                   >
                   of
-                  <span class="font-semibold text-gray-900 dark:text-white">{{
-                    itemSellingPriceStore.total
-                  }}</span>
+                  <span class="font-semibold text-gray-900 dark:text-white">{{ itemSellingPriceStore.total }}</span>
                 </span>
                 <ul class="inline-flex items-stretch -space-x-px">
                   <li>
                     <a
                       @click="itemSellingPriceStore.getData(previousPage)"
-                      :disabled="
-                        itemSellingPriceStore.currentPage == 1 ? true : false
-                      "
+                      :disabled="itemSellingPriceStore.currentPage == 1 ? true : false"
                       :class="
                         itemSellingPriceStore.currentPage == 1
                           ? 'cursor-not-allowed'
@@ -140,15 +105,9 @@
                   <li>
                     <a
                       @click="itemSellingPriceStore.getData(nextPage)"
-                      :disabled="
-                        itemSellingPriceStore.lastPage ==
-                        itemSellingPriceStore.currentPage
-                          ? true
-                          : false
-                      "
+                      :disabled="itemSellingPriceStore.lastPage == itemSellingPriceStore.currentPage ? true : false"
                       :class="
-                        itemSellingPriceStore.lastPage ==
-                        itemSellingPriceStore.currentPage
+                        itemSellingPriceStore.lastPage == itemSellingPriceStore.currentPage
                           ? 'cursor-not-allowed'
                           : 'cursor-pointer dark:hover:bg-blue-700 dark:hover:text-white hover:bg-blue-100 hover:text-gray-700'
                       "
@@ -167,21 +126,21 @@
 </template>
 
 <script setup>
-import { useItemSellingPriceStore } from '../../../stores/itemSellingPrice'
-import { IDRCurrency } from '../../../utilities/formatter'
-import CircleLoading from '../../../components/loading/CircleLoading.vue'
+import { useItemSellingPriceStore } from "@/stores/itemSellingPrice";
+import { IDRCurrency } from "@/utilities/formatter";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
 
 const props = defineProps({
   show: Boolean,
   itemName: {
     type: String,
-    default: '',
+    default: "",
   },
-})
+});
 
-const emit = defineEmits(['close', 'setItem'])
+const emit = defineEmits(["close", "setItem"]);
 
-const itemSellingPriceStore = useItemSellingPriceStore()
+const itemSellingPriceStore = useItemSellingPriceStore();
 </script>
 <style>
 .modal-mask {

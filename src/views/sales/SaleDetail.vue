@@ -132,9 +132,9 @@ import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
 import CustomerDetail from "./detailcomponent/CustomerDetail.vue";
 
-import HeadlessMenu from "../../components/menu/HeadlessMenu.vue";
-import { useTaxDetailStore } from "../../stores/taxDetail";
-import { useSalesStore } from "../../stores/sales";
+import HeadlessMenu from "@/components/menu/HeadlessMenu.vue";
+import { useTaxDetailStore } from "@/stores/taxDetail";
+import { useSalesStore } from "@/stores/sales";
 import {
   ArchiveBoxIcon,
   ArrowPathIcon,
@@ -144,11 +144,11 @@ import {
   XMarkIcon,
 } from "@heroicons/vue/24/outline";
 
-import LoadingModal from "../../components/modal/LoadingModal.vue";
-import SuccessModal from "../../components/modal/SuccessModal.vue";
+import LoadingModal from "@/components/modal/LoadingModal.vue";
+import SuccessModal from "@/components/modal/SuccessModal.vue";
 import { useToast } from "vue-toastification";
 import { useRoute, useRouter } from "vue-router";
-import CircleLoading from "../../components/loading/CircleLoading.vue";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
 import SalesPaymentDetail from "./detailcomponent/SalesPaymentDetail.vue";
 import CartDetail from "./detailcomponent/CartDetail.vue";
 import CreditDetail from "./detailcomponent/CreditDetail.vue";

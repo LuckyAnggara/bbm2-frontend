@@ -42,7 +42,9 @@
           </div>
         </form>
       </div>
-      <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+      <div
+        class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0"
+      >
         <button
           type="button"
           class="flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
@@ -55,7 +57,13 @@
             class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
             type="button"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="h-4 w-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              class="h-4 w-4 mr-2 text-gray-400"
+              viewbox="0 0 20 20"
+              fill="currentColor"
+            >
               <path
                 fill-rule="evenodd"
                 d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
@@ -64,7 +72,13 @@
             </svg>
             Filter
 
-            <svg class="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <svg
+              class="-mr-1 ml-1.5 w-5 h-5"
+              fill="currentColor"
+              viewbox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
               <path
                 clip-rule="evenodd"
                 fill-rule="evenodd"
@@ -105,7 +119,11 @@
             v-else
             v-for="(item, index) in itemStore.items"
             :key="item.id"
-            :class="(index + 1) % 2 !== 0 ? 'bg-white dark:bg-gray-900 dark:border-gray-700' : 'bg-gray-50 dark:bg-gray-800 dark:border-gray-700'"
+            :class="
+              (index + 1) % 2 !== 0
+                ? 'bg-white dark:bg-gray-900 dark:border-gray-700'
+                : 'bg-gray-50 dark:bg-gray-800 dark:border-gray-700'
+            "
             class="border-b text-sm"
           >
             <th scope="row" class="px-4 py-1 font-medium text-gray-900 dark:text-white">
@@ -127,7 +145,10 @@
         </tbody>
       </table>
     </div>
-    <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
+    <nav
+      class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
+      aria-label="Table navigation"
+    >
       <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
         Showing
         <span class="font-semibold text-gray-900 dark:text-white">{{ itemStore.from }} - {{ itemStore.to }}</span>
@@ -168,38 +189,38 @@
 </template>
 
 <script setup>
-import { DocumentTextIcon, PencilSquareIcon, TrashIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
-import { onMounted, computed, onUnmounted, ref, nextTick, inject } from 'vue'
-import TableComplex from '../../components/table/TableComplex.vue'
-import CircleLoading from '../../components/loading/CircleLoading.vue'
-import { IDRCurrency } from '../../utilities/formatter'
-import { useItemStore } from '../../stores/items'
-import { initDropdowns } from 'flowbite'
+import { DocumentTextIcon, PencilSquareIcon, TrashIcon, MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
+import { onMounted, computed, onUnmounted, ref, nextTick, inject } from "vue";
+import TableComplex from "@/components/table/TableComplex.vue";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
+import { IDRCurrency } from "@/utilities/formatter";
+import { useItemStore } from "@/stores/items";
+import { initDropdowns } from "flowbite";
 
-const swal = inject('$swal')
-const itemStore = useItemStore()
-const lengths = ref([5, 10, 20, 30, 40, 50])
+const swal = inject("$swal");
+const itemStore = useItemStore();
+const lengths = ref([5, 10, 20, 30, 40, 50]);
 
 itemStore.$subscribe((mutation, state) => {
-  if (mutation.events.key == 'currentLimit') {
-    itemStore.getData()
+  if (mutation.events.key == "currentLimit") {
+    itemStore.getData();
   }
-})
+});
 
 const previousPage = computed(() => {
-  return '&page=' + (itemStore.currentPage - 1)
-})
+  return "&page=" + (itemStore.currentPage - 1);
+});
 
 const nextPage = computed(() => {
-  return '&page=' + (itemStore.currentPage + 1)
-})
+  return "&page=" + (itemStore.currentPage + 1);
+});
 
 onMounted(() => {
-  itemStore.getData()
-  initDropdowns()
-})
+  itemStore.getData();
+  initDropdowns();
+});
 
 onUnmounted(() => {
-  itemStore.$reset()
-})
+  itemStore.$reset();
+});
 </script>

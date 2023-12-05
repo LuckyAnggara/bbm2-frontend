@@ -430,14 +430,14 @@ import { XMarkIcon } from "@heroicons/vue/24/solid";
 
 import { computed, onUnmounted, onBeforeMount, defineAsyncComponent, ref, nextTick, shallowRef } from "vue";
 import { useRouter } from "vue-router";
-import { IDRCurrency } from "../../utilities/formatter";
-import { useSalesStore } from "../../stores/sales";
-import { useLayoutStore } from "../../stores/layout";
+import { IDRCurrency } from "@/utilities/formatter";
+import { useSalesStore } from "@/stores/sales";
+import { useLayoutStore } from "@/stores/layout";
 
-const CircleLoading = defineAsyncComponent(() => import("../../components/loading/CircleLoading.vue"));
-const ConfirmationModal = defineAsyncComponent(() => import("../../components/modal/ConfirmationModal.vue"));
-const LoadingModal = defineAsyncComponent(() => import("../../components/modal/LoadingModal.vue"));
-const DetailPenjualanDrawer = defineAsyncComponent(() => import("../../views/sales/drawer/DetailPenjualanDrawer.vue"));
+const CircleLoading = defineAsyncComponent(() => import("@/components/loading/CircleLoading.vue"));
+const ConfirmationModal = defineAsyncComponent(() => import("@/components/modal/ConfirmationModal.vue"));
+const LoadingModal = defineAsyncComponent(() => import("@/components/modal/LoadingModal.vue"));
+const DetailPenjualanDrawer = defineAsyncComponent(() => import("@/views/sales/drawer/DetailPenjualanDrawer.vue"));
 const FilterDrawer = defineAsyncComponent(() => import("./drawer/FilterDrawer.vue"));
 
 const router = useRouter();

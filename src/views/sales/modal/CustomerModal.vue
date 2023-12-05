@@ -25,7 +25,9 @@
 
           <div>
             <div class="mb-24">
-              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cari Pelanggan</label>
+              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Cari Pelanggan</label
+              >
               <Searchbar
                 v-model="customerStore.searchName"
                 @cari-data="cariData()"
@@ -46,7 +48,9 @@
             <form autocomplete="off">
               <div class="grid gap-4 mb-4 sm:grid-cols-2">
                 <div>
-                  <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Lengkap</label>
+                  <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Nama Lengkap</label
+                  >
                   <input
                     ref="namaLengkap"
                     :disabled="isCustomer == true && isEdit == false"
@@ -62,7 +66,9 @@
                   </div>
                 </div>
                 <div>
-                  <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor Telepon</label>
+                  <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Nomor Telepon</label
+                  >
                   <input
                     :disabled="isCustomer == true && isEdit == false"
                     :class="[!isEdit ? 'bg-gray-200 dark:bg-gray-900' : 'bg-white dark:bg-gray-700']"
@@ -74,7 +80,9 @@
                 </div>
 
                 <div class="sm:col-span-2">
-                  <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat Lengkap</label>
+                  <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Alamat Lengkap</label
+                  >
                   <textarea
                     :class="[!isEdit ? 'bg-gray-200 dark:bg-gray-900' : 'bg-white dark:bg-gray-700']"
                     :disabled="isCustomer == true && isEdit == false"
@@ -93,16 +101,23 @@
                     value=""
                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
-                  <label for="checkbox-1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Simpan pelanggan </label>
+                  <label for="checkbox-1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >Simpan pelanggan
+                  </label>
                 </div>
 
-                <small class="text-red-500 font-medium" v-if="customerData.saveCustomer">Mohon lengkapi data pelanggan setelah transaksi</small>
+                <small class="text-red-500 font-medium" v-if="customerData.saveCustomer"
+                  >Mohon lengkapi data pelanggan setelah transaksi</small
+                >
               </div>
               <div class="flex items-center space-x-4 justify-between">
                 <div class="flex space-x-4">
                   <button
                     :disabled="customerStore.isEditLoading"
-                    :class="[canSubmit == true ? '' : isEdit ? '' : 'hidden', customerStore.isEditLoading ? 'cursor-wait' : '']"
+                    :class="[
+                      canSubmit == true ? '' : isEdit ? '' : 'hidden',
+                      customerStore.isEditLoading ? 'cursor-wait' : '',
+                    ]"
                     @click="clearData"
                     ref="submit"
                     type="button"
@@ -133,7 +148,7 @@
                         Prosessing</span
                       >
                       <span v-else class="flex">
-                        {{ isEdit ? 'Update' : 'Edit' }}
+                        {{ isEdit ? "Update" : "Edit" }}
                         <PencilSquareIcon class="h-5 w-5 ml-2" />
                       </span>
                     </div>
@@ -159,118 +174,118 @@
 </template>
 
 <script setup>
-import { PaperAirplaneIcon, TrashIcon, PencilSquareIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import { nextTick, onMounted, ref, computed } from 'vue'
-import { useCustomerStore } from '../../stores/customer'
-import { useAuthStore } from '../../stores/auth'
-import { useToast } from 'vue-toastification'
+import { PaperAirplaneIcon, TrashIcon, PencilSquareIcon, XMarkIcon } from "@heroicons/vue/24/outline";
+import { nextTick, onMounted, ref, computed } from "vue";
+import { useCustomerStore } from "@/stores/customer";
+import { useAuthStore } from "@/stores/auth";
+import { useToast } from "vue-toastification";
 
-import Searchbar from '../../components/input/Searchbar.vue'
-import CircleLoading from '../../components/loading/CircleLoading.vue'
+import Searchbar from "@/components/input/Searchbar.vue";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
 
 const props = defineProps({
   show: Boolean,
-})
-const emit = defineEmits(['close', 'sendCustomer'])
+});
+const emit = defineEmits(["close", "sendCustomer"]);
 
-const namaLengkap = ref(null)
-const submit = ref(null)
-const toast = useToast()
-const customerStore = useCustomerStore()
-const authStore = useAuthStore()
+const namaLengkap = ref(null);
+const submit = ref(null);
+const toast = useToast();
+const customerStore = useCustomerStore();
+const authStore = useAuthStore();
 const customerData = ref({
-  id: '',
-  name: '',
-  address: '',
-  phone_number: '',
+  id: "",
+  name: "",
+  address: "",
+  phone_number: "",
   userId: authStore.userData.id,
   saveCustomer: false,
-})
-const isCustomer = ref(false)
-const isEdit = ref(false)
-const canClose = ref(true)
+});
+const isCustomer = ref(false);
+const isEdit = ref(false);
+const canClose = ref(true);
 
 // const canSubmit = ref(false)
 
 function cariData() {
-  customerStore.currentLimit = 5
-  customerStore.getData()
+  customerStore.currentLimit = 5;
+  customerStore.getData();
 }
 
 function clearData() {
   if (isEdit.value) {
-    isEdit.value = !isEdit.value
+    isEdit.value = !isEdit.value;
   } else {
-    canClose.value = true
-    isCustomer.value = false
-    isEdit.value = false
-    customerStore.searchName = ''
+    canClose.value = true;
+    isCustomer.value = false;
+    isEdit.value = false;
+    customerStore.searchName = "";
     customerData.value = {
-      id: '',
-      name: '',
-      address: '',
-      phone_number: '',
+      id: "",
+      name: "",
+      address: "",
+      phone_number: "",
       saveCustomer: false,
       user: {
         id: authStore.userData.id,
         branchId: authStore.userData.branch_id,
       },
-    }
-    emit('sendCustomer', customerData.value)
-    toast.info('Data pelanggan di hapus', {
+    };
+    emit("sendCustomer", customerData.value);
+    toast.info("Data pelanggan di hapus", {
       timeout: 2000,
-      position: 'bottom-left',
-    })
+      position: "bottom-left",
+    });
   }
 }
 
 async function editData() {
   if (isEdit.value == false) {
-    isEdit.value = true
-    nextTick()
-    namaLengkap.value.focus()
+    isEdit.value = true;
+    nextTick();
+    namaLengkap.value.focus();
   } else {
-    await customerStore.updateCustomer(customerData.value)
-    isEdit.value = false
+    await customerStore.updateCustomer(customerData.value);
+    isEdit.value = false;
   }
 }
 
 function addData(item) {
-  canClose.value = false
-  customerData.value = item
+  canClose.value = false;
+  customerData.value = item;
   customerData.value.user = {
     id: authStore.userData.id,
     branchId: authStore.userData.branch_id,
-  }
-  isCustomer.value = true
-  toast.success(item.name + ' menjadi pelanggan transaksi ini', {
+  };
+  isCustomer.value = true;
+  toast.success(item.name + " menjadi pelanggan transaksi ini", {
     timeout: 2000,
-    position: 'bottom-left',
-  })
+    position: "bottom-left",
+  });
 }
 
 function closeModal() {
   if (!canClose.value) {
-    toast.error('Jangan lupa untuk klik tombol Submit', {
+    toast.error("Jangan lupa untuk klik tombol Submit", {
       timeout: 2000,
-      position: 'bottom-left',
-    })
-    nextTick()
-    submit.value.focus()
-    return
+      position: "bottom-left",
+    });
+    nextTick();
+    submit.value.focus();
+    return;
   }
-  emit('close')
+  emit("close");
 }
 
 function submitCustomer() {
-  canClose.value = true
-  emit('sendCustomer', customerData.value)
-  toast.success('Pelanggan berhasil ditambahkan', {
+  canClose.value = true;
+  emit("sendCustomer", customerData.value);
+  toast.success("Pelanggan berhasil ditambahkan", {
     timeout: 2000,
-    position: 'top-right',
-  })
-  nextTick()
-  emit('close')
+    position: "top-right",
+  });
+  nextTick();
+  emit("close");
 }
 
 // const canSubmit = computed(() => {
@@ -283,10 +298,12 @@ function submitCustomer() {
 
 const canSubmit = computed(() => {
   if (customerData.value) {
-    return customerData.value.name !== '' && customerData.value.address !== '' && customerData.value.phone_number !== ''
+    return (
+      customerData.value.name !== "" && customerData.value.address !== "" && customerData.value.phone_number !== ""
+    );
   }
-  return false
-})
+  return false;
+});
 
 // watch(customerData.name, (x) => {
 //   console.info(x.name)

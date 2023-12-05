@@ -128,10 +128,10 @@
 </template>
 <script setup>
 import { computed, ref, watch } from "vue";
-import { useSalesStore } from "../../../stores/sales";
-import { useCustomerStore } from "../../../stores/customer";
+import { useSalesStore } from "@/stores/sales";
+import { useCustomerStore } from "@/stores/customer";
 import { MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
-import CustomerFindModal from "../../../components/modal/CustomerFindModal.vue";
+import CustomerFindModal from "@/components/modal/CustomerFindModal.vue";
 
 const props = defineProps({
   isEdit: {

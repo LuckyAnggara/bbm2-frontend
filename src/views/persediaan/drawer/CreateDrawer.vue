@@ -74,7 +74,9 @@
           </div>
         </div>
         <div>
-          <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Saldo Persediaan</label>
+          <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Saldo Persediaan</label
+          >
           <input
             v-model="itemStore.currentData.balance"
             type="number"
@@ -122,7 +124,14 @@
             type="reset"
             class="hover:scale-105 duration-300 ease-in-out inline-flex w-full justify-center text-gray-500 items-center bg-white hover:bg-gray-100 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600"
           >
-            <svg aria-hidden="true" class="w-5 h-5 -ml-1 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              aria-hidden="true"
+              class="w-5 h-5 -ml-1 sm:mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
             Cancel
@@ -142,53 +151,53 @@
 </template>
 
 <script setup>
-import { CubeIcon, XMarkIcon } from '@heroicons/vue/24/solid'
-import { FunnelIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import { CubeIcon, XMarkIcon } from "@heroicons/vue/24/solid";
+import { FunnelIcon, PlusIcon } from "@heroicons/vue/24/outline";
 
-import DotLoading from '../../../components/loading/DotLoading.vue'
-import ButtonLoader from '../../../components/buttons/ButtonLoader.vue'
-import InputCurrency from '../../../components/input/InputCurrency.vue'
+import DotLoading from "@/components/loading/DotLoading.vue";
+import ButtonLoader from "@/components/buttons/ButtonLoader.vue";
+import InputCurrency from "@/components/input/InputCurrency.vue";
 
-import { computed, nextTick, ref, watchEffect, defineAsyncComponent } from 'vue'
+import { computed, nextTick, ref, watchEffect, defineAsyncComponent } from "vue";
 
-import { useItemBrandStore } from '../../../stores/itemBrand'
-import { useItemUnitStore } from '../../../stores/itemUnit'
-import { useItemStore } from '../../../stores/items'
-import InputCurrencyVue from '../../../components/input/InputCurrency.vue'
+import { useItemBrandStore } from "@/stores/itemBrand";
+import { useItemUnitStore } from "@/stores/itemUnit";
+import { useItemStore } from "@/stores/items";
+import InputCurrencyVue from "@/components/input/InputCurrency.vue";
 
 const porps = defineProps({
   show: {
     type: Boolean,
     default: false,
   },
-})
+});
 
-const itemUnitStore = useItemUnitStore()
-const itemBrandStore = useItemBrandStore()
-const itemStore = useItemStore()
-const userData = JSON.parse(localStorage.getItem('userData'))
+const itemUnitStore = useItemUnitStore();
+const itemBrandStore = useItemBrandStore();
+const itemStore = useItemStore();
+const userData = JSON.parse(localStorage.getItem("userData"));
 
-const showModalAddUnit = ref(false)
-const showModalAddMerek = ref(false)
+const showModalAddUnit = ref(false);
+const showModalAddMerek = ref(false);
 
-const NewUnitModal = defineAsyncComponent(() => import('../modal/UnitModal.vue'))
-const NewMerekModal = defineAsyncComponent(() => import('../modal/MerekModal.vue'))
+const NewUnitModal = defineAsyncComponent(() => import("../modal/UnitModal.vue"));
+const NewMerekModal = defineAsyncComponent(() => import("../modal/MerekModal.vue"));
 
-const emit = defineEmits(['submit', 'close'])
+const emit = defineEmits(["submit", "close"]);
 
-let isActive = false
-let stopWatching = null
+let isActive = false;
+let stopWatching = null;
 
 function toggleWatchEffect() {
   if (isActive) {
     // menghentikan pemanggilan watchEffect
-    stopWatching()
-    isActive = false
+    stopWatching();
+    isActive = false;
   } else {
     // memanggil kembali watchEffect
     stopWatching = watchEffect(() => {
       if (!itemStore.isStoreLoading) {
-        emit('close')
+        emit("close");
         itemStore.$patch({
           currentData: {
             name: null,
@@ -198,19 +207,19 @@ function toggleWatchEffect() {
             balance: 0,
             created_by: userData.id,
           },
-        })
+        });
       }
-    })
-    isActive = true
+    });
+    isActive = true;
   }
 }
 
 async function prosesRequest() {
-  itemStore.store()
-  toggleWatchEffect()
+  itemStore.store();
+  toggleWatchEffect();
 }
 
 function cancel() {
-  emit('close')
+  emit("close");
 }
 </script>

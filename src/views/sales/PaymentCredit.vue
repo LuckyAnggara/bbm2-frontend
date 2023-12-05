@@ -256,10 +256,10 @@ import {
 } from "@heroicons/vue/24/outline";
 import { computed, ref, nextTick, onMounted, defineAsyncComponent, inject } from "vue";
 import { useRoute } from "vue-router";
-import { IDRCurrency } from "../../utilities/formatter";
-import TableComplex from "../../components/table/TableComplex.vue";
-import { useSalesStore } from "../../stores/sales";
-import CircleLoading from "../../components/loading/CircleLoading.vue";
+import { IDRCurrency } from "@/utilities/formatter";
+import TableComplex from "@/components/table/TableComplex.vue";
+import { useSalesStore } from "@/stores/sales";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
 
 const swal = inject("$swal");
 const route = useRoute();
@@ -276,8 +276,8 @@ const column = [
 
 const PembayaranModal = defineAsyncComponent(() => import("../sales/modal/PembayaranKreditModal.vue"));
 
-const LoadingModal = defineAsyncComponent(() => import("../../components/modal/LoadingModal.vue"));
-const SuccessModal = defineAsyncComponent(() => import("../../components/modal/SuccessModal.vue"));
+const LoadingModal = defineAsyncComponent(() => import("@/components/modal/LoadingModal.vue"));
+const SuccessModal = defineAsyncComponent(() => import("@/components/modal/SuccessModal.vue"));
 
 const formattedTableData = computed(() => {
   return salesStore.singleResponses?.payment?.map((item) => {

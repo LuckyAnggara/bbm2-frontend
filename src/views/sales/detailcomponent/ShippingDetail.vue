@@ -153,12 +153,12 @@
 </template>
 <script setup>
 import { ref, watch } from "vue";
-import { useSalesStore } from "../../../stores/sales";
-import { useCustomerStore } from "../../../stores/customer";
+import { useSalesStore } from "@/stores/sales";
+import { useCustomerStore } from "@/stores/customer";
 import { MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
-import PostalCodeModal from "../../../components/modal/PostalCodeModal.vue";
-import { usePostalCodeStore } from "../../../stores/postalCode";
-import InputCurrency from "../../../components/input/InputCurrency.vue";
+import PostalCodeModal from "@/components/modal/PostalCodeModal.vue";
+import { usePostalCodeStore } from "@/stores/postalCode";
+import InputCurrency from "@/components/input/InputCurrency.vue";
 
 const props = defineProps({
   isEdit: {

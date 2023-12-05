@@ -197,7 +197,7 @@
 
 <script setup>
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
-import HeadlessMenu from "../../components/menu/HeadlessMenu.vue";
+import HeadlessMenu from "@/components/menu/HeadlessMenu.vue";
 
 import {
   EllipsisVerticalIcon,
@@ -210,17 +210,17 @@ import {
   ArchiveBoxIcon,
 } from "@heroicons/vue/24/outline";
 import { onMounted, computed, onUnmounted, ref, shallowRef, nextTick, inject, defineAsyncComponent } from "vue";
-import { IDRCurrency } from "../../utilities/formatter";
-import { useItemStore } from "../../stores/items";
-import { useItemBrandStore } from "../../stores/itemBrand";
-import { useItemUnitStore } from "../../stores/itemUnit";
-import CircleLoading from "../../components/loading/CircleLoading.vue";
+import { IDRCurrency } from "@/utilities/formatter";
+import { useItemStore } from "@/stores/items";
+import { useItemBrandStore } from "@/stores/itemBrand";
+import { useItemUnitStore } from "@/stores/itemUnit";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
 
 import CreateDrawer from "./drawer/CreateDrawer.vue";
 import EditDrawer from "./drawer/EditDrawer.vue";
 import { useRouter } from "vue-router";
-import { useLayoutStore } from "../../stores/layout";
-import ReloadButton from "../../components/buttons/ReloadButton.vue";
+import { useLayoutStore } from "@/stores/layout";
+import ReloadButton from "@/components/buttons/ReloadButton.vue";
 
 const FilterDrawer = defineAsyncComponent(() => import("./drawer/FilterDrawer.vue"));
 

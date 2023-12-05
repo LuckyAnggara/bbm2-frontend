@@ -557,11 +557,11 @@
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref } from "vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
-import FileUpload from "../../components/FileUpload.vue";
-import HeadlessMenu from "../../components/menu/HeadlessMenu.vue";
-import { useTaxDetailStore } from "../../stores/taxDetail";
-import { useItemUnitStore } from "../../stores/itemUnit";
-import { useItemStore } from "../../stores/items";
+import FileUpload from "@/components/FileUpload.vue";
+import HeadlessMenu from "@/components/menu/HeadlessMenu.vue";
+import { useTaxDetailStore } from "@/stores/taxDetail";
+import { useItemUnitStore } from "@/stores/itemUnit";
+import { useItemStore } from "@/stores/items";
 import {
   ArchiveBoxIcon,
   FolderArrowDownIcon,
@@ -571,17 +571,17 @@ import {
   XMarkIcon,
 } from "@heroicons/vue/24/outline";
 
-import DotLoading from "../../components/loading/DotLoading.vue";
-import { useItemCategoryStore } from "../../stores/itemCategory";
+import DotLoading from "@/components/loading/DotLoading.vue";
+import { useItemCategoryStore } from "@/stores/itemCategory";
 
-import InputCurrency from "../../components/input/InputCurrency.vue";
-import { IDRCurrency } from "../../utilities/formatter";
-import LoadingModal from "../../components/modal/LoadingModal.vue";
-import SuccessModal from "../../components/modal/SuccessModal.vue";
+import InputCurrency from "@/components/input/InputCurrency.vue";
+import { IDRCurrency } from "@/utilities/formatter";
+import LoadingModal from "@/components/modal/LoadingModal.vue";
+import SuccessModal from "@/components/modal/SuccessModal.vue";
 import { useToast } from "vue-toastification";
 import { useRoute, useRouter } from "vue-router";
-import CircleLoading from "../../components/loading/CircleLoading.vue";
-import { useItemMutationStore } from "../../stores/itemMutation";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
+import { useItemMutationStore } from "@/stores/itemMutation";
 
 const toast = useToast();
 const router = useRouter();

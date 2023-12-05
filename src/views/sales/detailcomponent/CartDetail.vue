@@ -319,15 +319,15 @@
 </template>
 <script setup>
 import { TrashIcon } from "@heroicons/vue/24/outline";
-import { useSalesStore } from "../../../stores/sales";
-import { useTaxDetailStore } from "../../../stores/taxDetail";
-import { useItemStore } from "../../../stores/items";
-import { IDRCurrency } from "../../../utilities/formatter";
-import InputCurrency from "../../../components/input/InputCurrency.vue";
+import { useSalesStore } from "@/stores/sales";
+import { useTaxDetailStore } from "@/stores/taxDetail";
+import { useItemStore } from "@/stores/items";
+import { IDRCurrency } from "@/utilities/formatter";
+import InputCurrency from "@/components/input/InputCurrency.vue";
 import { useToast } from "vue-toastification";
 import { computed, ref } from "vue";
-import DotLoading from "../../../components/loading/DotLoading.vue";
-import Searchbar from "../../../components/input/Searchbar.vue";
+import DotLoading from "@/components/loading/DotLoading.vue";
+import Searchbar from "@/components/input/Searchbar.vue";
 
 const salesStore = useSalesStore();
 const taxStore = useTaxDetailStore();

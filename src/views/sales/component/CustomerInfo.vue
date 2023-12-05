@@ -182,13 +182,13 @@
 <script setup>
 import { PaperAirplaneIcon, TrashIcon, PencilSquareIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { nextTick, ref, computed, watch, onUnmounted } from "vue";
-import { useCustomerStore } from "../../../stores/customer";
-import { useSalesStore } from "../../../stores/sales";
-import { useAuthStore } from "../../../stores/auth";
+import { useCustomerStore } from "@/stores/customer";
+import { useSalesStore } from "@/stores/sales";
+import { useAuthStore } from "@/stores/auth";
 import { useToast } from "vue-toastification";
 
-import Searchbar from "../../../components/input/Searchbar.vue";
-import CircleLoading from "../../../components/loading/CircleLoading.vue";
+import Searchbar from "@/components/input/Searchbar.vue";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
 
 const emit = defineEmits(["next"]);
 

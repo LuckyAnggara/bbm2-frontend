@@ -193,9 +193,9 @@ import {
 } from "@heroicons/vue/24/outline";
 import { computed, ref, nextTick, onMounted, defineAsyncComponent, inject, watch } from "vue";
 import { useRoute } from "vue-router";
-import { IDRCurrency } from "../../../utilities/formatter";
-import { useSalesStore } from "../../../stores/sales";
-import CircleLoading from "../../../components/loading/CircleLoading.vue";
+import { IDRCurrency } from "@/utilities/formatter";
+import { useSalesStore } from "@/stores/sales";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
 import VueTailwindDatepicker from "vue-tailwind-datepicker";
 import { useDateFormat } from "@vueuse/core";
 

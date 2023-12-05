@@ -17,7 +17,13 @@
                 type="button"
                 class="text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
               >
-                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  aria-hidden="true"
+                  class="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     fill-rule="evenodd"
                     d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -32,7 +38,9 @@
             <form class="flex flex-col space-y-6">
               <div class="grid gap-2 sm:grid-cols-2 sm:gap-4 duration-300 ease-in-out transition-all">
                 <div class="sm:col-span-2">
-                  <label for="unit-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                  <label for="unit-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Name</label
+                  >
                   <input
                     :disabled="unitStore.isStoreLoading"
                     id="unit-name"
@@ -44,7 +52,9 @@
                   />
                 </div>
                 <div class="sm:col-span-2">
-                  <label for="description-unit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                  <label for="description-unit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Description</label
+                  >
                   <textarea
                     v-model="unitStore.currentData.description"
                     id="description-unit"
@@ -70,46 +80,46 @@
 </template>
 
 <script setup>
-import { PaperAirplaneIcon } from '@heroicons/vue/24/outline'
-import { ref, computed, nextTick, watchEffect, onUnmounted } from 'vue'
-import { useItemUnitStore } from '../../../stores/itemUnit'
+import { PaperAirplaneIcon } from "@heroicons/vue/24/outline";
+import { ref, computed, nextTick, watchEffect, onUnmounted } from "vue";
+import { useItemUnitStore } from "@/stores/itemUnit";
 
-import ButtonLoader from '../../../components/buttons/ButtonLoader.vue'
+import ButtonLoader from "@/components/buttons/ButtonLoader.vue";
 
 const props = defineProps({
   show: Boolean,
-})
-const emit = defineEmits(['close', 'submitTransaction'])
+});
+const emit = defineEmits(["close", "submitTransaction"]);
 
-let isActive = false
-let stopWatching = null
+let isActive = false;
+let stopWatching = null;
 
-const unitStore = useItemUnitStore()
+const unitStore = useItemUnitStore();
 
 function toggleWatchEffect() {
   if (isActive) {
     // menghentikan pemanggilan watchEffect
-    stopWatching()
-    isActive = false
+    stopWatching();
+    isActive = false;
   } else {
     // memanggil kembali watchEffect
     stopWatching = watchEffect(() => {
       if (!unitStore.isStoreLoading) {
-        emit('close')
+        emit("close");
         unitStore.$patch({
           currentData: {
             name: null,
           },
-        })
+        });
       }
-    })
-    isActive = true
+    });
+    isActive = true;
   }
 }
 
 async function prosesRequest() {
-  unitStore.store()
-  toggleWatchEffect()
+  unitStore.store();
+  toggleWatchEffect();
 }
 
 onUnmounted(() => {
@@ -117,8 +127,8 @@ onUnmounted(() => {
     currentData: {
       name: null,
     },
-  })
-})
+  });
+});
 </script>
 
 <style>

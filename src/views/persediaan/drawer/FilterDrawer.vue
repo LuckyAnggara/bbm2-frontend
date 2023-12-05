@@ -102,12 +102,12 @@
 
 <script setup>
 import { onMounted } from "vue";
-import InputCurrency from "../../../components/input/InputCurrency.vue";
+import InputCurrency from "@/components/input/InputCurrency.vue";
 
-import { useItemUnitStore } from "../../../stores/itemUnit";
-import DotLoading from "../../../components/loading/DotLoading.vue";
-import { useItemCategoryStore } from "../../../stores/itemCategory";
-import { useItemStore } from "../../../stores/items";
+import { useItemUnitStore } from "@/stores/itemUnit";
+import DotLoading from "@/components/loading/DotLoading.vue";
+import { useItemCategoryStore } from "@/stores/itemCategory";
+import { useItemStore } from "@/stores/items";
 
 const itemStore = useItemStore();
 const itemUnitStore = useItemUnitStore();

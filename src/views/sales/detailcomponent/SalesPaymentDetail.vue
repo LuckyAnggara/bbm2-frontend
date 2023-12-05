@@ -204,9 +204,9 @@
   </section>
 </template>
 <script setup>
-import { useSalesStore } from "../../../stores/sales";
-import InputCurrency from "../../../components/input/InputCurrency.vue";
-import DialogModal from "../../../components/modal/DialogModal.vue";
+import { useSalesStore } from "@/stores/sales";
+import InputCurrency from "@/components/input/InputCurrency.vue";
+import DialogModal from "@/components/modal/DialogModal.vue";
 import { computed, ref, watch } from "vue";
 import { inRange } from "lodash";
 

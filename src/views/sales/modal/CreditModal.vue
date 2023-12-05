@@ -17,7 +17,13 @@
                 type="button"
                 class="text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
               >
-                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  aria-hidden="true"
+                  class="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     fill-rule="evenodd"
                     d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -31,13 +37,17 @@
 
             <div class="flex flex-col space-y-4">
               <div class="flex items-center justify-between">
-                <label for="description" class="block text-xl font-medium text-gray-700 dark:text-white w-1/3">Total</label>
+                <label for="description" class="block text-xl font-medium text-gray-700 dark:text-white w-1/3"
+                  >Total</label
+                >
                 <span class="text-xl dark:text-white text-black">{{
                   IDRCurrency.format(salesStore.total.grandTotal + salesStore.currentData.shipping.fee ?? 0)
                 }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <label for="description" class="block mb-2 text-xl font-medium text-gray-700 dark:text-white w-2/3">Sisa Pembayaran</label>
+                <label for="description" class="block mb-2 text-xl font-medium text-gray-700 dark:text-white w-2/3"
+                  >Sisa Pembayaran</label
+                >
                 <InputCurrency
                   :options="{ currency: 'IDR' }"
                   v-model="salesStore.currentData.credit.amount"
@@ -46,12 +56,18 @@
               </div>
               <hr />
               <div class="flex items-center justify-between">
-                <label for="description" class="block mb-2 text-xl font-medium text-gray-700 dark:text-white w-2/3">Sisa Pembayaran</label>
-                <span class="text-xl dark:text-red-500 text-red-500 font-semibold">{{ IDRCurrency.format(sisaPembayaran ?? 0) }}</span>
+                <label for="description" class="block mb-2 text-xl font-medium text-gray-700 dark:text-white w-2/3"
+                  >Sisa Pembayaran</label
+                >
+                <span class="text-xl dark:text-red-500 text-red-500 font-semibold">{{
+                  IDRCurrency.format(sisaPembayaran ?? 0)
+                }}</span>
               </div>
               <hr />
               <div class="flex items-center justify-between">
-                <label for="description" class="block mb-2 text-xl font-medium text-gray-700 dark:text-white">Tanggal Jatuh Tempo</label>
+                <label for="description" class="block mb-2 text-xl font-medium text-gray-700 dark:text-white"
+                  >Tanggal Jatuh Tempo</label
+                >
                 <div class="w-2/5">
                   <vue-tailwind-datepicker
                     :disable-date="dDate"
@@ -67,7 +83,9 @@
               </div>
 
               <div class="sm:col-span-2">
-                <label for="description" class="block mb-2 text-xl font-medium text-gray-700 dark:text-white">Keterangan</label>
+                <label for="description" class="block mb-2 text-xl font-medium text-gray-700 dark:text-white"
+                  >Keterangan</label
+                >
                 <textarea
                   v-model="salesStore.currentData.credit.notes"
                   rows="3"
@@ -95,47 +113,47 @@
 </template>
 
 <script setup>
-import { PaperAirplaneIcon } from '@heroicons/vue/24/outline'
-import { ref, computed } from 'vue'
-import { useSalesStore } from '../../../stores/sales'
-import { IDRCurrency } from '../../../utilities/formatter'
-import InputCurrency from '../../../components/input/InputCurrency.vue'
-import VueTailwindDatepicker from 'vue-tailwind-datepicker'
-import { useToast } from 'vue-toastification'
+import { PaperAirplaneIcon } from "@heroicons/vue/24/outline";
+import { ref, computed } from "vue";
+import { useSalesStore } from "@/stores/sales";
+import { IDRCurrency } from "@/utilities/formatter";
+import InputCurrency from "@/components/input/InputCurrency.vue";
+import VueTailwindDatepicker from "vue-tailwind-datepicker";
+import { useToast } from "vue-toastification";
 
 const props = defineProps({
   show: Boolean,
-})
+});
 
-const emit = defineEmits(['close', 'nextProcess'])
+const emit = defineEmits(["close", "nextProcess"]);
 
-const salesStore = useSalesStore()
-const toast = useToast()
+const salesStore = useSalesStore();
+const toast = useToast();
 
 const formatter = ref({
-  date: 'DD MMM YYYY',
-  month: 'MMM',
-})
-const dateValue = ref('')
+  date: "DD MMM YYYY",
+  month: "MMM",
+});
+const dateValue = ref("");
 const dDate = (date) => {
-  return date < new Date()
-}
+  return date < new Date();
+};
 
 const sisaPembayaran = computed(() => {
-  return salesStore.total.grandTotal + salesStore.currentData.shipping.fee - salesStore.currentData.credit.amount
-})
+  return salesStore.total.grandTotal + salesStore.currentData.shipping.fee - salesStore.currentData.credit.amount;
+});
 
 async function nextProcess() {
-  salesStore.currentData.credit.due_date = dateValue.value
+  salesStore.currentData.credit.due_date = dateValue.value;
 
-  if (salesStore.currentData.credit.due_date == '') {
-    toast.error('Tanggal jatuh tempo belum di isi', {
+  if (salesStore.currentData.credit.due_date == "") {
+    toast.error("Tanggal jatuh tempo belum di isi", {
       timeout: 1000,
-      position: 'top-center',
-    })
-    return
+      position: "top-center",
+    });
+    return;
   }
-  emit('nextProcess')
+  emit("nextProcess");
 }
 </script>
 

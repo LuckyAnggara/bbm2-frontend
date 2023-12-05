@@ -85,7 +85,14 @@
         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Payment Status</label>
         <ul class="w-full grid grid-flow-row-dense grid-cols-2 gap-2">
           <li v-for="i in salesStore.paymentStatus" :key="i">
-            <input name="payment" type="radio" :id="`payment-${i}`" :value="i" v-model="salesStore.filter.paymentStatus" class="hidden peer" />
+            <input
+              name="payment"
+              type="radio"
+              :id="`payment-${i}`"
+              :value="i"
+              v-model="salesStore.filter.paymentStatus"
+              class="hidden peer"
+            />
             <label
               :for="`payment-${i}`"
               class="inline-flex text-xs text-center items-center justify-between w-full py-2 px-4 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-white dark:border-gray-700 peer-checked:bg-red-500 hover:text-gray-600 peer-checked:border-red-500 dark:peer-checked:text-white peer-checked:text-white hover:bg-green-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-red-500"
@@ -100,7 +107,14 @@
         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Payment Type</label>
         <ul class="w-full grid grid-flow-row-dense grid-cols-2 gap-2">
           <li v-for="x in salesStore.pembayaran" :key="x">
-            <input name="pembayaran" type="radio" :id="`pembayaran-${x}`" :value="x" v-model="salesStore.filter.pembayaran" class="hidden peer" />
+            <input
+              name="pembayaran"
+              type="radio"
+              :id="`pembayaran-${x}`"
+              :value="x"
+              v-model="salesStore.filter.pembayaran"
+              class="hidden peer"
+            />
             <label
               :for="`pembayaran-${x}`"
               class="inline-flex text-xs text-center items-center justify-between w-full py-2 px-4 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-white dark:border-gray-700 peer-checked:bg-red-500 hover:text-gray-600 peer-checked:border-red-500 dark:peer-checked:text-white peer-checked:text-white hover:bg-green-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-red-500"
@@ -115,7 +129,14 @@
         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Delivery Status</label>
         <ul class="w-full grid grid-flow-row-dense grid-cols-2 gap-2">
           <li v-for="d in salesStore.deliveryStatus" :key="d">
-            <input name="delivery" type="radio" :id="`delivery-${d}`" :value="d" v-model="salesStore.filter.deliveryStatus" class="hidden peer" />
+            <input
+              name="delivery"
+              type="radio"
+              :id="`delivery-${d}`"
+              :value="d"
+              v-model="salesStore.filter.deliveryStatus"
+              class="hidden peer"
+            />
             <label
               :for="`delivery-${d}`"
               class="inline-flex text-xs text-center items-center justify-between w-full py-2 px-4 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-white dark:border-gray-700 peer-checked:bg-red-500 hover:text-gray-600 peer-checked:border-red-500 dark:peer-checked:text-white peer-checked:text-white hover:bg-green-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-red-500"
@@ -158,37 +179,37 @@
 </template>
 
 <script setup>
-import { FunnelIcon } from '@heroicons/vue/24/outline'
-import { nextTick, ref, watchEffect } from 'vue'
-import VueTailwindDatepicker from 'vue-tailwind-datepicker'
-import InputCurrency from '../../../components/input/InputCurrency.vue'
-import moment from 'moment'
+import { FunnelIcon } from "@heroicons/vue/24/outline";
+import { nextTick, ref, watchEffect } from "vue";
+import VueTailwindDatepicker from "vue-tailwind-datepicker";
+import InputCurrency from "@/components/input/InputCurrency.vue";
+import moment from "moment";
 
-import { useSalesStore } from '../../../stores/sales'
+import { useSalesStore } from "@/stores/sales";
 
-const salesStore = useSalesStore()
+const salesStore = useSalesStore();
 
 const porps = defineProps({
   show: {
     type: Boolean,
     default: false,
   },
-})
+});
 
 const formatter = ref({
-  date: 'DD MMM YYYY',
-  month: 'MMM',
-})
+  date: "DD MMM YYYY",
+  month: "MMM",
+});
 
 function setThisMonth() {
-  const payload = [moment().startOf('month').format('DD MMM YYYY'), moment().endOf('month').format('DD MMM YYYY')]
-  salesStore.changeDateFilter(payload)
-  salesStore.getData()
+  const payload = [moment().startOf("month").format("DD MMM YYYY"), moment().endOf("month").format("DD MMM YYYY")];
+  salesStore.changeDateFilter(payload);
+  salesStore.getData();
 }
 
 function setThisDay() {
-  const payload = [moment().format('DD MMM YYYY'), moment().format('DD MMM YYYY')]
-  salesStore.changeDateFilter(payload)
-  salesStore.getData()
+  const payload = [moment().format("DD MMM YYYY"), moment().format("DD MMM YYYY")];
+  salesStore.changeDateFilter(payload);
+  salesStore.getData();
 }
 </script>

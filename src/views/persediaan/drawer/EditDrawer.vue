@@ -4,9 +4,7 @@
     class="py-20 fixed top-0 left-0 z-40 w-full h-screen max-w-md p-4 overflow-y-auto transition-transform duration-300 ease-in-out bg-white dark:bg-gray-800 shadow-md"
   >
     <div class="w-full justify-between flex items-start mb-4">
-      <h5
-        class="inline-flex items-center mb-6 text-base font-semibold text-gray-500 uppercase dark:text-gray-400"
-      >
+      <h5 class="inline-flex items-center mb-6 text-base font-semibold text-gray-500 uppercase dark:text-gray-400">
         <CubeIcon class="h-5 w-5 mr-2" />Edit Data Produk
       </h5>
       <button
@@ -21,11 +19,7 @@
     <form>
       <div class="space-y-4">
         <div>
-          <label
-            for="name"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Nama</label
-          >
+          <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
           <input
             v-model="itemStore.editCurrentData.name"
             type="text"
@@ -36,11 +30,7 @@
           />
         </div>
         <div>
-          <label
-            for="brand"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Merek</label
-          >
+          <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Merek</label>
           <DotLoading v-if="itemBrandStore.isLoading" />
           <div v-else class="flex flex-row space-x-2">
             <select
@@ -48,11 +38,7 @@
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
               <option value="0" disabled>Pilih merek product</option>
-              <option
-                v-for="item in itemBrandStore.items"
-                :key="item.id"
-                :value="item.id"
-              >
+              <option v-for="item in itemBrandStore.items" :key="item.id" :value="item.id">
                 {{ item.name.toUpperCase() }}
               </option>
             </select>
@@ -66,11 +52,7 @@
           </div>
         </div>
         <div>
-          <label
-            for="brand"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Satuan</label
-          >
+          <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Satuan</label>
           <DotLoading v-if="itemUnitStore.isLoading" />
           <div v-else class="flex flex-row space-x-2">
             <select
@@ -78,11 +60,7 @@
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
               <option value="0" disabled>Pilih satuan product</option>
-              <option
-                v-for="item in itemUnitStore.items"
-                :key="item.id"
-                :value="item.id"
-              >
+              <option v-for="item in itemUnitStore.items" :key="item.id" :value="item.id">
                 {{ item.name.toUpperCase() }}
               </option>
             </select>
@@ -96,9 +74,7 @@
           </div>
         </div>
 
-        <div
-          class="bottom-20 left-0 flex justify-center w-full pb-4 space-x-4 md:px-4 md:absolute"
-        >
+        <div class="bottom-20 left-0 flex justify-center w-full pb-4 space-x-4 md:px-4 md:absolute">
           <ButtonLoader
             :custom-class="'hover:scale-105 duration-300 ease-in-out text-white w-full justify-center bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700'"
             @click="prosesRequest"
@@ -120,12 +96,7 @@
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
             Cancel
           </button>
@@ -135,81 +106,75 @@
   </div>
 
   <Teleport to="body">
-    <NewUnitModal :show="showModalAddUnit" @close="showModalAddUnit = false">
-    </NewUnitModal>
+    <NewUnitModal :show="showModalAddUnit" @close="showModalAddUnit = false"> </NewUnitModal>
   </Teleport>
 
   <Teleport to="body">
-    <NewMerekModal :show="showModalAddMerek" @close="showModalAddMerek = false">
-    </NewMerekModal>
+    <NewMerekModal :show="showModalAddMerek" @close="showModalAddMerek = false"> </NewMerekModal>
   </Teleport>
 </template>
 
 <script setup>
-import { CubeIcon, XMarkIcon } from '@heroicons/vue/24/solid'
-import { FunnelIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import { CubeIcon, XMarkIcon } from "@heroicons/vue/24/solid";
+import { FunnelIcon, PlusIcon } from "@heroicons/vue/24/outline";
 
-import DotLoading from '../../../components/loading/DotLoading.vue'
-import ButtonLoader from '../../../components/buttons/ButtonLoader.vue'
+import DotLoading from "@/components/loading/DotLoading.vue";
+import ButtonLoader from "@/components/buttons/ButtonLoader.vue";
 
-import { computed, nextTick, ref, watchEffect, defineAsyncComponent } from 'vue'
+import { computed, nextTick, ref, watchEffect, defineAsyncComponent } from "vue";
 
-import { useItemBrandStore } from '../../../stores/itemBrand'
-import { useItemUnitStore } from '../../../stores/itemUnit'
-import { useItemStore } from '../../../stores/items'
+import { useItemBrandStore } from "@/stores/itemBrand";
+import { useItemUnitStore } from "@/stores/itemUnit";
+import { useItemStore } from "@/stores/items";
 
 const porps = defineProps({
   show: {
     type: Boolean,
     default: false,
   },
-})
+});
 
-const itemUnitStore = useItemUnitStore()
-const itemBrandStore = useItemBrandStore()
-const itemStore = useItemStore()
-const userData = JSON.parse(localStorage.getItem('userData'))
+const itemUnitStore = useItemUnitStore();
+const itemBrandStore = useItemBrandStore();
+const itemStore = useItemStore();
+const userData = JSON.parse(localStorage.getItem("userData"));
 
-const showModalAddUnit = ref(false)
-const showModalAddMerek = ref(false)
+const showModalAddUnit = ref(false);
+const showModalAddMerek = ref(false);
 
-const NewUnitModal = defineAsyncComponent(() =>
-  import('../modal/UnitModal.vue')
-)
-const NewMerekModal = defineAsyncComponent(() =>
-  import('../modal/MerekModal.vue')
-)
+const NewUnitModal = defineAsyncComponent(() => import("../modal/UnitModal.vue"));
+const NewMerekModal = defineAsyncComponent(() => import("../modal/MerekModal.vue"));
 
-const emit = defineEmits(['submit', 'close'])
+const emit = defineEmits(["submit", "close"]);
 
-let isActive = false
-let stopWatching = null
+let isActive = false;
+let stopWatching = null;
 
 function toggleWatchEffect() {
   if (isActive) {
     // menghentikan pemanggilan watchEffect
-    stopWatching()
-    isActive = false
+    stopWatching();
+    isActive = false;
   } else {
     // memanggil kembali watchEffect
     stopWatching = watchEffect(() => {
       if (!itemStore.isEditLoading) {
-        emit('close')
+        emit("close");
         itemStore.$patch({
           editCurrentData: {},
-        })
+        });
       }
-    })
-    isActive = true
+    });
+    isActive = true;
   }
 }
 
 async function prosesRequest() {
-  itemStore.update()
-  toggleWatchEffect()
+  itemStore.update();
+  toggleWatchEffect();
 }
 
 function cancel() {
-  emit('close')
+  emit("close");
 }
 </script>

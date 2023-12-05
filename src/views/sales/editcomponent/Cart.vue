@@ -235,16 +235,16 @@
 import { TrashIcon, PaperAirplaneIcon, ArrowUturnLeftIcon } from "@heroicons/vue/24/outline";
 
 import { ref, reactive, computed, onUnmounted, defineAsyncComponent, onMounted, watch } from "vue";
-import { useItemStore } from "../../../stores/items";
-import { IDRCurrency } from "../../../utilities/formatter";
+import { useItemStore } from "@/stores/items";
+import { IDRCurrency } from "@/utilities/formatter";
 import { useToast } from "vue-toastification";
 
-import Searchbar from "../../../components/input/Searchbar.vue";
-import InputCurrency from "../../../components/input/InputCurrency.vue";
-import { useSalesStore } from "../../../stores/sales";
-import { useItemSellingPriceStore } from "../../../stores/itemSellingPrice";
-import DotLoading from "../../../components/loading/DotLoading.vue";
-import { useTaxDetailStore } from "../../../stores/taxDetail";
+import Searchbar from "@/components/input/Searchbar.vue";
+import InputCurrency from "@/components/input/InputCurrency.vue";
+import { useSalesStore } from "@/stores/sales";
+import { useItemSellingPriceStore } from "@/stores/itemSellingPrice";
+import DotLoading from "@/components/loading/DotLoading.vue";
+import { useTaxDetailStore } from "@/stores/taxDetail";
 
 const emit = defineEmits(["next", "previous"]);
 

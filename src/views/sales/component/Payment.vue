@@ -11,70 +11,45 @@
         </i>
       </div>
     </div>
-    <h5
-      class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white"
-    >
-      Pilih metode pembayaran
-    </h5>
+    <h5 class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white">Pilih metode pembayaran</h5>
     <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
       Untuk metode kredit dipastikan bahwa pelanggan adalah Pelanggan Tetap
     </p>
 
     <div class="my-4 mb-5">
       <div class="flex flex-row items-center">
-        <h6
-          class="text-base font-semibold text-gray-900 md:text-xl dark:text-white"
-        >
-          Grand Total
-        </h6>
+        <h6 class="text-base font-semibold text-gray-900 md:text-xl dark:text-white">Grand Total</h6>
         <Popper hover placement="right" content="aaa">
-          <ExclamationCircleIcon
-            class="cursor-pointer ml-1 h-5 w-5 text-gray-600 dark:text-gray-300"
-          />
+          <ExclamationCircleIcon class="cursor-pointer ml-1 h-5 w-5 text-gray-600 dark:text-gray-300" />
           <template #content>
-            <div
-              class="bg-gray-50 dark:bg-gray-700 w-60 p-4 rounded-lg shadow-md"
-            >
+            <div class="bg-gray-50 dark:bg-gray-700 w-60 p-4 rounded-lg shadow-md">
               <ul class="text-gray-600 dark:text-gray-300 space-y-1">
                 <li class="flex justify-between">
                   <span>Total</span>
-                  <span>{{
-                    IDRCurrency.format(salesStore.total.subtotal ?? 0)
-                  }}</span>
+                  <span>{{ IDRCurrency.format(salesStore.total.subtotal ?? 0) }}</span>
                 </li>
                 <li class="flex justify-between">
                   <span>Discount</span>
-                  <span>{{
-                    IDRCurrency.format(salesStore.total.discount ?? 0)
-                  }}</span>
+                  <span>{{ IDRCurrency.format(salesStore.total.discount ?? 0) }}</span>
                 </li>
                 <hr />
                 <li class="flex justify-between">
                   <span>Total Before Tax</span>
-                  <span class="font-medium">{{
-                    IDRCurrency.format(salesStore.total.totalBeforeTax ?? 0)
-                  }}</span>
+                  <span class="font-medium">{{ IDRCurrency.format(salesStore.total.totalBeforeTax ?? 0) }}</span>
                 </li>
                 <li class="flex justify-between">
                   <span>Tax</span>
-                  <span>{{
-                    IDRCurrency.format(salesStore.total.tax ?? 0)
-                  }}</span>
+                  <span>{{ IDRCurrency.format(salesStore.total.tax ?? 0) }}</span>
                 </li>
                 <li class="flex justify-between">
                   <span>Shipping</span>
-                  <span>{{
-                    IDRCurrency.format(salesStore.currentData.shipping.fee ?? 0)
-                  }}</span>
+                  <span>{{ IDRCurrency.format(salesStore.currentData.shipping.fee ?? 0) }}</span>
                 </li>
                 <hr />
                 <li class="flex justify-between">
                   <span>Total Before Tax</span>
                   <span class="font-medium">{{
-                    IDRCurrency.format(
-                      salesStore.total.grandTotal +
-                        salesStore.currentData.shipping.fee ?? 0
-                    )
+                    IDRCurrency.format(salesStore.total.grandTotal + salesStore.currentData.shipping.fee ?? 0)
                   }}</span>
                 </li>
               </ul>
@@ -84,12 +59,7 @@
       </div>
 
       <p class="text-3xl font-normal text-gray-500 dark:text-gray-400">
-        {{
-          IDRCurrency.format(
-            salesStore.total.grandTotal + salesStore.currentData.shipping.fee ??
-              0
-          )
-        }}
+        {{ IDRCurrency.format(salesStore.total.grandTotal + salesStore.currentData.shipping.fee ?? 0) }}
       </p>
     </div>
     <a
@@ -120,28 +90,14 @@
       </ul>
 
       <ul class="my-4 space-y-4" v-else>
-        <div
-          v-if="
-            salesStore.currentData.transaction.paymentStatus == 'BELUM LUNAS'
-          "
-        >
+        <div v-if="salesStore.currentData.transaction.paymentStatus == 'BELUM LUNAS'">
           <div class="flex flex-row items-center">
-            <h6
-              class="text-base font-semibold text-gray-900 md:text-xl dark:text-white"
-            >
-              Down Payment
-            </h6>
+            <h6 class="text-base font-semibold text-gray-900 md:text-xl dark:text-white">Down Payment</h6>
             <Popper hover placement="right" content="aaa">
-              <ExclamationCircleIcon
-                class="cursor-pointer ml-1 h-5 w-5 text-gray-600 dark:text-gray-300"
-              />
+              <ExclamationCircleIcon class="cursor-pointer ml-1 h-5 w-5 text-gray-600 dark:text-gray-300" />
               <template #content>
-                <div
-                  class="bg-gray-50 dark:bg-gray-700 w-fit p-4 rounded-lg shadow-md"
-                >
-                  <span class="text-gray-600 dark:text-gray-300"
-                    >Jumlah yang harus di bayarkan</span
-                  >
+                <div class="bg-gray-50 dark:bg-gray-700 w-fit p-4 rounded-lg shadow-md">
+                  <span class="text-gray-600 dark:text-gray-300">Jumlah yang harus di bayarkan</span>
                 </div>
               </template>
             </Popper>
@@ -166,9 +122,7 @@
       </ul>
     </Transition>
     <div>
-      <a
-        class="inline-flex items-center text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
-      >
+      <a class="inline-flex items-center text-xs font-normal text-gray-500 hover:underline dark:text-gray-400">
         <svg
           class="w-3 h-3 mr-2"
           aria-hidden="true"
@@ -212,18 +166,12 @@
     <!-- Modal -->
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
-      <CreditModal
-        :show="showCreditModal"
-        @close="showCreditModal = false"
-        @nextProcess="processCredit()"
-      >
+      <CreditModal :show="showCreditModal" @close="showCreditModal = false" @nextProcess="processCredit()">
       </CreditModal>
     </Teleport>
 
     <Teleport to="body">
-      <LoadingModal :show="salesStore.isStoreLoading"
-        >Processing transaction</LoadingModal
-      >
+      <LoadingModal :show="salesStore.isStoreLoading">Processing transaction</LoadingModal>
     </Teleport>
 
     <Teleport to="body">
@@ -252,11 +200,7 @@
     </Teleport>
 
     <Teleport to="body">
-      <SuccessModal
-        :show="errorModal"
-        @submit="errorModal = false"
-        :type="'error'"
-      >
+      <SuccessModal :show="errorModal" @submit="errorModal = false" :type="'error'">
         <template #message>
           <div class="flex flex-col">
             <span class="text-red-500"> Error</span>
@@ -270,7 +214,7 @@
 </template>
 
 <script setup>
-import Popper from 'vue3-popper'
+import Popper from "vue3-popper";
 import {
   BanknotesIcon,
   CreditCardIcon,
@@ -285,167 +229,156 @@ import {
   ArrowUturnLeftIcon,
   PrinterIcon,
   ArrowPathIcon,
-} from '@heroicons/vue/24/outline'
-import { inject, defineAsyncComponent, ref, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
-import { useItemStore } from '../../../stores/items'
-import { useSalesStore } from '../../../stores/sales'
-import { IDRCurrency } from '../../../utilities/formatter'
+} from "@heroicons/vue/24/outline";
+import { inject, defineAsyncComponent, ref, nextTick } from "vue";
+import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
+import { useItemStore } from "@/stores/items";
+import { useSalesStore } from "@/stores/sales";
+import { IDRCurrency } from "@/utilities/formatter";
 
-import ErrorModal from '../../../components/modal/SuccessModal.vue'
+import ErrorModal from "@/components/modal/SuccessModal.vue";
 
-const emit = defineEmits(['next', 'previous', 'new'])
+const emit = defineEmits(["next", "previous", "new"]);
 
-const errorModal = ref(false)
-const swal = inject('$swal')
-const salesStore = useSalesStore()
-const router = useRouter()
-const toast = useToast()
-const stateShow = ref('first')
-const showCashModal = ref(false)
-const showTransferModal = ref(false)
-const showCreditModal = ref(false)
+const errorModal = ref(false);
+const swal = inject("$swal");
+const salesStore = useSalesStore();
+const router = useRouter();
+const toast = useToast();
+const stateShow = ref("first");
+const showCashModal = ref(false);
+const showTransferModal = ref(false);
+const showCreditModal = ref(false);
 const firstMenu = ref([
   {
     id: 1,
-    label: 'Full Payment',
+    label: "Full Payment",
     icon: BanknotesIcon,
     action: () => {
-      stateShow.value = 'second'
-      salesStore.currentData.transaction.paymentStatus = 'LUNAS'
-      salesStore.currentData.credit.isCredit = false
+      stateShow.value = "second";
+      salesStore.currentData.transaction.paymentStatus = "LUNAS";
+      salesStore.currentData.credit.isCredit = false;
     },
   },
   {
     id: 2,
-    label: 'Credit',
+    label: "Credit",
     icon: CreditCardIcon,
     action: () => {
-      if (
-        salesStore.currentData.customerData.id == 1 &&
-        salesStore.currentData.customerData.saveCustomer == false
-      ) {
-        errorModal.value = true
+      if (salesStore.currentData.customerData.id == 1 && salesStore.currentData.customerData.saveCustomer == false) {
+        errorModal.value = true;
       } else {
-        showCreditModal.value = true
-        salesStore.currentData.credit.isCredit = true
-        salesStore.currentData.transaction.paymentStatus = 'BELUM LUNAS'
+        showCreditModal.value = true;
+        salesStore.currentData.credit.isCredit = true;
+        salesStore.currentData.transaction.paymentStatus = "BELUM LUNAS";
       }
 
       // showCreditModal.value = true
     },
   },
-])
+]);
 const secondMenu = ref([
   {
     id: 1,
-    label: 'Cash',
+    label: "Cash",
     icon: BanknotesIcon,
     action: () => {
-      showCashModal.value = true
+      showCashModal.value = true;
       // showCashModal.value = true
     },
   },
   {
     id: 2,
-    label: 'Bank Transfer',
+    label: "Bank Transfer",
     icon: BuildingLibraryIcon,
     action: () => {
-      showTransferModal.value = true
+      showTransferModal.value = true;
       // showCreditModal.value = true
     },
   },
   {
     id: 3,
-    label: 'QRIS',
+    label: "QRIS",
     icon: CreditCardIcon,
     action: () => {
-      noFeature()
+      noFeature();
     },
   },
   {
     id: 4,
-    label: 'Digital Payment',
+    label: "Digital Payment",
     icon: QrCodeIcon,
     action: () => {
-      noFeature()
+      noFeature();
     },
   },
-])
+]);
 
-const CashModal = defineAsyncComponent(() => import('../modal/CashModal.vue'))
-const TransferModal = defineAsyncComponent(() =>
-  import('../modal/TransferModal.vue')
-)
-const CreditModal = defineAsyncComponent(() =>
-  import('../modal/CreditModal.vue')
-)
+const CashModal = defineAsyncComponent(() => import("../modal/CashModal.vue"));
+const TransferModal = defineAsyncComponent(() => import("../modal/TransferModal.vue"));
+const CreditModal = defineAsyncComponent(() => import("../modal/CreditModal.vue"));
 
-const LoadingModal = defineAsyncComponent(() =>
-  import('../../../components/modal/LoadingModal.vue')
-)
-const SuccessModal = defineAsyncComponent(() =>
-  import('../../../components/modal/SuccessModal.vue')
-)
+const LoadingModal = defineAsyncComponent(() => import("@/components/modal/LoadingModal.vue"));
+const SuccessModal = defineAsyncComponent(() => import("@/components/modal/SuccessModal.vue"));
 
 function noFeature() {
-  swal.fire('Fitur belum dapat digunakan', '', 'info')
+  swal.fire("Fitur belum dapat digunakan", "", "info");
 }
 
 async function closeModal() {
-  salesStore.isTransactionSuccess = false
-  await nextTick()
-  router.push({ name: 'new-sale' })
+  salesStore.isTransactionSuccess = false;
+  await nextTick();
+  router.push({ name: "new-sale" });
 }
 
 function backward() {
-  if (stateShow.value == 'first') {
-    emit('previous')
+  if (stateShow.value == "first") {
+    emit("previous");
   } else {
-    stateShow.value = 'first'
+    stateShow.value = "first";
   }
 }
 
 function processCredit() {
   if (salesStore.currentData.credit.amount == 0) {
-    submitTransaction(true)
+    submitTransaction(true);
   } else {
-    showCreditModal.value = false
-    stateShow.value = 'second'
+    showCreditModal.value = false;
+    stateShow.value = "second";
   }
 }
 
-async function submitTransaction(isCredit = false, paymentType = 'CASH') {
+async function submitTransaction(isCredit = false, paymentType = "CASH") {
   if (salesStore.currentData.currentCart.length == 0) {
-    toast.error('Transaksi tidak dapat di Proses', {
+    toast.error("Transaksi tidak dapat di Proses", {
       timeout: 3000,
-      position: 'bottom-center',
-    })
-    return
+      position: "bottom-center",
+    });
+    return;
   }
 
-  await nextTick()
+  await nextTick();
   // UPDATE DATA UNTUK TRANSAKSI KAS MASUK KE PAYLOAD
-  salesStore.setData(isCredit, paymentType)
+  salesStore.setData(isCredit, paymentType);
 
-  await nextTick()
+  await nextTick();
   // PROSES TRANSAKSI
-  salesStore.store()
+  salesStore.store();
   // await nextTick()
   // salesStore.resetData()
   // itemStore.resetData()
 }
 
 async function invoicePage() {
-  salesStore.isTransactionSuccess = false
-  await nextTick()
-  router.push({ name: 'invoice', params: { id: salesStore.responses.id } })
+  salesStore.isTransactionSuccess = false;
+  await nextTick();
+  router.push({ name: "invoice", params: { id: salesStore.responses.id } });
 }
 
 async function newTransaction() {
-  errorModal.value = false
-  emit('new')
+  errorModal.value = false;
+  emit("new");
 }
 </script>
 

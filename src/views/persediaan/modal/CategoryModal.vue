@@ -8,16 +8,10 @@
       >
         <div class="relative p-4 w-full max-w-lg h-full md:h-auto">
           <!-- Modal content -->
-          <div
-            class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
-          >
+          <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
             <!-- Modal header -->
-            <div
-              class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600"
-            >
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                Add New Category
-              </h3>
+            <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Add New Category</h3>
               <button
                 @click="emit('close')"
                 type="button"
@@ -42,13 +36,9 @@
             <!-- Modal body -->
 
             <form class="flex flex-col space-y-6" autocomplete="off">
-              <div
-                class="grid gap-2 sm:grid-cols-2 sm:gap-4 duration-300 ease-in-out transition-all"
-              >
+              <div class="grid gap-2 sm:grid-cols-2 sm:gap-4 duration-300 ease-in-out transition-all">
                 <div class="sm:col-span-2">
-                  <label
-                    for="category-name"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  <label for="category-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Name</label
                   >
                   <input
@@ -61,9 +51,7 @@
                   />
                 </div>
                 <div class="sm:col-span-2">
-                  <label
-                    for="description-category"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  <label for="description-category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Description</label
                   >
                   <textarea
@@ -76,13 +64,8 @@
                 </div>
               </div>
 
-              <div
-                class="flex items-center space-x-4 justify-between place-self-end"
-              >
-                <ButtonLoader
-                  @click="prosesRequest"
-                  :loading="itemCategoryStore.isStoreLoading"
-                >
+              <div class="flex items-center space-x-4 justify-between place-self-end">
+                <ButtonLoader @click="prosesRequest" :loading="itemCategoryStore.isStoreLoading">
                   <template #title> Submit </template>
                   <template #titleLoading> Loading... </template>
                 </ButtonLoader>
@@ -96,47 +79,47 @@
 </template>
 
 <script setup>
-import { PaperAirplaneIcon } from '@heroicons/vue/24/outline'
-import { ref, computed, nextTick, watchEffect, onUnmounted } from 'vue'
+import { PaperAirplaneIcon } from "@heroicons/vue/24/outline";
+import { ref, computed, nextTick, watchEffect, onUnmounted } from "vue";
 
-import ButtonLoader from '../../../components/buttons/ButtonLoader.vue'
-import { useItemCategoryStore } from '../../../stores/itemCategory'
+import ButtonLoader from "@/components/buttons/ButtonLoader.vue";
+import { useItemCategoryStore } from "@/stores/itemCategory";
 
 const props = defineProps({
   show: Boolean,
-})
-const emit = defineEmits(['close', 'submitTransaction'])
+});
+const emit = defineEmits(["close", "submitTransaction"]);
 
-let isActive = false
-let stopWatching = null
+let isActive = false;
+let stopWatching = null;
 
-const itemCategoryStore = useItemCategoryStore()
+const itemCategoryStore = useItemCategoryStore();
 
 function toggleWatchEffect() {
   if (isActive) {
     // menghentikan pemanggilan watchEffect
-    stopWatching()
-    isActive = false
+    stopWatching();
+    isActive = false;
   } else {
     // memanggil kembali watchEffect
     stopWatching = watchEffect(() => {
       if (!itemCategoryStore.isStoreLoading) {
-        emit('close')
+        emit("close");
         itemCategoryStore.$patch({
           currentData: {
             name: null,
             description: null,
           },
-        })
+        });
       }
-    })
-    isActive = true
+    });
+    isActive = true;
   }
 }
 
 async function prosesRequest() {
-  itemCategoryStore.store()
-  toggleWatchEffect()
+  itemCategoryStore.store();
+  toggleWatchEffect();
 }
 
 onUnmounted(() => {
@@ -145,8 +128,8 @@ onUnmounted(() => {
       name: null,
       description: null,
     },
-  })
-})
+  });
+});
 </script>
 
 <style>

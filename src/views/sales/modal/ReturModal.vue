@@ -143,14 +143,14 @@
 import { PaperAirplaneIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { computed, onActivated, onMounted, ref } from "vue";
 
-import { useSalesStore } from "../../../stores/sales";
+import { useSalesStore } from "@/stores/sales";
 import { useToast } from "vue-toastification";
 
-import { useSalesReturStore } from "../../../stores/salesRetur";
+import { useSalesReturStore } from "@/stores/salesRetur";
 import { useArrayFilter, useArraySome } from "@vueuse/core";
 import { useRoute } from "vue-router";
 
-import ButtonLoader from "../../../components/buttons/ButtonLoader.vue";
+import ButtonLoader from "@/components/buttons/ButtonLoader.vue";
 
 const props = defineProps({
   show: Boolean,

@@ -279,13 +279,13 @@ import {
 } from "@heroicons/vue/24/outline";
 import { nextTick, onMounted, ref, computed, watch } from "vue";
 
-import CircleLoading from "../../../components/loading/CircleLoading.vue";
-import { IDRCurrency } from "../../../utilities/formatter";
-import InputCurrency from "../../../components/input/InputCurrency.vue";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
+import { IDRCurrency } from "@/utilities/formatter";
+import InputCurrency from "@/components/input/InputCurrency.vue";
 
-import { useSalesStore } from "../../../stores/sales";
-import { usePostalCodeStore } from "../../../stores/postalCode";
-import PostalCodeModal from "../../../components/modal/PostalCodeModal.vue";
+import { useSalesStore } from "@/stores/sales";
+import { usePostalCodeStore } from "@/stores/postalCode";
+import PostalCodeModal from "@/components/modal/PostalCodeModal.vue";
 import { useToast } from "vue-toastification";
 
 const props = defineProps({

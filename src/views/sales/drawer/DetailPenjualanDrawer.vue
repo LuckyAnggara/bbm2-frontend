@@ -86,7 +86,9 @@
           @click="showMoreDeliveryInfo"
           class="place-self-center text-blue-500 cursor-pointer"
         >
-          <span v-if="shippingDetailStore.isLoading"> <ArrowPathIcon class="h-5 w-5 animate-spin text-blue-500" /></span>
+          <span v-if="shippingDetailStore.isLoading">
+            <ArrowPathIcon class="h-5 w-5 animate-spin text-blue-500"
+          /></span>
           <span v-else>Click me for more info ..</span></small
         >
         <div v-if="!_isEmpty(shippingDetailStore.responses)" class="border-t-2 border-b-2">
@@ -155,7 +157,9 @@
               class="text-xs shadow-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
             />
           </div>
-          <small @click="shippingDetailStore.responses = null" class="text-blue-500 cursor-pointer block text-center"> <span>Click to close ..</span></small>
+          <small @click="shippingDetailStore.responses = null" class="text-blue-500 cursor-pointer block text-center">
+            <span>Click to close ..</span></small
+          >
         </div>
       </div>
 
@@ -195,7 +199,9 @@
 
         <div
           :class="
-            salesStore.showDrawerData.payment_status == 'LUNAS' ? 'bg-blue-100 text-blue-600 dark:bg-blue-500' : 'bg-red-100 text-red-600 dark:bg-red-500'
+            salesStore.showDrawerData.payment_status == 'LUNAS'
+              ? 'bg-blue-100 text-blue-600 dark:bg-blue-500'
+              : 'bg-red-100 text-red-600 dark:bg-red-500'
           "
           class="block text-xs font-medium mr-2 px-2.5 py-2 rounded dark:text-white text-center mb-4"
         >
@@ -212,7 +218,9 @@
       <div class="mx-auto">
         <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
           <div class="mx-auto max-w-screen-sm text-center">
-            <h1 class="mb-4 text-2xl tracking-tight font-extrabold lg:text-5xl text-blue-600 dark:text-blue-500">Opss!!</h1>
+            <h1 class="mb-4 text-2xl tracking-tight font-extrabold lg:text-5xl text-blue-600 dark:text-blue-500">
+              Opss!!
+            </h1>
 
             <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">Data yang diminta tidak ada.</p>
           </div>
@@ -223,23 +231,23 @@
 </template>
 
 <script setup>
-import { isEmpty as _isEmpty } from 'lodash'
-import { useSalesStore } from '../../../stores/sales'
-import { useShippingDetailStore } from '../../../stores/shippingDetail'
-import { IDRCurrency } from '../../../utilities/formatter'
-import CircleLoading from '../../../components/loading/CircleLoading.vue'
-import { ArrowPathIcon } from '@heroicons/vue/24/outline'
+import { isEmpty as _isEmpty } from "lodash";
+import { useSalesStore } from "@/stores/sales";
+import { useShippingDetailStore } from "@/stores/shippingDetail";
+import { IDRCurrency } from "@/utilities/formatter";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
+import { ArrowPathIcon } from "@heroicons/vue/24/outline";
 
 const porps = defineProps({
   show: {
     type: Boolean,
     default: false,
   },
-})
-const salesStore = useSalesStore()
-const shippingDetailStore = useShippingDetailStore()
+});
+const salesStore = useSalesStore();
+const shippingDetailStore = useShippingDetailStore();
 
 function showMoreDeliveryInfo() {
-  shippingDetailStore.showData(salesStore.showDrawerData.id)
+  shippingDetailStore.showData(salesStore.showDrawerData.id);
 }
 </script>

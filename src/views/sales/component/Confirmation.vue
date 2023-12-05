@@ -129,10 +129,10 @@
 import { PaperAirplaneIcon, TruckIcon, ArrowUturnLeftIcon } from "@heroicons/vue/24/outline";
 
 import { ref, nextTick, onMounted } from "vue";
-import { useSalesStore } from "../../../stores/sales";
-import { IDRCurrency } from "../../../utilities/formatter";
+import { useSalesStore } from "@/stores/sales";
+import { IDRCurrency } from "@/utilities/formatter";
 import { ShoppingBagIcon } from "@heroicons/vue/24/outline";
-import DotLoading from "../../../components/loading/DotLoading.vue";
+import DotLoading from "@/components/loading/DotLoading.vue";
 import ShippingModal from "../modal/ShippingModal.vue";
 
 const emit = defineEmits(["next", "previous"]);

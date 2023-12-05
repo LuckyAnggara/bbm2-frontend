@@ -44,7 +44,9 @@
           <div class="max-w-lg" autocomplete="off">
             <div class="grid gap-2 sm:grid-cols-2 sm:gap-4 duration-300 ease-in-out transition-all">
               <div class="sm:col-span-2">
-                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Name <span class="text-red-500">*</span></label>
+                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Product Name <span class="text-red-500">*</span></label
+                >
                 <input
                   v-model="itemStore.currentData.name"
                   type="text"
@@ -54,7 +56,9 @@
                 />
               </div>
               <div class="sm:col-span-2">
-                <label for="kode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode / SKU</label>
+                <label for="kode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Kode / SKU</label
+                >
                 <input
                   v-model="itemStore.currentData.sku"
                   type="text"
@@ -74,7 +78,9 @@
                 />
               </div>
               <div class="sm:col-span-2">
-                <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category <span class="text-red-500">*</span></label>
+                <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Category <span class="text-red-500">*</span></label
+                >
                 <DotLoading v-if="itemCategoryStore.isLoading" />
                 <div v-else class="flex flex-row space-x-2">
                   <select
@@ -96,7 +102,9 @@
                 </div>
               </div>
               <div class="sm:col-span-2">
-                <label for="unit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit <span class="text-red-500">*</span></label>
+                <label for="unit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Unit <span class="text-red-500">*</span></label
+                >
                 <DotLoading v-if="itemUnitStore.isLoading" />
                 <div v-else class="flex flex-row space-x-2">
                   <select
@@ -118,7 +126,9 @@
                 </div>
               </div>
               <div class="sm:col-span-2">
-                <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Description</label
+                >
                 <textarea
                   v-model="itemStore.currentData.description"
                   id="description"
@@ -154,11 +164,18 @@
                     value=""
                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
-                  <label for="beli-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Saya Beli Product Ini</label>
+                  <label for="beli-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >Saya Beli Product Ini</label
+                  >
                 </div>
-                <div v-if="itemStore.currentData.iBuy" class="duration-300 ease-in-out transition-all grid gap-2 sm:grid-cols-3 sm:gap-4">
+                <div
+                  v-if="itemStore.currentData.iBuy"
+                  class="duration-300 ease-in-out transition-all grid gap-2 sm:grid-cols-3 sm:gap-4"
+                >
                   <div class="md:col-span-2">
-                    <label for="beli-satuan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Harga Beli Satuan</label>
+                    <label for="beli-satuan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >Harga Beli Satuan</label
+                    >
                     <InputCurrency
                       v-model="itemStore.currentData.buying_price"
                       id="beli-satuan"
@@ -168,7 +185,9 @@
                     />
                   </div>
                   <div>
-                    <label for="beli-pajak" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pajak Beli</label>
+                    <label for="beli-pajak" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >Pajak Beli</label
+                    >
                     <DotLoading v-if="taxStore.isLoading" />
                     <select
                       v-model="itemStore.currentData.buying_tax_id"
@@ -176,7 +195,9 @@
                       id="beli-pajak"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     >
-                      <option v-for="item in taxStore.items" :key="item.id" :value="item.id">{{ item.name }} ({{ item.value * 100 }}%)</option>
+                      <option v-for="item in taxStore.items" :key="item.id" :value="item.id">
+                        {{ item.name }} ({{ item.value * 100 }}%)
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -190,11 +211,18 @@
                     value=""
                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
-                  <label for="jual-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Saya Jual Product Ini</label>
+                  <label for="jual-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >Saya Jual Product Ini</label
+                  >
                 </div>
-                <div v-if="itemStore.currentData.iSell" class="duration-300 ease-in-out transition-all grid gap-2 sm:grid-cols-3 sm:gap-4">
+                <div
+                  v-if="itemStore.currentData.iSell"
+                  class="duration-300 ease-in-out transition-all grid gap-2 sm:grid-cols-3 sm:gap-4"
+                >
                   <div class="md:col-span-2">
-                    <label for="jual-satuan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Harga Jual Satuan</label>
+                    <label for="jual-satuan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >Harga Jual Satuan</label
+                    >
                     <InputCurrency
                       v-model="itemStore.currentData.selling_price"
                       id="jual-satuan"
@@ -204,7 +232,9 @@
                     />
                   </div>
                   <div>
-                    <label for="jual-pajak" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pajak Jual</label>
+                    <label for="jual-pajak" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >Pajak Jual</label
+                    >
                     <DotLoading v-if="taxStore.isLoading" />
 
                     <select
@@ -213,7 +243,9 @@
                       id="jual-pajak"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     >
-                      <option v-for="item in taxStore.items" :key="item.id" :value="item.id">{{ item.name }} ({{ item.value * 100 }}%)</option>
+                      <option v-for="item in taxStore.items" :key="item.id" :value="item.id">
+                        {{ item.name }} ({{ item.value * 100 }}%)
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -230,11 +262,18 @@
                     value=""
                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
-                  <label for="persediaan-awal" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Atur persediaan awal</label>
+                  <label for="persediaan-awal" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >Atur persediaan awal</label
+                  >
                 </div>
-                <div v-if="itemStore.currentData.beginningStock.value" class="duration-300 ease-in-out transition-all grid gap-2 sm:grid-cols-5 sm:gap-4">
+                <div
+                  v-if="itemStore.currentData.beginningStock.value"
+                  class="duration-300 ease-in-out transition-all grid gap-2 sm:grid-cols-5 sm:gap-4"
+                >
                   <div>
-                    <label for="persediaan-awal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stock</label>
+                    <label for="persediaan-awal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >Stock</label
+                    >
                     <input
                       v-model="itemStore.currentData.beginningStock.stock"
                       type="text"
@@ -244,7 +283,9 @@
                     />
                   </div>
                   <div class="md:col-span-2">
-                    <label for="persediaan-price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Harga Perolehan</label>
+                    <label for="persediaan-price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >Harga Perolehan</label
+                    >
                     <InputCurrency
                       v-model="itemStore.currentData.beginningStock.price"
                       id="persediaan-price"
@@ -254,7 +295,9 @@
                     />
                   </div>
                   <div class="md:col-span-2">
-                    <label for="persediaan-total" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total</label>
+                    <label for="persediaan-total" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >Total</label
+                    >
                     <input
                       disabled
                       :value="IDRCurrency.format(itemStore.totalBeginningStock)"
@@ -281,11 +324,15 @@
                     value=""
                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
-                  <label for="jual-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Notifikasi batas minimum</label>
+                  <label for="jual-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >Notifikasi batas minimum</label
+                  >
                 </div>
                 <div v-if="itemStore.currentData.notification_qty" class="duration-300 ease-in-out transition-all">
                   <div>
-                    <label for="beli-satuan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Batas minimum</label>
+                    <label for="beli-satuan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >Batas minimum</label
+                    >
                     <input
                       type="text"
                       id="jual-satuan"
@@ -331,88 +378,95 @@
 </template>
 
 <script setup>
-import { computed, defineAsyncComponent, nextTick, onMounted, ref } from 'vue'
-import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
+import { computed, defineAsyncComponent, nextTick, onMounted, ref } from "vue";
+import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
-import FileUpload from '../../components/FileUpload.vue'
-import HeadlessMenu from '../../components/menu/HeadlessMenu.vue'
-import { useTaxDetailStore } from '../../stores/taxDetail'
-import { useItemUnitStore } from '../../stores/itemUnit'
-import { useItemStore } from '../../stores/items'
-import { FolderArrowDownIcon, PlusIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import FileUpload from "@/components/FileUpload.vue";
+import HeadlessMenu from "@/components/menu/HeadlessMenu.vue";
+import { useTaxDetailStore } from "@/stores/taxDetail";
+import { useItemUnitStore } from "@/stores/itemUnit";
+import { useItemStore } from "@/stores/items";
+import { FolderArrowDownIcon, PlusIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 
-import DotLoading from '../../components/loading/DotLoading.vue'
-import { useItemCategoryStore } from '../../stores/itemCategory'
+import DotLoading from "@/components/loading/DotLoading.vue";
+import { useItemCategoryStore } from "@/stores/itemCategory";
 
-import InputCurrency from '../../components/input/InputCurrency.vue'
-import { IDRCurrency } from '../../utilities/formatter'
-import LoadingModal from '../../components/modal/LoadingModal.vue'
-import SuccessModal from '../../components/modal/SuccessModal.vue'
-import { useToast } from 'vue-toastification'
-import { useRouter } from 'vue-router'
+import InputCurrency from "@/components/input/InputCurrency.vue";
+import { IDRCurrency } from "@/utilities/formatter";
+import LoadingModal from "@/components/modal/LoadingModal.vue";
+import SuccessModal from "@/components/modal/SuccessModal.vue";
+import { useToast } from "vue-toastification";
+import { useRouter } from "vue-router";
 
-const toast = useToast()
-const router = useRouter()
+const toast = useToast();
+const router = useRouter();
 
-const NewUnitModal = defineAsyncComponent(() => import('./modal/UnitModal.vue'))
-const NewCategoryModal = defineAsyncComponent(() => import('./modal/CategoryModal.vue'))
+const NewUnitModal = defineAsyncComponent(() => import("./modal/UnitModal.vue"));
+const NewCategoryModal = defineAsyncComponent(() => import("./modal/CategoryModal.vue"));
 
-const taxStore = useTaxDetailStore()
-const itemStore = useItemStore()
-const itemUnitStore = useItemUnitStore()
-const itemCategoryStore = useItemCategoryStore()
+const taxStore = useTaxDetailStore();
+const itemStore = useItemStore();
+const itemUnitStore = useItemUnitStore();
+const itemCategoryStore = useItemCategoryStore();
 
-const showModalAddUnit = ref(false)
-const showModalAddCategory = ref(false)
-const activeTab = ref(0)
+const showModalAddUnit = ref(false);
+const showModalAddCategory = ref(false);
+const activeTab = ref(0);
 
 function changeTab(index) {
-  activeTab.value = index
+  activeTab.value = index;
 }
 
 const tabs = ref([
-  { id: 1, label: 'Info' },
-  { id: 2, label: 'Price & Stock' },
-  { id: 3, label: 'Setting' },
-])
+  { id: 1, label: "Info" },
+  { id: 2, label: "Price & Stock" },
+  { id: 3, label: "Setting" },
+]);
 
 const actionMenu = [
   {
     function: itemStore.clearData,
-    label: 'Clear',
+    label: "Clear",
     icon: XMarkIcon,
   },
-]
+];
 
 async function toProductPage() {
-  itemStore.isTransactionSuccess = false
-  await nextTick()
-  router.push({ name: 'list-product' })
+  itemStore.isTransactionSuccess = false;
+  await nextTick();
+  router.push({ name: "list-product" });
 }
 
 function store() {
   if (canSubmit.value) {
-    itemStore.store()
+    itemStore.store();
   } else {
-    toast.error('Incomplete Product Information', {
+    toast.error("Incomplete Product Information", {
       timeout: 2000,
-      position: 'top-center',
-    })
+      position: "top-center",
+    });
   }
 }
 
 const canSubmit = computed(() => {
-  const item = itemStore.currentData
-  if (item.name == null || item.name === '' || item.category_id == null || item.category_id === '' || item.unit_id == null || item.unit_id === 0) {
-    return false
+  const item = itemStore.currentData;
+  if (
+    item.name == null ||
+    item.name === "" ||
+    item.category_id == null ||
+    item.category_id === "" ||
+    item.unit_id == null ||
+    item.unit_id === 0
+  ) {
+    return false;
   }
 
-  return true
-})
+  return true;
+});
 
 onMounted(() => {
-  taxStore.getData()
-  itemUnitStore.getData()
-  itemCategoryStore.getData()
-})
+  taxStore.getData();
+  itemUnitStore.getData();
+  itemCategoryStore.getData();
+});
 </script>
