@@ -268,7 +268,7 @@ export const useSalesStore = defineStore("salesStore", {
       return true;
     },
     editRetur(state) {
-      return state.singleResponses?.detail_retur.length > 0 ? 1 : 0;
+      return state.singleResponses?.detail_retur?.length > 0 ? 1 : 0 ?? 0;
     },
 
     dataEdit(state) {
@@ -334,9 +334,10 @@ export const useSalesStore = defineStore("salesStore", {
       try {
         const response = await axiosIns.get(`/sales/${id}`);
         this.singleResponses = JSON.parse(JSON.stringify(response.data.data));
+        console.info(response.data.data?.detail_retur ?? []);
         returData.fromSalesStore(
           JSON.parse(JSON.stringify(response.data.data.detail)),
-          JSON.parse(JSON.stringify(response.data.data.detail_retur))
+          JSON.parse(JSON.stringify(response.data.data?.detail_retur ?? []))
         );
       } catch (error) {
         toast.error("Data not found", {

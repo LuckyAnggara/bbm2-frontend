@@ -45,7 +45,7 @@ export const useSalesReturStore = defineStore("salesReturStore", {
       }
     },
 
-    async fromSalesStore(detail, retur) {
+    async fromSalesStore(detail, retur = []) {
       const group = retur.reduce((accumulator, current) => {
         const { item_id, qty } = current;
         if (!accumulator[item_id]) {
