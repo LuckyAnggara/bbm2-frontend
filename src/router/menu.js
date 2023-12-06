@@ -18,7 +18,7 @@ export const menu = [
     id: 2,
     name: "Sales",
     icon: BuildingStorefrontIcon,
-    to: "daftar-sale",
+    to: "list-sale",
   },
   {
     id: 3,
@@ -37,7 +37,7 @@ export const menu = [
   {
     id: 6,
     name: "Mutasi Produk",
-    to: "produk-mutasi",
+    to: "mutation-product",
   },
   {
     id: 7,

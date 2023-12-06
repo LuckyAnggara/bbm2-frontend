@@ -14,14 +14,9 @@ const layout = computed(() => {
 </script>
 
 <template>
-  <TransitionSlide mode="out-in" :duration="500">
-    <!-- <div v-if="isLoading" class="flex h-screen items-center justify-center">
-      <Logo :size="'w-64 h-64'" :animated="true" class="dark:bg-black bg-white" :is-dark="styleStore.darkMode" />
-    </div> -->
-    <component :is="layout">
-      <router-view />
-    </component>
-  </TransitionSlide>
+  <component :is="layout">
+    <router-view />
+  </component>
 </template>
 
 <style>

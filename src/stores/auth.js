@@ -13,7 +13,7 @@ export const useAuthStore = defineStore("auth", {
       username: "demo",
       password: "12345678",
     },
-    userData: null,
+    userData: JSON.parse(localStorage.getItem("userData"))?.user,
   }),
   getters: {
     user(state) {
@@ -39,7 +39,7 @@ export const useAuthStore = defineStore("auth", {
           return true;
         }
       } catch (error) {
-        alert(error.message);
+        toast.error(error.response.data.message);
       } finally {
         this.isLoading = false;
       }
@@ -70,7 +70,7 @@ export const useAuthStore = defineStore("auth", {
           return false;
         }
       } catch (error) {
-        alert(error);
+        toast.error(error);
       } finally {
         this.isLoading = false;
       }
@@ -78,7 +78,7 @@ export const useAuthStore = defineStore("auth", {
     isLoggedIn() {
       const user = localStorage.getItem("userData");
       if (user) {
-        this.userData = JSON.parse(user);
+        this.userData = JSON.parse(user).user;
         return true;
       }
       return false;
