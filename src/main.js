@@ -12,6 +12,10 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import "@sweetalert2/themes/dark/dark.css";
 import { darkModeKey, styleKey } from "@/config.js";
 
+import VueBarcode from "@chenfengyuan/vue-barcode";
+
+import VueApexCharts from "vue3-apexcharts";
+
 import FloatingVue from "floating-vue";
 FloatingVue.options.themes.tooltip.disabled = window.innerWidth <= 768;
 
@@ -29,17 +33,21 @@ app.config.globalProperties = {
 };
 
 app.use(pinia);
+
 app.use(router);
 
 app.use(autoAnimatePlugin);
 app.use(VueSweetalert2);
 app.use(FloatingVue);
+app.use(VueApexCharts);
 
 app.use(Toast, {
   transition: "Vue-Toastification__bounce",
   maxToasts: 20,
   newestOnTop: true,
 });
+app.component(VueBarcode.name, VueBarcode);
+
 app.mount("#app");
 
 const styleStore = useStyleStore(pinia);

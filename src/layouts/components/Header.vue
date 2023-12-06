@@ -9,6 +9,7 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center justify-start">
           <button
+            @click="layoutStore.isSideBarShow = !layoutStore.isSideBarShow"
             data-drawer-target="logo-sidebar"
             data-drawer-toggle="logo-sidebar"
             aria-controls="logo-sidebar"
@@ -16,19 +17,8 @@
             class="inline-flex xl:hidden items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
           >
             <span class="sr-only">Open sidebar</span>
-            <svg
-              class="w-6 h-6"
-              aria-hidden="true"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                clip-rule="evenodd"
-                fill-rule="evenodd"
-                d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
-              ></path>
-            </svg>
+            <Bars3BottomLeftIcon v-if="!layoutStore.isSideBarShow" class="w-6 h-6" />
+            <Bars3Icon v-else class="w-6 h-6" />
           </button>
           <a href="https://flowbite.com" class="flex ml-2 md:mr-24">
             <Logo size="w-8 h-8" class="mr-2" />
@@ -68,18 +58,25 @@ import { useToast } from "vue-toastification";
 import UserDropdown from "./UserDropdown.vue";
 import NotificationBar from "./NotificationBar.vue";
 import Logo from "@/components/Logo.vue";
-import { MoonIcon, SunIcon } from "@heroicons/vue/24/solid";
+import { MoonIcon, SunIcon, Bars3BottomLeftIcon } from "@heroicons/vue/24/solid";
+import { useLayoutStore } from "../../stores/layout";
+import { Bars3Icon } from "@heroicons/vue/24/outline";
 // import { useVersionStore } from '@/stores/version'
 const toast = useToast();
 
 const router = useRouter();
 const authStore = useAuthStore();
+const layoutStore = useLayoutStore();
 // const versionStore = useVersionStore()
 const isDark = ref(localStorage.getItem("isDark") || false);
 const openSideBar = ref(localStorage.getItem("openSideBar") || true);
 // const isDark = computed(() => {
 //   return localStorage.getItem('isDark')
 // })
+
+function open() {
+  console.info("aaa");
+}
 
 watch(isDark, (newX) => {
   localStorage.setItem("isDark", JSON.stringify(newX));

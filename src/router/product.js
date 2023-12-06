@@ -2,7 +2,7 @@ export const product = [
   {
     path: "/products/list",
     name: "list-product",
-    component: () => import("@/views/persediaan/DaftarProduk.vue"),
+    component: () => import("@/views/product/DaftarProduk.vue"),
     meta: {
       transition: "slide-left",
       requiresAuth: true,
@@ -13,7 +13,7 @@ export const product = [
   {
     path: "/product/new-product",
     name: "new-product",
-    component: () => import("@/views/persediaan/AddProduct.vue"),
+    component: () => import("@/views/product/AddProduct.vue"),
     meta: {
       transition: "slide-left",
       requiresAuth: true,
@@ -24,7 +24,7 @@ export const product = [
   {
     path: "/product/detail-product/:sku",
     name: "detail-product",
-    component: () => import("@/views/persediaan/DetailProduct.vue"),
+    component: () => import("@/views/product/DetailProduct.vue"),
     meta: {
       transition: "slide-left",
       requiresAuth: true,
@@ -35,7 +35,7 @@ export const product = [
   {
     path: "/product/mutation",
     name: "mutation-product",
-    component: () => import("@/views/persediaan/MutationProduct.vue"),
+    component: () => import("@/views/product/MutationProduct.vue"),
     meta: {
       transition: "slide-left",
       requiresAuth: true,

@@ -55,6 +55,9 @@ export const useSalesStore = defineStore("salesStore", {
           notes: "",
           isCredit: false,
         },
+        retur: {
+          returStatus: false,
+        },
         shipping: {
           useCustomer: false,
         },

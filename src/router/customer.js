@@ -2,7 +2,7 @@ export const customer = [
   {
     path: "/customer/list",
     name: "list-customer",
-    component: () => import("@/views/persediaan/CustomerList"),
+    component: () => import("@/views/customer/CustomerList.vue"),
     meta: {
       transition: "slide-left",
       requiresAuth: true,
@@ -13,7 +13,7 @@ export const customer = [
   {
     path: "/customer/add",
     name: "new-customer",
-    component: () => import("@/views/persediaan/CustomerAdd"),
+    component: () => import("@/views/customer/CustomerAdd.vue"),
     meta: {
       transition: "slide-left",
       requiresAuth: true,
@@ -24,7 +24,7 @@ export const customer = [
   {
     path: "/customer/detail/:uuid",
     name: "detail-customer",
-    component: () => import("@/views/persediaan/CustomerDetail"),
+    component: () => import("@/views/customer/CustomerDetail.vue"),
     meta: {
       transition: "slide-left",
       requiresAuth: true,

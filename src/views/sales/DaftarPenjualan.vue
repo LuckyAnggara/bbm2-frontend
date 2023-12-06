@@ -6,7 +6,7 @@
           <label class="block text-sm font-medium text-gray-900 dark:text-white mr-2">Show</label>
           <select
             v-model="salesStore.currentLimit"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block sm:w-16 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-16"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block sm:w-20 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-20"
           >
             <option
               :selected="salesStore.currentLimit == length ? true : false"
@@ -50,7 +50,13 @@
       <div
         class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0"
       >
-        <div class="flex items-center space-x-4 w-full md:w-auto">
+        <div
+          class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0"
+        >
+          <ReloadButton @click="salesStore.getData()" :is-loading="salesStore.isLoading" />
+          <HeadlessMenu :links="actionMenu" />
+        </div>
+        <!-- <div class="flex items-center space-x-4 w-full md:w-auto">
           <router-link
             :to="{ name: 'new-sale', params: {} }"
             class="duration-300 hover:scale-105 transition flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
@@ -70,7 +76,7 @@
             Filter
             <FunnelIcon class="h-4 w-4 ml-2" />
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
@@ -410,6 +416,7 @@
 
 <script setup>
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import HeadlessMenu from "@/components/menu/HeadlessMenu.vue";
 import {
   AdjustmentsHorizontalIcon,
   CreditCardIcon,
@@ -433,6 +440,7 @@ import { useRouter } from "vue-router";
 import { IDRCurrency } from "@/utilities/formatter";
 import { useSalesStore } from "@/stores/sales";
 import { useLayoutStore } from "@/stores/layout";
+import ReloadButton from "@/components/buttons/ReloadButton.vue";
 
 const CircleLoading = defineAsyncComponent(() => import("@/components/loading/CircleLoading.vue"));
 const ConfirmationModal = defineAsyncComponent(() => import("@/components/modal/ConfirmationModal.vue"));
@@ -443,6 +451,21 @@ const FilterDrawer = defineAsyncComponent(() => import("./drawer/FilterDrawer.vu
 const router = useRouter();
 const salesStore = useSalesStore();
 const layoutStore = useLayoutStore();
+
+const actionMenu = [
+  {
+    function: function tambah() {
+      router.push({ name: "new-sale" });
+    },
+    label: "Baru",
+    icon: PlusIcon,
+  },
+  {
+    function: filterDraw,
+    label: "Filter",
+    icon: FunnelIcon,
+  },
+];
 
 const deleteId = ref(null);
 const showConfirmationModal = ref(false);

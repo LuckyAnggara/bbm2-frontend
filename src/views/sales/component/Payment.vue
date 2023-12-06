@@ -203,11 +203,19 @@
       <SuccessModal :show="errorModal" @submit="errorModal = false" :type="'error'">
         <template #message>
           <div class="flex flex-col">
-            <span class="text-red-500"> Error</span>
+            <span class="text-yellow-500"> Informasi</span>
             <span> Bukan pelanggan tetap </span>
           </div>
         </template>
-        <template #buttonText> Close </template>
+        <template #buttonText>
+          <button
+            @click="errorModal = false"
+            type="button"
+            class="flex flex-row items-center hover:scale-105 duration-300 ease-in-out transform py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-900"
+          >
+            Close
+          </button>
+        </template>
       </SuccessModal>
     </Teleport>
   </div>
@@ -373,7 +381,7 @@ async function submitTransaction(isCredit = false, paymentType = "CASH") {
 async function invoicePage() {
   salesStore.isTransactionSuccess = false;
   await nextTick();
-  router.push({ name: "invoice", params: { id: salesStore.responses.id } });
+  router.push({ name: "invoice", params: { id: salesStore.responses.uuid } });
 }
 
 async function newTransaction() {

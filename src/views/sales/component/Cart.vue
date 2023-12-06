@@ -25,7 +25,7 @@
     <div class="flex flex-col space-y-6">
       <div class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit w-1/2">
         <Searchbar
-          @cari-data="cariData()"
+          @keyup="search()"
           v-model="itemStore.searchName"
           :is-loading="itemStore.isLoading"
           :result-items="itemStore.items"
@@ -245,7 +245,7 @@ import { useSalesStore } from "@/stores/sales";
 import { useItemSellingPriceStore } from "@/stores/itemSellingPrice";
 import DotLoading from "@/components/loading/DotLoading.vue";
 import { useTaxDetailStore } from "@/stores/taxDetail";
-import { useArrayFindIndex } from "@vueuse/core";
+import { useArrayFindIndex, useDebounceFn } from "@vueuse/core";
 
 const emit = defineEmits(["next", "previous"]);
 
@@ -267,10 +267,14 @@ const canSubmit = computed(() => {
 const PriceModal = defineAsyncComponent(() => import("../modal/PriceModal.vue"));
 
 // Function
-function cariData() {
-  itemStore.currentLimit = 5;
+// function cariData() {
+//   itemStore.currentLimit = 5;
+//   itemStore.getData();
+// }
+const search = useDebounceFn(() => {
   itemStore.getData();
-}
+}, 500);
+
 function subTotal(item) {
   const dasarPajak = item.price - item.disc;
   const value =
@@ -343,7 +347,7 @@ function setPrice(x) {
 }
 function showPrice(item, index) {
   showPriceModal.value = true;
-  itemSellingPriceStore.getData(item.id);
+  itemSellingPriceStore.getData({ id: item.id });
   itemTitle.value = item.name;
   itemIndex.value = index;
 }

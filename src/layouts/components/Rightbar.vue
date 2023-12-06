@@ -1,7 +1,7 @@
 <template>
   <aside
     id="logo-sidebar"
-    :class="showRightBar == true ? '' : 'translate-x-full'"
+    :class="showRightBar == true ? '' : 'translate-x-full '"
     class="fixed py-20 top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow- overflow-y-auto scrollbar-thin scrollbar-track-slate-500 scrollbar-thumb-neutral-800 transition-transform duration-500 ease-in-out bg-white dark:bg-gray-800 shadow-md"
     aria-label="Sidebar"
   >
@@ -9,6 +9,7 @@
       <h5 class="inline-flex items-center text-md font-semibold text-gray-500 uppercase dark:text-gray-400">
         {{ layoutStore.title }}
       </h5>
+
       <button
         @click="layoutStore.isRightDrawShow = false"
         class="text-black dark:text-white hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 top-2.5 right-2.5 inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
@@ -121,16 +122,16 @@
 </template>
 
 <script setup>
-import { XMarkIcon } from '@heroicons/vue/24/outline'
-import { computed } from 'vue'
+import { XMarkIcon } from "@heroicons/vue/24/outline";
+import { computed } from "vue";
 
-import { useLayoutStore } from '../../stores/layout'
+import { useLayoutStore } from "../../stores/layout";
 
-const layoutStore = useLayoutStore()
+const layoutStore = useLayoutStore();
 
 const showRightBar = computed(() => {
-  return layoutStore.isRightDrawShow
-})
+  return layoutStore.isRightDrawShow;
+});
 </script>
 
 <script setup></script>
