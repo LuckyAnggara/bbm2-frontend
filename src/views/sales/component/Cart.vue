@@ -24,7 +24,19 @@
 
     <div class="flex flex-col space-y-6">
       <div class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit w-1/2">
-        <Searchbar
+        <Select2
+          :disabled="false"
+          :use-SSR="true"
+          @ssr="search"
+          :is-loading="itemStore.isLoading"
+          :use-loader="true"
+          :data="itemStore.items"
+          v-model="itemStore.searchName"
+          placeholder="Cari Nama / SKU / Product / Scan Barcode .."
+          @chosen="addItem"
+        ></Select2>
+
+        <!-- <Searchbar
           @keyup="search()"
           v-model="itemStore.searchName"
           :is-loading="itemStore.isLoading"
@@ -33,7 +45,7 @@
           :aria-result="true"
           @add-data="addItem"
         >
-        </Searchbar>
+        </Searchbar> -->
       </div>
 
       <div class="flex flex-col space-y-4 items-end w-full">
@@ -232,6 +244,7 @@
 </template>
 
 <script setup>
+import Select2 from "@/components/Select2.vue";
 import { TrashIcon, PaperAirplaneIcon, ArrowUturnLeftIcon } from "@heroicons/vue/24/outline";
 
 import { ref, reactive, computed, onUnmounted, defineAsyncComponent, onMounted, watch } from "vue";
@@ -239,7 +252,6 @@ import { useItemStore } from "@/stores/items";
 import { IDRCurrency } from "@/utilities/formatter";
 import { useToast } from "vue-toastification";
 
-import Searchbar from "@/components/input/Searchbar.vue";
 import InputCurrency from "@/components/input/InputCurrency.vue";
 import { useSalesStore } from "@/stores/sales";
 import { useItemSellingPriceStore } from "@/stores/itemSellingPrice";
@@ -362,6 +374,7 @@ watch(
 
 onMounted(() => {
   itemStore.$patch((state) => {
+    state.currentLimit = 5;
     state.filter.type = "sell";
   });
   if (taxStore.items.length == 0 || taxStore.items.length == null) {

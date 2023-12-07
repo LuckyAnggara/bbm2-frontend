@@ -153,6 +153,7 @@ import SalesPaymentDetail from "./detailcomponent/SalesPaymentDetail.vue";
 import CartDetail from "./detailcomponent/CartDetail.vue";
 import CreditDetail from "./detailcomponent/CreditDetail.vue";
 import ShippingDetail from "./detailcomponent/ShippingDetail.vue";
+import { useSalesReturStore } from "../../stores/salesRetur";
 
 const ReturModal = defineAsyncComponent(() => import("./modal/ReturModal.vue"));
 
@@ -163,6 +164,7 @@ const swal = inject("$swal");
 
 const taxStore = useTaxDetailStore();
 const salesStore = useSalesStore();
+const returStore = useSalesReturStore();
 
 const showReturModal = ref(false);
 
@@ -199,6 +201,10 @@ function returModal() {
     swal.fire("Sedang dalam mode edit");
   } else {
     showReturModal.value = true;
+    returStore.fromSalesStore(
+      JSON.parse(JSON.stringify(salesStore.singleResponses.detail)),
+      JSON.parse(JSON.stringify(salesStore.singleResponses.detail_retur ?? []))
+    );
   }
 }
 

@@ -2,22 +2,38 @@ export const sales = [
   {
     path: "/sales/list",
     name: "list-sale",
-    component: () => import("@/views/sales/DaftarPenjualan.vue"),
+    component: () => import("@/views/sales/SaleList.vue"),
     meta: {
+      breadcumb: [
+        {
+          name: "Sales",
+          to: "/sales/list",
+        },
+      ],
       transition: "slide-left",
       requiresAuth: true,
-      title: "List of Sales",
+      title: "Sales",
       layout: "layout-content",
     },
   },
   {
     path: "/sale/new",
     name: "new-sale",
-    component: () => import("@/views/sales/WizardSale.vue"),
+    component: () => import("@/views/sales/SaleAddWizard.vue"),
     meta: {
+      breadcumb: [
+        {
+          name: "Sales",
+          to: "/sales/list",
+        },
+        {
+          name: "New",
+          to: "/sale/new",
+        },
+      ],
       transition: "slide-left",
       requiresAuth: true,
-      title: "New Sale",
+      title: "Sales",
       layout: "layout-content",
     },
   },
@@ -26,9 +42,19 @@ export const sales = [
     name: "detail-sale",
     component: () => import("@/views/sales/SaleDetail.vue"),
     meta: {
+      breadcumb: [
+        {
+          name: "Sales",
+          to: "/sales/list",
+        },
+        {
+          name: "Detail",
+          to: "",
+        },
+      ],
       transition: "slide-left",
       requiresAuth: true,
-      title: "Detail",
+      title: "Sales",
       layout: "layout-content",
     },
   },
@@ -37,9 +63,19 @@ export const sales = [
     name: "edit-sale",
     component: () => import("@/views/sales/WizardEditSale.vue"),
     meta: {
+      breadcumb: [
+        {
+          name: "Sales",
+          to: "/sales/list",
+        },
+        {
+          name: "Edit",
+          to: "",
+        },
+      ],
       transition: "slide-left",
       requiresAuth: true,
-      title: "Edit Sale",
+      title: "Edit Sales",
       layout: "layout-content",
     },
   },

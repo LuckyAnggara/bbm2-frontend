@@ -1,18 +1,18 @@
 import { baseURL } from "./helper";
 import axios from "axios";
 
-const axiosIns = axios.create({
+const axiosFile = axios.create({
   baseURL: baseURL,
 });
 
-axiosIns.interceptors.request.use((config) => {
+axiosFile.interceptors.request.use((config) => {
   const token = JSON.parse(localStorage.getItem("token"));
   if (token) {
     config.headers.Authorization = `${token.token_type} ${token.access_token}`;
-    config.headers["Content-Type"] = "application/json";
+    config.headers["Content-Type"] = "multipart/form-data";
   } else {
   }
   return config;
 });
 
-export default axiosIns;
+export default axiosFile;

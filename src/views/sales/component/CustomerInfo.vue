@@ -29,17 +29,17 @@
       class="flex lg:flex-row flex-col lg:space-x-6 space-y-6 lg:space-y-0 ease-in-out transform duration-300"
     >
       <div class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit w-1/2">
-        <Searchbar
-          @cari-data="cariData()"
-          v-model="customerStore.searchName"
+        <Select2
+          :disabled="false"
+          :use-SSR="true"
+          @ssr="search"
           :is-loading="customerStore.isLoading"
-          :result-items="customerStore.items"
-          :placeholder="'Find existing customer'"
-          :aria-result="true"
-          @add-data="addData"
-          :disabled-add="isEdit"
-        >
-        </Searchbar>
+          :use-loader="true"
+          :data="customerStore.items"
+          v-model="customerStore.searchName"
+          placeholder="Cari customer existing .."
+          @chosen="addData"
+        ></Select2>
       </div>
       <form class="w-full flex flex-col space-y-4">
         <div class="bg-white shadow-md dark:bg-gray-800 rounded-lg px-6 py-6">
@@ -49,7 +49,7 @@
               <input
                 required
                 ref="namaLengkap"
-                :disabled="formDisabled"
+                :readonly="formDisabled"
                 v-model="salesStore.currentData.customerData.name"
                 type="text"
                 :class="[formDisabled ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-900']"
@@ -66,6 +66,7 @@
             <div>
               <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
               <select
+                :disabled="!isEdit"
                 v-model="salesStore.currentData.customerData.type"
                 :class="[formDisabled ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-900']"
                 class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
@@ -81,7 +82,7 @@
               >
               <input
                 required
-                :disabled="formDisabled"
+                :readonly="formDisabled"
                 :class="[formDisabled ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-900']"
                 v-model="salesStore.currentData.customerData.phone_number"
                 type="text"
@@ -97,7 +98,7 @@
               <textarea
                 required
                 :class="[formDisabled == true ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-900']"
-                :disabled="formDisabled"
+                :readonly="formDisabled"
                 v-model="salesStore.currentData.customerData.address"
                 rows="5"
                 class="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
@@ -180,8 +181,9 @@
 </template>
 
 <script setup>
+import Select2 from "@/components/Select2.vue";
 import { PaperAirplaneIcon, TrashIcon, PencilSquareIcon, XMarkIcon } from "@heroicons/vue/24/outline";
-import { nextTick, ref, computed, watch, onUnmounted } from "vue";
+import { nextTick, ref, computed, watch, onUnmounted, onMounted } from "vue";
 import { useCustomerStore } from "@/stores/customer";
 import { useSalesStore } from "@/stores/sales";
 import { useAuthStore } from "@/stores/auth";
@@ -189,6 +191,7 @@ import { useToast } from "vue-toastification";
 
 import Searchbar from "@/components/input/Searchbar.vue";
 import CircleLoading from "@/components/loading/CircleLoading.vue";
+import { useDebounceFn } from "@vueuse/core";
 
 const emit = defineEmits(["next"]);
 
@@ -201,6 +204,10 @@ const authStore = useAuthStore();
 
 const isEdit = ref(false);
 const canClose = ref(true);
+
+const search = useDebounceFn(() => {
+  customerStore.getData();
+}, 500);
 
 function nextStep() {
   if (salesStore.currentData.customerData.withoutCustomer) {
@@ -342,6 +349,10 @@ watch(
   },
   { deep: true }
 );
+
+onMounted(() => {
+  customerStore.currentLimit = 5;
+});
 
 onUnmounted(() => {
   customerStore.$reset();

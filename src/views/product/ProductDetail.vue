@@ -56,7 +56,7 @@
           </div>
           <hr class="py-2" />
           <TabPanel>
-            <div class="w-full flex">
+            <div class="w-full flex space-x-4">
               <div class="w-full">
                 <div class="grid gap-2 sm:grid-cols-2 sm:gap-4 duration-300 ease-in-out transition-all">
                   <div class="sm:col-span-2">
@@ -103,7 +103,7 @@
                     <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Category <span v-if="isEdit" class="text-red-500">*</span></label
                     >
-                    <DotLoading v-if="itemCategoryStore.isLoading" />
+                    <CircleLoading v-if="itemCategoryStore.isLoading" />
                     <div
                       v-else
                       :class="isEdit ? 'flex flex-row space-x-2' : ''"
@@ -133,7 +133,7 @@
                     <label for="unit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Unit <span v-if="isEdit" class="text-red-500">*</span></label
                     >
-                    <DotLoading v-if="itemUnitStore.isLoading" />
+                    <CircleLoading v-if="itemUnitStore.isLoading" />
                     <div
                       v-else
                       :class="isEdit ? 'flex flex-row space-x-2' : ''"
@@ -187,14 +187,27 @@
                 </div>
               </div>
 
-              <div class="w-full text-center flex justify-center">
+              <div class="w-full text-center flex flex-col justify-center space-y-4">
+                <div class="border rounded-lg">
+                  <label for="barcode" class="block text-sm font-medium text-gray-900 dark:text-white">Image</label>
+                  <img class="rounded-t-lg h-72 mx-auto" :src="image" alt="" />
+                  <button
+                    @click="showModalChangeImage = true"
+                    type="button"
+                    class="mt-3 py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                  >
+                    Ganti Gambar
+                  </button>
+                </div>
                 <div class="mx-auto text-center">
-                  <span class="font-bold"> Barcode </span>
-                  <vue-barcode
-                    :value="itemStore.singleResponses.sku.toString()"
-                    :options="{ displayValue: true }"
-                    tag="img"
-                  ></vue-barcode>
+                  <label for="barcode" class="block text-sm font-medium text-gray-900 dark:text-white">Barcode</label>
+                  <div class="rounded-lg border">
+                    <vue-barcode
+                      :value="itemStore.singleResponses.sku.toString()"
+                      :options="{ displayValue: true }"
+                      tag="img"
+                    ></vue-barcode>
+                  </div>
                 </div>
               </div>
             </div>
@@ -497,6 +510,15 @@
     </template>
 
     <Teleport to="body">
+      <ChangeImageModal
+        :show="showModalChangeImage"
+        @close="showModalChangeImage = false"
+        @changeImage="changeImageFromEdit"
+      >
+      </ChangeImageModal>
+    </Teleport>
+
+    <Teleport to="body">
       <NewUnitModal :show="showModalAddUnit" @close="showModalAddUnit = false"> </NewUnitModal>
     </Teleport>
 
@@ -535,6 +557,7 @@ import { useTaxDetailStore } from "@/stores/taxDetail";
 import { useItemUnitStore } from "@/stores/itemUnit";
 import { useItemStore } from "@/stores/items";
 import { useItemMutationStore } from "@/stores/itemMutation";
+import { storageUrl } from "@/services/helper";
 
 import {
   ArchiveBoxIcon,
@@ -547,6 +570,8 @@ import {
 } from "@heroicons/vue/24/outline";
 
 import DotLoading from "@/components/loading/DotLoading.vue";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
+
 import { useItemCategoryStore } from "@/stores/itemCategory";
 
 import InputCurrency from "@/components/input/InputCurrency.vue";
@@ -555,7 +580,6 @@ import LoadingModal from "@/components/modal/LoadingModal.vue";
 import SuccessModal from "@/components/modal/SuccessModal.vue";
 import { useToast } from "vue-toastification";
 import { useRoute, useRouter } from "vue-router";
-import CircleLoading from "@/components/loading/CircleLoading.vue";
 const SellChart = defineAsyncComponent(() => import("./detail/SellChart.vue"));
 
 const toast = useToast();
@@ -565,6 +589,7 @@ const swal = inject("$swal");
 
 const NewUnitModal = defineAsyncComponent(() => import("./modal/UnitModal.vue"));
 const NewCategoryModal = defineAsyncComponent(() => import("./modal/CategoryModal.vue"));
+const ChangeImageModal = defineAsyncComponent(() => import("./modal/ChangeImageModal.vue"));
 
 const taxStore = useTaxDetailStore();
 const itemStore = useItemStore();
@@ -572,9 +597,11 @@ const itemUnitStore = useItemUnitStore();
 const itemCategoryStore = useItemCategoryStore();
 const itemMutationStore = useItemMutationStore();
 const stateShow = ref("mutasi");
+const imageFromEdit = ref(null);
 
 const showModalAddUnit = ref(false);
 const showModalAddCategory = ref(false);
+const showModalChangeImage = ref(false);
 const activeTab = ref(0);
 const isEdit = ref(false);
 const tabs = ref([
@@ -604,6 +631,16 @@ const actionMenu = [
     icon: PrinterIcon,
   },
 ];
+
+function changeImageFromEdit(payload) {
+  showModalChangeImage.value = false;
+  imageFromEdit.value = payload;
+}
+
+const image = computed(() => {
+  if (imageFromEdit.value == null) return storageUrl + itemStore.singleResponses.show_image;
+  return storageUrl + imageFromEdit.value;
+});
 
 function changeTab(index) {
   activeTab.value = index;
