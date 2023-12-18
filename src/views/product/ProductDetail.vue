@@ -192,11 +192,12 @@
                   <label for="barcode" class="block text-sm font-medium text-gray-900 dark:text-white">Image</label>
                   <img class="rounded-t-lg h-72 mx-auto" :src="image" alt="" />
                   <button
+                    v-if="isEdit"
                     @click="showModalChangeImage = true"
                     type="button"
                     class="mt-3 py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                   >
-                    Ganti Gambar
+                    Change Image
                   </button>
                 </div>
                 <div class="mx-auto text-center">
@@ -367,7 +368,14 @@
                 <div v-if="stateShow == 'mutasi'" class="mt-4">
                   <div class="overflow-x-auto">
                     <small class="mt-3 text-grey-800 dark:text-gray-500"
-                      ><i>Data yang ditampilkan adalah 5 transaksi terakhir</i></small
+                      ><i
+                        >Data yang ditampilkan adalah 5 transaksi terakhir.
+
+                        <a @click="toMutationPage()" class="text-blue-600 cursor-pointer text-underline font-semibold"
+                          >Click
+                        </a>
+                        untuk menampilkan lebih</i
+                      ></small
                     >
                     <table
                       class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto table-striped"
@@ -384,6 +392,7 @@
                           <th scope="col" class="px-4 py-2 w-8 border border-slate-400 dark:border-slate-600">
                             kredit
                           </th>
+                          <th scope="col" class="px-4 py-2 w-8 border border-slate-400 dark:border-slate-600">Saldo</th>
                           <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">
                             Keterangan
                           </th>
@@ -391,12 +400,12 @@
                       </thead>
                       <tbody>
                         <tr v-if="itemMutationStore.isLoading">
-                          <td colspan="5" class="text-center py-6">
+                          <td colspan="6" class="text-center py-6">
                             <CircleLoading>Prosesing ... </CircleLoading>
                           </td>
                         </tr>
                         <tr v-else-if="!itemMutationStore.isLoading && itemMutationStore.items.length < 1">
-                          <td colspan="5" class="text-center py-6">No Data</td>
+                          <td colspan="6" class="text-center py-6">No Data</td>
                         </tr>
                         <tr
                           v-else
@@ -416,6 +425,7 @@
                           </td>
                           <td class="px-4 py-2">{{ item.debit }}</td>
                           <td class="px-4 py-2">{{ item.credit }}</td>
+                          <td class="px-4 py-2">{{ item.balance }}</td>
                           <td class="px-4 py-2">
                             <router-link :to="item.link" v-if="item.link == null ? false : true">
                               <span class="text-blue-700 dark:text-blue-400">
@@ -431,7 +441,7 @@
                     </table>
                   </div>
                   <small class="mt-3 text-grey-800 dark:text-gray-500"
-                    ><i>Klik link biru untuk melihat Invoice</i></small
+                    ><i>Klik link biru untuk melihat Faktur</i></small
                   >
                 </div>
                 <div v-if="stateShow == 'sell'" class="mt-4">
@@ -626,7 +636,7 @@ const actionMenu = [
     icon: TrashIcon,
   },
   {
-    function: deleteData,
+    function: printBarcode,
     label: "Print Barcode",
     icon: PrinterIcon,
   },
@@ -635,6 +645,13 @@ const actionMenu = [
 function changeImageFromEdit(payload) {
   showModalChangeImage.value = false;
   imageFromEdit.value = payload;
+}
+
+function toMutationPage() {
+  router.push({
+    name: "mutation-product",
+    params: { sku: itemStore.singleResponses.sku },
+  });
 }
 
 const image = computed(() => {
@@ -674,6 +691,12 @@ function deleteData(item) {
     backdrop: true,
   });
 }
+function printBarcode() {
+  swal.fire({
+    text: "Fitur ini belum tersedia",
+    icon: "info",
+  });
+}
 function update() {
   if (canSubmit.value) {
     itemStore.update(false);
@@ -700,6 +723,12 @@ const canSubmit = computed(() => {
   return true;
 });
 
+itemStore.$subscribe((mutation, state) => {
+  if (mutation.events.key == "currentLimit") {
+    itemStore.getData();
+  }
+});
+
 const sku = computed(() => {
   return route.params.sku ?? null;
 });
@@ -707,7 +736,7 @@ const sku = computed(() => {
 onMounted(async () => {
   if (itemStore.singleResponses == null) {
     await itemStore.showData(sku.value);
-    await itemMutationStore.getData({ id: itemStore.singleResponses.id, currentLimit: 5 });
+    await itemMutationStore.getData({ sku: itemStore.singleResponses.sku, currentLimit: 5 });
   }
   taxStore.getData();
   itemUnitStore.getData();
