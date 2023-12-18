@@ -37,7 +37,7 @@
               </svg>
             </div>
             <input
-              @keyup.enter="salesStore.getData()"
+              @keyup="search"
               v-model="salesStore.searchName"
               type="text"
               id="simple-search"
@@ -56,27 +56,6 @@
           <ReloadButton @click="salesStore.getData()" :is-loading="salesStore.isLoading" />
           <HeadlessMenu :links="actionMenu" />
         </div>
-        <!-- <div class="flex items-center space-x-4 w-full md:w-auto">
-          <router-link
-            :to="{ name: 'new-sale', params: {} }"
-            class="duration-300 hover:scale-105 transition flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            type="button"
-          >
-            Sales
-            <PlusIcon class="ml-2 w-4 h-4" />
-          </router-link>
-        </div>
-
-        <div class="flex items-center space-x-4 w-full md:w-auto">
-          <button
-            @click="filterDraw()"
-            class="duration-300 hover:scale-105 transition w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-            type="button"
-          >
-            Filter
-            <FunnelIcon class="h-4 w-4 ml-2" />
-          </button>
-        </div> -->
       </div>
     </div>
     <div class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
@@ -441,6 +420,7 @@ import { IDRCurrency } from "@/utilities/formatter";
 import { useSalesStore } from "@/stores/sales";
 import { useLayoutStore } from "@/stores/layout";
 import ReloadButton from "@/components/buttons/ReloadButton.vue";
+import { useDebounceFn } from "@vueuse/core";
 
 const CircleLoading = defineAsyncComponent(() => import("@/components/loading/CircleLoading.vue"));
 const ConfirmationModal = defineAsyncComponent(() => import("@/components/modal/ConfirmationModal.vue"));
@@ -483,6 +463,10 @@ salesStore.$subscribe((mutation, state) => {
     salesStore.getData();
   }
 });
+
+const search = useDebounceFn(() => {
+  salesStore.getData();
+}, 500);
 
 async function initRightDrawer(index) {
   layoutStore.title = "Highlight Penjualan";

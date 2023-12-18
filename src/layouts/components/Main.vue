@@ -6,10 +6,14 @@
       <!-- Ngasih Jarak -->
       <div class="h-8 bg-blue-500 mb-8"></div>
 
-      <span class="block px-2 md:px-0 py-1 text-2xl font-bold dark:text-white text-black mb-4"
+      <!-- <span class="block px-2 md:px-0 py-1 text-2xl font-bold dark:text-white text-black mb-4"
+        >{{ route.meta.title }}
+      </span> -->
+      <div class="md:px-0"><breadcumb /></div>
+      <span class="block px-2 md:px-0 py-1 text-2xl font-bold dark:text-white text-black my-2"
         >{{ route.meta.title }}
       </span>
-      <div class="md:mt-8 mt-4">
+      <div class="mt-4">
         <router-view />
       </div>
     </div>
@@ -19,6 +23,7 @@
 <script setup>
 import { useRoute } from "vue-router";
 import Footer from "./Footer.vue";
+import Breadcumb from "./Breadcumb.vue";
 
 const route = useRoute();
 </script>

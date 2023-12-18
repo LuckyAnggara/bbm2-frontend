@@ -21,6 +21,7 @@ export const useItemStore = defineStore("itemStore", {
       isTransactionSuccess: false,
       modalToggle: false,
       currentLimit: 10,
+
       editCurrentData: {},
       currentData: {
         name: null,

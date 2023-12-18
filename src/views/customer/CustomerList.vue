@@ -6,7 +6,7 @@
           <label for="years" class="block text-sm font-medium text-gray-900 dark:text-white mr-2">Show</label>
           <select
             v-model="customerStore.currentLimit"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block sm:w-16 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-16"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block sm:w-20 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-20"
           >
             <option
               :selected="customerStore.currentLimit == length ? true : false"
@@ -37,12 +37,12 @@
               </svg>
             </div>
             <input
-              @keyup.enter="customerStore.getData()"
+              @keyup="search"
               v-model="customerStore.searchName"
               type="text"
               id="simple-search"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Tekan enter untuk mencari"
+              placeholder="Cari berdasarkan nama"
             />
           </div>
         </form>
@@ -210,6 +210,7 @@ import { useCustomerStore } from "@/stores/customer";
 import { useSalesStore } from "@/stores/sales";
 import { useAuthStore } from "@/stores/auth";
 import { useToast } from "vue-toastification";
+import { useDebounceFn } from "@vueuse/core";
 
 const lengths = ref([5, 10, 20, 30, 40, 50]);
 const swal = inject("$swal");
@@ -232,6 +233,10 @@ customerStore.$subscribe((mutation, state) => {
     customerStore.getData();
   }
 });
+
+const search = useDebounceFn(() => {
+  customerStore.getData();
+}, 500);
 
 async function detail(item) {
   router.push({ name: "detail-customer", params: { uuid: item.uuid } });

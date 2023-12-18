@@ -110,7 +110,9 @@
                     </tbody>
                   </table>
                 </div>
-                <small v-if="salesStore.singleResponses.retur == 1" class="text-blue-500 text-bold place-self-start"
+                <small
+                  v-if="salesStore.singleResponses.retur_status == 1"
+                  class="text-blue-500 text-bold place-self-start"
                   >Transaksi ini sudah melakukan retur Product sebelumnya
                 </small>
               </div>

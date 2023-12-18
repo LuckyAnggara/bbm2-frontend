@@ -33,12 +33,12 @@
               </svg>
             </div>
             <input
-              @keyup.enter="itemStore.getData()"
+              @keyup="search"
               v-model="itemStore.searchName"
               type="text"
               id="simple-search"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Tekan enter untuk mencari"
+              placeholder="Cari berdasarkan Nama atau SKU"
             />
           </div>
         </form>
@@ -221,6 +221,7 @@ import EditDrawer from "./drawer/EditDrawer.vue";
 import { useRouter } from "vue-router";
 import { useLayoutStore } from "@/stores/layout";
 import ReloadButton from "@/components/buttons/ReloadButton.vue";
+import { useDebounceFn } from "@vueuse/core";
 
 const FilterDrawer = defineAsyncComponent(() => import("./drawer/FilterDrawer.vue"));
 
@@ -234,6 +235,10 @@ const layoutStore = useLayoutStore();
 
 const showCreateDrawer = ref(false);
 const showEditDrawer = ref(false);
+
+const search = useDebounceFn(() => {
+  itemStore.getData();
+}, 500);
 
 async function filterDraw() {
   await nextTick();
