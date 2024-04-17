@@ -33,15 +33,8 @@
         class="absolute w-52 right-10 top-12 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
       >
         <div class="px-4 py-3" role="none">
-          <p class="text-sm px-1 text-gray-900 dark:text-white" role="none">
-            Lucky Anggara
-          </p>
-          <p
-            class="px-1 text-sm font-medium text-gray-900 truncate dark:text-gray-300"
-            role="none"
-          >
-            Cashier
-          </p>
+          <p class="text-sm px-1 text-gray-900 dark:text-white" role="none">Lucky Anggara</p>
+          <p class="px-1 text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">Cashier</p>
         </div>
         <div class="px-1 py-1">
           <MenuItem>
@@ -74,20 +67,20 @@
 </template>
 
 <script setup>
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-import { useAuthStore } from '../../stores/Auth'
-import { useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
-import CircleLoading from '../../components/loading/CircleLoading.vue'
-const toast = useToast()
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import { useAuthStore } from "@/stores/Auth";
+import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
+const toast = useToast();
 
-const router = useRouter()
-const authStore = useAuthStore()
+const router = useRouter();
+const authStore = useAuthStore();
 
 async function logout() {
-  toast.info('Logging out in progress', {
-    id: 'logout',
-    position: 'bottom-right',
+  toast.info("Logging out in progress", {
+    id: "logout",
+    position: "bottom-right",
     timeout: false,
     closeOnClick: false,
     pauseOnFocusLoss: false,
@@ -96,16 +89,16 @@ async function logout() {
     draggablePercent: 0.6,
     showCloseButtonOnHover: false,
     hideProgressBar: true,
-    closeButton: 'button',
+    closeButton: "button",
     icon: true,
     rtl: false,
-  })
+  });
   setTimeout(async () => {
-    const success = await authStore.logout()
+    const success = await authStore.logout();
     if (success) {
-      toast.dismiss('logout')
-      router.push({ name: 'login' })
+      toast.dismiss("logout");
+      router.push({ name: "login" });
     }
-  }, 1000)
+  }, 1000);
 }
 </script>

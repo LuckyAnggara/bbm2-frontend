@@ -1,10 +1,5 @@
 <template>
   <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-    <!-- :class="[
-      !versionStore.isOnline
-        ? 'dark:bg-red-500 bg-red-500 border-red-200 dark::border-red-500'
-        : 'bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700',
-    ]" -->
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center justify-start">
@@ -59,7 +54,7 @@ import UserDropdown from "./UserDropdown.vue";
 import NotificationBar from "./NotificationBar.vue";
 import Logo from "@/components/Logo.vue";
 import { MoonIcon, SunIcon, Bars3BottomLeftIcon } from "@heroicons/vue/24/solid";
-import { useLayoutStore } from "../../stores/layout";
+import { useLayoutStore } from "@/stores/layout";
 import { Bars3Icon } from "@heroicons/vue/24/outline";
 // import { useVersionStore } from '@/stores/version'
 const toast = useToast();

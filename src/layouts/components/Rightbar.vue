@@ -2,7 +2,7 @@
   <aside
     id="logo-sidebar"
     :class="showRightBar == true ? '' : 'translate-x-full '"
-    class="fixed py-20 top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow- overflow-y-auto scrollbar-thin scrollbar-track-slate-500 scrollbar-thumb-neutral-800 transition-transform duration-500 ease-in-out bg-white dark:bg-gray-800 shadow-md"
+    class="fixed py-20 top-0 right-0 z-40 w-full h-screen max-w-md p-4 overflow-auto scroll-smooth scrollbar-thin scrollbar-track-slate-500 scrollbar-thumb-neutral-800 transition-transform duration-500 ease-in-out bg-white dark:bg-gray-800 shadow-md"
     aria-label="Sidebar"
   >
     <div class="w-full justify-between flex items-center mb-2">
@@ -125,7 +125,7 @@
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import { computed } from "vue";
 
-import { useLayoutStore } from "../../stores/layout";
+import { useLayoutStore } from "@/stores/layout";
 
 const layoutStore = useLayoutStore();
 
