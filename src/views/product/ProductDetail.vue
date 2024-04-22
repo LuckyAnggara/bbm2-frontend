@@ -187,19 +187,7 @@
                 </div>
               </div>
 
-              <div class="w-full text-center flex flex-col justify-center space-y-4">
-                <div class="border rounded-lg">
-                  <label for="barcode" class="block text-sm font-medium text-gray-900 dark:text-white">Image</label>
-                  <img class="rounded-t-lg h-72 mx-auto" :src="image" alt="" />
-                  <button
-                    v-if="isEdit"
-                    @click="showModalChangeImage = true"
-                    type="button"
-                    class="mt-3 py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                  >
-                    Change Image
-                  </button>
-                </div>
+              <div class="w-full text-center flex justify-center">
                 <div class="mx-auto text-center">
                   <label for="barcode" class="block text-sm font-medium text-gray-900 dark:text-white">Barcode</label>
                   <div class="rounded-lg border">
@@ -641,23 +629,6 @@ const actionMenu = [
     icon: PrinterIcon,
   },
 ];
-
-function changeImageFromEdit(payload) {
-  showModalChangeImage.value = false;
-  imageFromEdit.value = payload;
-}
-
-function toMutationPage() {
-  router.push({
-    name: "mutation-product",
-    params: { sku: itemStore.singleResponses.sku },
-  });
-}
-
-const image = computed(() => {
-  if (imageFromEdit.value == null) return storageUrl + itemStore.singleResponses.show_image;
-  return storageUrl + imageFromEdit.value;
-});
 
 function changeTab(index) {
   activeTab.value = index;

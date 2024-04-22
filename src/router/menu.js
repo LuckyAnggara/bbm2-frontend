@@ -12,12 +12,21 @@ export const menu = [
     icon: RectangleGroupIcon,
     to: "dashboard",
   },
-
   {
-    name: "Sales",
-    icon: BuildingStorefrontIcon,
-    to: "list-sale",
+    name: "-",
   },
+  {
+    name: "Business",
+    icon: BuildingStorefrontIcon,
+    child: [
+      {
+        name: "Sales",
+        icon: BriefcaseIcon,
+        to: "list-sale",
+      },
+    ],
+  },
+
   {
     name: "Product & Service",
     icon: BriefcaseIcon,

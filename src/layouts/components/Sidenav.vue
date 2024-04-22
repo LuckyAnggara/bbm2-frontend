@@ -12,18 +12,29 @@
       <ul class="space-y-2">
         <li v-for="(menu, index) in listMenu" :key="index">
           <template v-if="!menu.child?.length > 0">
-            <router-link
-              class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-              :to="{ name: menu.to }"
-            >
-              <div
-                class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+            <div v-if="menu.name !== '-'">
+              <router-link
+                @click="activeMenu = index"
+                :class="
+                  activeMenu == index
+                    ? 'bg-gray-800 text-gray-100 dark:bg-gray-200 dark:text-gray-700'
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white'
+                "
+                class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group"
+                :to="{ name: menu.to }"
               >
-                <component :is="menu.icon"></component>
-              </div>
+                <div
+                  class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                >
+                  <component :is="menu.icon"></component>
+                </div>
 
-              <span class="flex-1 ml-3 text-left whitespace-nowrap">{{ menu.name }}</span>
-            </router-link>
+                <span class="flex-1 ml-3 text-left whitespace-nowrap">{{ menu.name }}</span>
+              </router-link>
+            </div>
+            <div v-else>
+              <hr />
+            </div>
           </template>
           <template v-else>
             <button
@@ -46,6 +57,12 @@
               <li v-for="(child, indexChild) in menu.child" :key="indexChild">
                 <router-link
                   :to="{ name: child.to }"
+                  @click="activeMenu = index + indexChild"
+                  :class="
+                    activeMenu == index + indexChild
+                      ? 'bg-gray-800 text-gray-100 dark:bg-gray-200 dark:text-gray-700'
+                      : 'hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white'
+                  "
                   class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                   >{{ child.name }}</router-link
                 >
@@ -108,15 +125,16 @@
 <script setup>
 import { initCollapses } from "flowbite";
 import { reactive, ref, onMounted } from "vue";
-import ChildMenuButton from "../../components/buttons/ChildMenuButton.vue";
-import { menu } from "../../router/menu";
+import ChildMenuButton from "@/components/buttons/ChildMenuButton.vue";
+import { menu } from "@/router/menu";
 import { useRoute } from "vue-router";
-import { useLayoutStore } from "../../stores/layout";
+import { useLayoutStore } from "@/stores/layout";
 import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 
 const listMenu = reactive(menu);
 const route = useRoute();
 const layoutStore = useLayoutStore();
+const activeMenu = ref(null);
 
 // initialize components based on data attribute selectors
 onMounted(() => {

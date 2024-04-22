@@ -14,9 +14,7 @@
               <template v-slot:leftIcon>
                 <component :is="menu.icon"></component>
               </template>
-              <template v-slot:text>
-                {{ menu.name }}
-              </template>
+              <template v-slot:text> {{ menu.name }} </template>
             </MenuButton>
             <ul :class="[currentMenu == menu.id ? '' : 'hidden']" class="py-2 space-y-2">
               <li v-for="childMenu in menu.child" :key="childMenu.id">
@@ -37,20 +35,25 @@
             </ul>
           </template>
           <template v-else>
-            <MenuButton
-              :has-child="false"
-              :menu-id="menu.id"
-              :active-id="currentMenu"
-              @click="parentMenuClick(menu.id)"
-              :nav-name="menu.to"
-            >
-              <template v-slot:leftIcon>
-                <component :is="menu.icon"></component>
-              </template>
-              <template v-slot:text>
-                {{ menu.name }}
-              </template>
-            </MenuButton>
+            <div v-if="menu.name == '-'">
+              <hr />
+            </div>
+            <div v-else>
+              <MenuButton
+                :has-child="false"
+                :menu-id="menu.id"
+                :active-id="currentMenu"
+                @click="parentMenuClick(menu.id)"
+                :nav-name="menu.to"
+              >
+                <template v-slot:leftIcon>
+                  <component :is="menu.icon"></component>
+                </template>
+                <template v-slot:text>
+                  {{ menu.name }}
+                </template>
+              </MenuButton>
+            </div>
           </template>
         </li>
       </ul>
@@ -60,13 +63,13 @@
 
 <script setup>
 import { reactive, ref, computed, onMounted } from "vue";
-import MenuButton from "../../components/buttons/MenuButton.vue";
-import ChildMenuButton from "../../components/buttons/ChildMenuButton.vue";
-import { menu } from "../../router/menu";
+import MenuButton from "@/components/buttons/MenuButton.vue";
+import ChildMenuButton from "@/components/buttons/ChildMenuButton.vue";
+import { menu } from "@/router/menu";
 import { useRoute } from "vue-router";
 
 import { initDropdowns } from "flowbite";
-import { useLayoutStore } from "../../stores/layout";
+import { useLayoutStore } from "@/stores/layout";
 
 const listMenu = reactive(menu);
 const route = useRoute();

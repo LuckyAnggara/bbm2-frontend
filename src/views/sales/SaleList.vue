@@ -59,7 +59,7 @@
       </div>
     </div>
     <div class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700">
-      <table class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 xl:table-fixed">
+      <table class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
           <tr>
             <th scope="col" class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600">No</th>

@@ -107,9 +107,9 @@
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import { BellIcon, UserIcon } from "@heroicons/vue/24/solid";
 
-import { useNotificationStore } from "../../stores/notification";
+import { useNotificationStore } from "@/stores/notification";
 import { onMounted, ref } from "vue";
-import CircleLoading from "../../components/loading/CircleLoading.vue";
+import CircleLoading from "@/components/loading/CircleLoading.vue";
 import _ from "lodash";
 import { useRouter } from "vue-router";
 
