@@ -2,7 +2,7 @@
   <aside
     id="logo-sidebar"
     :class="
-      layoutStore.isSideBarShow == true ? '-translate-x-full sm:translate-x-0' : '-translate-x-full lg:translate-x-0 '
+      layoutStore.isSideBarShow == true ? '-translate-x-full xl:translate-x-0' : '-translate-x-full lg:translate-x-0 '
     "
     @mouseleave="layoutStore.isSideBarShow = false"
     class="fixed top-2 left-0 z-40 w-64 h-full pt-20 transition-all bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700"
@@ -14,17 +14,22 @@
           <template v-if="!menu.child?.length > 0">
             <div v-if="menu.name !== '-'">
               <router-link
-                @click="activeMenu = index"
+                @click="activeMenu = parseInt(index.toString())"
                 :class="
-                  activeMenu == index
+                  activeMenu == parseInt(index.toString())
                     ? 'bg-gray-800 text-gray-100 dark:bg-gray-200 dark:text-gray-700'
-                    : 'hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white'
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white  text-gray-700'
                 "
-                class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group"
+                class="flex items-center p-2 w-full text-base font-normal rounded-lg transition duration-75 group"
                 :to="{ name: menu.to }"
               >
                 <div
-                  class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  :class="
+                    activeMenu == parseInt(index.toString())
+                      ? 'bg-gray-800 text-gray-100 dark:bg-gray-200 dark:text-gray-700'
+                      : 'hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white  text-gray-700'
+                  "
+                  class="flex-shrink-0 w-6 h-6 transition duration-75"
                 >
                   <component :is="menu.icon"></component>
                 </div>
@@ -44,7 +49,7 @@
               :data-collapse-toggle="`dropdown-pages-${index}`"
             >
               <div
-                class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                class="flex-shrink-0 w-6 h-6 transition duration-75 dark:text-white group-hover:text-gray-900 dark:group-hover:text-white text-gray-700"
               >
                 <component :is="menu.icon"></component>
               </div>
@@ -57,13 +62,13 @@
               <li v-for="(child, indexChild) in menu.child" :key="indexChild">
                 <router-link
                   :to="{ name: child.to }"
-                  @click="activeMenu = index + indexChild"
+                  @click="activeMenu = parseInt(index.toString() + indexChild.toString())"
                   :class="
-                    activeMenu == index + indexChild
+                    activeMenu == parseInt(index.toString() + indexChild.toString())
                       ? 'bg-gray-800 text-gray-100 dark:bg-gray-200 dark:text-gray-700'
-                      : 'hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white'
+                      : 'hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white  text-gray-700'
                   "
-                  class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                  class="flex items-center p-2 w-full text-base font-normal rounded-lg transition duration-75 group"
                   >{{ child.name }}</router-link
                 >
               </li>

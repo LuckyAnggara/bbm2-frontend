@@ -7,7 +7,6 @@ import { useNotificationStore } from "./notification";
 import { useSalesReturStore } from "./salesRetur";
 import { useArrayDifference } from "@vueuse/core";
 const toast = useToast();
-const userData = JSON.parse(localStorage.getItem("userData"));
 
 // ITEM STORE
 export const useSalesStore = defineStore("salesStore", {
@@ -25,6 +24,13 @@ export const useSalesStore = defineStore("salesStore", {
       isDrawerLoading: false,
       isTransactionSuccess: false,
       editReturDetail: {},
+      formPaymentCredit: {
+        sale_id: null,
+        created_at: null,
+        amount: 0,
+        notes: null,
+        payment_type: "CASH",
+      },
       sortBy: "created_at",
       isAscending: false,
       currentLimit: 10,
@@ -42,9 +48,8 @@ export const useSalesStore = defineStore("salesStore", {
           isCustomer: false,
           id: 1,
           withoutCustomer: true,
-          userId: userData.id,
           saveCustomer: false,
-          type: "",
+          type: null,
         },
         currentCart: [],
         total: {},
@@ -163,10 +168,10 @@ export const useSalesStore = defineStore("salesStore", {
           return "&credit=1";
       }
     },
-    branchQuery(state) {
-      const authStore = useAuthStore();
-      return "&branch=" + authStore.userData.branch_id;
-    },
+    // branchQuery(state) {
+    //   const authStore = useAuthStore();
+    //   return "&branch=" + authStore.userData.branch_id;
+    // },
     activeFilter(state) {
       return {
         tanggal: state.filter.date ?? "-",
@@ -232,7 +237,7 @@ export const useSalesStore = defineStore("salesStore", {
       return sum;
     },
     editGrandTotal(state) {
-      return state.editTotalBeforeTax + state.editTax;
+      return state.editTotalBeforeTax + state.editTax - (state.singleResponses?.total_retur ?? 0);
     },
     editTotal(state) {
       return {
@@ -259,8 +264,14 @@ export const useSalesStore = defineStore("salesStore", {
       }
       return true;
     },
-    editShippingPermission(state) {
+    editCustomerPermission(state) {
+      if (JSON.stringify(state.singleResponses?.customer) == JSON.stringify(state.originalSingleResponses?.customer)) {
+        return false;
+      }
       return true;
+    },
+    editShippingPermission(state) {
+      return false;
     },
     editReturPermission(state) {
       const list1 = JSON.stringify(state.singleResponses?.detail_retur);
@@ -284,6 +295,7 @@ export const useSalesStore = defineStore("salesStore", {
         editCreditPermission: state.editCreditPermission,
         editShippingPermission: state.editShippingPermission,
         editReturPermission: state.editReturPermission,
+        editCustomerPermission: state.editCustomerPermission,
         useGlobalTax: state.singleResponses.global_tax,
         transaction: {
           bank: {},
@@ -309,7 +321,6 @@ export const useSalesStore = defineStore("salesStore", {
           paymentStatus: state.singleResponses.payment_status,
           paymentType: state.singleResponses.payment_type,
         },
-        userData: authStore.userData,
       };
     },
   },
@@ -318,7 +329,7 @@ export const useSalesStore = defineStore("salesStore", {
       this.isLoading = true;
       try {
         const response = await axiosIns.get(
-          `/sales?limit=${this.currentLimit}${this.branchQuery}${this.searchQuery}${page}${this.paymentStatusQuery}${this.deliveryStatusQuery}${this.pembayaranQuery}${this.dateQuery}${this.minTotalQuery}`
+          `/sales?limit=${this.currentLimit}${this.searchQuery}${page}${this.paymentStatusQuery}${this.deliveryStatusQuery}${this.pembayaranQuery}${this.dateQuery}${this.minTotalQuery}`
         );
         this.responses = response.data.data;
       } catch (error) {
@@ -353,16 +364,15 @@ export const useSalesStore = defineStore("salesStore", {
       this.isStoreLoading = true;
       try {
         const response = await axiosIns.post(`/sales`, this.currentData);
-        toast.success("Transaksi berhasil di proses", {
-          timeout: 3000,
-        });
         this.responses = response.data.data;
         this.isTransactionSuccess = true;
         notificationStore.getUnread();
+        return {
+          status: true,
+          data: response.data.data,
+        };
       } catch (error) {
-        toast.error(error.message, {
-          timeout: 3000,
-        });
+        return false;
       } finally {
         this.isStoreLoading = false;
       }
@@ -371,11 +381,9 @@ export const useSalesStore = defineStore("salesStore", {
       this.isUpdateLoading = true;
       try {
         const response = await axiosIns.put(`/sales/${this.singleResponses.id}`, this.dataEdit);
-        this.isTransactionSuccess = true;
+        return true;
       } catch (error) {
-        toast.error(error.message, {
-          timeout: 3000,
-        });
+        return false;
       } finally {
         this.isUpdateLoading = false;
       }
@@ -384,15 +392,10 @@ export const useSalesStore = defineStore("salesStore", {
       this.isDestroyLoading = true;
       try {
         const response = await axiosIns.delete(`/sales/${id}`);
-        toast.success("Data berhasil di hapus", {
-          timeout: 2000,
-        });
-        const index = this.items.findIndex((item) => item.id === id);
         this.responses.data.splice(index, 1);
+        return true;
       } catch (error) {
-        toast.error(error.response.data.message, {
-          timeout: 2000,
-        });
+        return false;
       } finally {
         this.isDestroyLoading = false;
       }
@@ -407,36 +410,32 @@ export const useSalesStore = defineStore("salesStore", {
         this.isDrawerLoading = false;
       }
     },
-    async storeCreditPayment(data) {
-      this.isPaymentLoading = true;
+    async storeCreditPayment() {
       try {
-        const response = await axiosIns.post(`/payment`, data);
-        toast.success("Transaksi berhasil di proses", {
-          timeout: 3000,
-        });
-        this.responses = response.data.data;
-        this.isTransactionSuccess = true;
+        const response = await axiosIns.post(`/sales-credit-payment`, this.formPaymentCredit);
+        if (response.status == 201) {
+          this.singleResponses.payment.push(response.data.data);
+          this.singleResponses.remaining_credit -= this.formPaymentCredit.amount;
+          this.resetFormCreditPayment();
+          if (this.singleResponses.remaining_credit == 0) {
+            this.singleResponses.payment_status = "LUNAS";
+          }
+          return true;
+        }
       } catch (error) {
-        toast.error(error.message, {
-          timeout: 3000,
-        });
-      } finally {
-        this.isPaymentLoading = false;
+        return false;
       }
     },
-    async destroyCreditData(id) {
+    async destroyCreditData(paymentItem) {
       this.isDestroyLoading = true;
       try {
-        const response = await axiosIns.delete(`/payment/${id}`);
-        toast.success("Data berhasil di hapus", {
-          timeout: 2000,
-        });
-        const index = this.singleResponses.payment.findIndex((item) => item.id === id);
+        const response = await axiosIns.delete(`/sales-credit-payment/${paymentItem.id}`);
+        const index = this.singleResponses.payment.findIndex((item) => item.id === paymentItem.id);
         this.singleResponses.payment.splice(index, 1);
+        this.singleResponses.remaining_credit += paymentItem.amount;
+        return true;
       } catch (error) {
-        toast.error(error.response.data.message, {
-          timeout: 2000,
-        });
+        return false;
       } finally {
         this.isDestroyLoading = false;
       }
@@ -454,7 +453,6 @@ export const useSalesStore = defineStore("salesStore", {
       this.currentData.shipping = { ...value };
     },
     setData(isCredit = false, paymentType = "CASH") {
-      const authStore = useAuthStore();
       let transaction = {
         ...this.currentData.transaction,
         paymentType: paymentType,
@@ -466,7 +464,10 @@ export const useSalesStore = defineStore("salesStore", {
         ...transaction,
       };
       this.currentData.total = this.total;
-      this.currentData.userData = authStore.userData;
+    },
+    setReturData(returData) {
+      this.singleResponses.retur_status = true;
+      this.singleResponses.detail_retur.push(returData);
     },
     resetData() {
       this.currentData = {
@@ -475,11 +476,11 @@ export const useSalesStore = defineStore("salesStore", {
         },
         customerData: {
           id: 1,
+          type: null,
           name: "-",
           address: "-",
           phone_number: "-",
           withoutCustomer: true,
-          userId: userData.id,
           saveCustomer: false,
         },
         currentCart: [],
@@ -495,6 +496,26 @@ export const useSalesStore = defineStore("salesStore", {
           notes: "",
         },
         shipping: {},
+      };
+    },
+    resetFormCustomerData() {
+      this.currentData.customerData = {
+        id: 1,
+        isCustomer: false,
+        type: null,
+        name: "",
+        withoutCustomer: true,
+        address: "",
+        phone_number: "",
+        saveCustomer: false,
+      };
+    },
+    resetFormCreditPayment() {
+      this.formPaymentCredit = {
+        created_at: null,
+        amount: 0,
+        notes: null,
+        payment_type: "CASH",
       };
     },
     copyOriginalSingleResponses() {

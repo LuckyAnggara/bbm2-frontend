@@ -40,7 +40,7 @@
               </div>
             </div>
 
-            <div class="mx-auto max-w-xs">
+            <form class="mx-auto max-w-xs" @submit.prevent="login">
               <input
                 v-model="authStore.form.username"
                 autocomplete="off"
@@ -70,7 +70,7 @@
               </div>
 
               <button
-                @click="login"
+                type="submit"
                 :disabled="authStore.isLoading"
                 class="text-white mt-5 tracking-wide font-semibold bg-blue-400 text-white-500 w-full py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
               >
@@ -105,7 +105,7 @@
                 <a href="#" class="border-b border-gray-500 border-dotted"> Privacy Policy </a>
               </p>
               <img src="@/assets/logo.png" class="mx-auto h-24 mt-12" />
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -123,15 +123,49 @@ import { EyeSlashIcon, EyeIcon } from "@heroicons/vue/24/outline";
 import { ref } from "vue";
 import { useAuthStore } from "@/stores/Auth";
 import { useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
 
 const showPassword = ref(false);
 const router = useRouter();
 const authStore = useAuthStore();
 
-async function login() {
+const login = async () => {
+  const id = toast.loading("Login...", {
+    position: toast.POSITION.BOTTOM_CENTER,
+    type: "info",
+    isLoading: true,
+  });
+
   const success = await authStore.login();
   if (success) {
+    toast.update(id, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "success",
+      render: "Login success",
+      autoClose: 2000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+    toast.done(id);
     router.push({ name: "dashboard" });
+  } else {
+    toast.update(id, {
+      render: "Terjadi kesalahan",
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "error",
+      autoClose: 1000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
   }
-}
+};
+
+// async function login() {
+//   const success = await authStore.login();
+//   if (success) {
+//     router.push({ name: "dashboard" });
+//   }
+// }
 </script>

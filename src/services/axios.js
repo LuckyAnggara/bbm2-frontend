@@ -6,10 +6,9 @@ const axiosIns = axios.create({
 });
 
 axiosIns.interceptors.request.use((config) => {
-  const token = JSON.parse(localStorage.getItem("token"));
+  const token = localStorage.getItem("token");
   if (token) {
-    config.headers.Authorization = `${token.token_type} ${token.access_token}`;
-    config.headers["Content-Type"] = "application/json";
+    config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
   } else {
   }
   return config;

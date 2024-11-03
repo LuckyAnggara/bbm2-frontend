@@ -184,7 +184,7 @@
                 class="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0"
               >
                 <span
-                  @click="paymentCreditView(item.id)"
+                  @click="paymentCreditView(item.uuid)"
                   v-if="item.credit == true"
                   class="cursor-pointer bg-red-100 text-red-600 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
                   >KREDIT
@@ -197,7 +197,7 @@
               </div>
               <div v-else class="flex flex-row items-center space-x-2">
                 <span
-                  @click="paymentCreditView(item.id)"
+                  @click="paymentCreditView(item.uuid)"
                   v-if="item.credit == true"
                   class="h-fit cursor-pointer bg-red-100 text-red-600 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-red-500 dark:text-white"
                   >KREDIT
@@ -259,7 +259,7 @@
 
                         <MenuItem v-slot="{ active }">
                           <button
-                            @click="invoice(item.id)"
+                            @click="invoice(item.uuid)"
                             :class="[
                               active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
                               'group flex w-full items-center rounded-md px-2 py-2 text-sm',
@@ -270,7 +270,7 @@
                           </button>
                         </MenuItem>
 
-                        <MenuItem v-slot="{ active }">
+                        <!-- <MenuItem v-slot="{ active }">
                           <button
                             @click="editData(item.id)"
                             :class="[
@@ -282,7 +282,7 @@
 
                             Edit
                           </button>
-                        </MenuItem>
+                        </MenuItem> -->
 
                         <MenuItem v-slot="{ active }">
                           <button
@@ -389,7 +389,7 @@
 
   <!-- Loading Modal -->
   <Teleport to="body">
-    <LoadingModal :show="salesStore.isDestroyLoading">Processing transaction</LoadingModal>
+    <LoadingModal :show="salesStore.isDestroyLoading">Deleting transaction ..</LoadingModal>
   </Teleport>
 </template>
 
@@ -421,6 +421,8 @@ import { useSalesStore } from "@/stores/sales";
 import { useLayoutStore } from "@/stores/layout";
 import ReloadButton from "@/components/buttons/ReloadButton.vue";
 import { useDebounceFn } from "@vueuse/core";
+
+import { toast } from "vue3-toastify";
 
 const CircleLoading = defineAsyncComponent(() => import("@/components/loading/CircleLoading.vue"));
 const ConfirmationModal = defineAsyncComponent(() => import("@/components/modal/ConfirmationModal.vue"));
@@ -482,35 +484,58 @@ async function filterDraw() {
   layoutStore.isRightDrawShow = true;
 }
 
-async function paymentCreditView(id) {
+async function paymentCreditView(uuid) {
   layoutStore.isRightDrawShow = false;
   await nextTick();
-  router.push({
-    name: "payment-credit",
-    params: { id: id },
-  });
+  router.push({ name: "detail-sale", params: { uuid: uuid }, query: { tab: 3 } });
 }
 async function detail(uuid) {
   router.push({ name: "detail-sale", params: { uuid: uuid } });
 }
 
-async function destroyData(id) {
-  showConfirmationModal.value = false;
-  await nextTick();
-  await salesStore.destroyData(deleteId.value); // memanggil action deleteData pada store
-}
-
-function invoice(id) {
-  router.push({ name: "invoice", params: { id } });
-}
-
-function editData(id) {
-  router.push({ name: "edit-sale", params: { id } });
+function invoice(uuid) {
+  router.push({ name: "invoice", params: { uuid } });
 }
 
 function deleteData(id) {
   deleteId.value = id;
   showConfirmationModal.value = true;
+}
+
+async function destroyData() {
+  showConfirmationModal.value = false;
+  await nextTick();
+
+  const id = toast.loading("Deleting data...", {
+    position: toast.POSITION.BOTTOM_CENTER,
+    type: "info",
+    isLoading: true,
+  });
+
+  const success = await salesStore.destroyData(deleteId.value);
+
+  if (success) {
+    toast.update(id, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "success",
+      render: "Delete data successfully !",
+      autoClose: 2000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+    toast.done(id);
+  } else {
+    toast.update(id, {
+      render: "There something wrong",
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "error",
+      autoClose: 1000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+  } // memanggil action deleteData pada store
 }
 
 onBeforeMount(() => {

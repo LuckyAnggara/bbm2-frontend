@@ -114,6 +114,18 @@
           placeholder="Type customer address"
         ></textarea>
       </div>
+      <div>
+        <input
+          v-model="salesStore.singleResponses.customer.saveCustomer"
+          id="checkbox-3"
+          type="checkbox"
+          value=""
+          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
+        />
+        <label for="checkbox-3" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          >Simpan pelanggan
+        </label>
+      </div>
     </div>
   </div>
   <Teleport to="body">
@@ -144,7 +156,7 @@ const props = defineProps({
 const salesStore = useSalesStore();
 const customerStore = useCustomerStore();
 const showCustomerExistingModal = ref(false);
-const customerCanEdit = ref(false);
+const customerCanEdit = ref(true);
 const savingCustomerData = computed(() => {
   return JSON.parse(JSON.stringify(salesStore.originalSingleResponses.customer));
 });

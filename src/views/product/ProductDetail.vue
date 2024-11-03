@@ -415,7 +415,7 @@
                           <td class="px-4 py-2">{{ item.credit }}</td>
                           <td class="px-4 py-2">{{ item.balance }}</td>
                           <td class="px-4 py-2">
-                            <router-link :to="item.link" v-if="item.link == null ? false : true">
+                            <router-link :to="item.link" v-if="item.link == null || item.link == '' ? false : true">
                               <span class="text-blue-700 dark:text-blue-400">
                                 {{ item.notes }}
                               </span></router-link
@@ -707,7 +707,7 @@ const sku = computed(() => {
 onMounted(async () => {
   if (itemStore.singleResponses == null) {
     await itemStore.showData(sku.value);
-    await itemMutationStore.getData({ sku: itemStore.singleResponses.sku, currentLimit: 5 });
+    await itemMutationStore.getData({ sku: sku.value, currentLimit: 5 });
   }
   taxStore.getData();
   itemUnitStore.getData();

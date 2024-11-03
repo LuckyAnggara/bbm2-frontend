@@ -188,12 +188,12 @@
           </button>
 
           <button
-            @click="newTransaction()"
+            @click="toListTransaction"
             type="button"
             class="flex flex-row items-center hover:scale-105 duration-300 ease-in-out transform py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-900"
           >
             <ArrowPathIcon class="h-4 w-4 mr-2" />
-            New Transaction
+            List Transaction
           </button>
         </template>
       </SuccessModal>
@@ -240,10 +240,10 @@ import {
 } from "@heroicons/vue/24/outline";
 import { inject, defineAsyncComponent, ref, nextTick } from "vue";
 import { useRouter } from "vue-router";
-import { useToast } from "vue-toastification";
 import { useItemStore } from "@/stores/items";
 import { useSalesStore } from "@/stores/sales";
 import { IDRCurrency } from "@/utilities/formatter";
+import { toast } from "vue3-toastify";
 
 import ErrorModal from "@/components/modal/SuccessModal.vue";
 
@@ -253,7 +253,6 @@ const errorModal = ref(false);
 const swal = inject("$swal");
 const salesStore = useSalesStore();
 const router = useRouter();
-const toast = useToast();
 const stateShow = ref("first");
 const showCashModal = ref(false);
 const showTransferModal = ref(false);
@@ -360,22 +359,44 @@ function processCredit() {
 async function submitTransaction(isCredit = false, paymentType = "CASH") {
   if (salesStore.currentData.currentCart.length == 0) {
     toast.error("Transaksi tidak dapat di Proses", {
-      timeout: 3000,
-      position: "bottom-center",
+      autoClose: 3000,
+      position: toast.POSITION.BOTTOM_CENTER,
     });
     return;
   }
-
   await nextTick();
-  // UPDATE DATA UNTUK TRANSAKSI KAS MASUK KE PAYLOAD
   salesStore.setData(isCredit, paymentType);
-
   await nextTick();
-  // PROSES TRANSAKSI
-  salesStore.store();
-  // await nextTick()
-  // salesStore.resetData()
-  // itemStore.resetData()
+  showCashModal.value = false;
+  const id = toast.loading("Processing sales...", {
+    position: toast.POSITION.BOTTOM_CENTER,
+    type: "info",
+    isLoading: true,
+  });
+
+  const success = await salesStore.store();
+  if (success) {
+    toast.update(id, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "success",
+      render: "Sales successfull !",
+      autoClose: 2000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+    toast.done(id);
+  } else {
+    toast.update(id, {
+      render: "There something wrong",
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "error",
+      autoClose: 1000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+  }
 }
 
 async function invoicePage() {
@@ -384,9 +405,13 @@ async function invoicePage() {
   router.push({ name: "invoice", params: { id: salesStore.responses.uuid } });
 }
 
+toListTransaction;
+async function toListTransaction() {
+  router.push({ name: "list-sale" });
+}
+
 async function newTransaction() {
-  errorModal.value = false;
-  emit("new");
+  router.push({ name: "new-sale" });
 }
 </script>
 

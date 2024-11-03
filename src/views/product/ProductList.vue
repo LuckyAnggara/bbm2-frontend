@@ -112,7 +112,11 @@
                     <MenuButton
                       class="hover:scale-125 ease-in-out duration-300 flex w-full rounded-md font-medium text-black dark:text-white"
                     >
-                      <EllipsisVerticalIcon class="h-5 w-5 text-black dark:text-white" aria-hidden="true" />
+                      <ArrowPathIcon
+                        v-if="item.id == itemIdDelete && itemStore.isDestroyLoading"
+                        class="animate-spin h-5 w-5"
+                      />
+                      <EllipsisVerticalIcon v-else class="h-5 w-5 text-black dark:text-white" aria-hidden="true" />
                     </MenuButton>
                   </div>
 
@@ -128,7 +132,12 @@
                       class="z-50 py-1 absolute right-0 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white dark:bg-gray-800 dark:text-gray-100 shadow-lg ring-1 ring-black dark:ring-gray-700 ring-opacity-5 focus:outline-none"
                     >
                       <div class="px-2 py-1">
-                        <MenuItem v-for="menu in itemMenu" v-slot="{ active }">
+                        <MenuItem
+                          v-for="(menu, childIndex) in itemMenu"
+                          v-slot="{ active }"
+                          :key="childIndex"
+                          :disabled="itemStore.isDestroyLoading"
+                        >
                           <button
                             @click="menu.function(item)"
                             :class="[
@@ -193,6 +202,20 @@
 
   <CreateDrawer :show="showCreateDrawer" @close="showCreateDrawer = false" />
   <EditDrawer :show="showEditDrawer" @close="showEditDrawer = false" />
+
+  <Teleport to="body">
+    <ConfirmationModal :show="modalDelete" @close="modalDelete = false" @submit="deleteProduct()">
+      <template #title>
+        <h1>Are you sure to delete this product ?</h1>
+      </template>
+      <template #cancel>
+        <span>Cancel</span>
+      </template>
+      <template #submit>
+        <span>Submit</span>
+      </template>
+    </ConfirmationModal>
+  </Teleport>
 </template>
 
 <script setup>
@@ -212,29 +235,29 @@ import {
 import { onMounted, computed, onUnmounted, ref, shallowRef, nextTick, inject, defineAsyncComponent } from "vue";
 import { IDRCurrency } from "@/utilities/formatter";
 import { useItemStore } from "@/stores/items";
-import { useItemBrandStore } from "@/stores/itemBrand";
-import { useItemUnitStore } from "@/stores/itemUnit";
 import CircleLoading from "@/components/loading/CircleLoading.vue";
-
+import ConfirmationModal from "@/components/modal/ConfirmationModal.vue";
 import CreateDrawer from "./drawer/CreateDrawer.vue";
 import EditDrawer from "./drawer/EditDrawer.vue";
 import { useRouter } from "vue-router";
 import { useLayoutStore } from "@/stores/layout";
 import ReloadButton from "@/components/buttons/ReloadButton.vue";
 import { useDebounceFn } from "@vueuse/core";
+import { toast } from "vue3-toastify";
+import { ArrowPathIcon } from "@heroicons/vue/24/solid";
 
 const FilterDrawer = defineAsyncComponent(() => import("./drawer/FilterDrawer.vue"));
 
-const lengths = ref([5, 10, 20, 30, 40, 50]);
-const swal = inject("$swal");
 const router = useRouter();
+
 const itemStore = useItemStore();
-const itemBrandStore = useItemBrandStore();
-const itemUnitStore = useItemUnitStore();
 const layoutStore = useLayoutStore();
 
+const lengths = ref([5, 10, 20, 30, 40, 50]);
+const itemIdDelete = ref(0);
 const showCreateDrawer = ref(false);
 const showEditDrawer = ref(false);
+const modalDelete = ref(false);
 
 const search = useDebounceFn(() => {
   itemStore.getData();
@@ -265,40 +288,43 @@ async function detail(item) {
   router.push({ name: "detail-product", params: { sku: item.sku } });
 }
 
-async function edit(id) {
-  if (!itemBrandStore.items) itemBrandStore.getData();
-  if (!itemUnitStore.items) itemUnitStore.getData();
-  await nextTick();
-  let data = itemStore.items.find((x) => x.id == id);
-  itemStore.editCurrentData = data;
-  await nextTick();
-  showEditDrawer.value = true;
-}
-
-async function newProduct() {
-  if (!itemBrandStore.items) itemBrandStore.getData();
-  if (!itemUnitStore.items) itemUnitStore.getData();
-  await nextTick();
-  showCreateDrawer.value = true;
-}
-
 function deleteData(item) {
-  swal.fire({
-    title: "Hapus?",
-    text: "Data tidak bisa dikembalikan!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Ya, hapus!",
-    cancelButtonText: "Cancel!",
-    showLoaderOnConfirm: true,
-    reverseButtons: true,
-    preConfirm: async () => {
-      await itemStore.destroy(item.id);
-    },
-    allowOutsideClick: () => !itemStore.isDestroyLoading,
-    backdrop: true,
-  });
+  modalDelete.value = true;
+  itemIdDelete.value = item.id;
 }
+
+const deleteProduct = async () => {
+  modalDelete.value = false;
+  const id = toast.loading("Deleting product...", {
+    position: toast.POSITION.BOTTOM_CENTER,
+    type: "info",
+    isLoading: true,
+  });
+
+  const success = await itemStore.destroy(itemIdDelete.value);
+  if (success) {
+    toast.update(id, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "success",
+      render: "Product has been delete !",
+      autoClose: 2000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+    toast.done(id);
+  } else {
+    toast.update(id, {
+      render: "There something wrong",
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "error",
+      autoClose: 1000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+  }
+};
 
 const actionMenu = [
   {

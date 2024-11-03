@@ -11,35 +11,38 @@ export const useAuthStore = defineStore("auth", {
     isLoading: false,
     form: {
       username: "demo",
-      password: "12345678",
+      password: "123456",
     },
-    userData: JSON.parse(localStorage.getItem("userData"))?.user,
+    isUpdateLoading: false,
+    isLoading: false,
+    user: null,
   }),
   getters: {
-    user(state) {
-      return state.userData;
+    userData(state) {
+      return state.user;
+    },
+    guest() {
+      const storageItem = window.localStorage.getItem("guest");
+      if (!storageItem) return false;
+      if (storageItem === "isGuest") return true;
+      if (storageItem === "isNotGuest") return false;
     },
   },
   actions: {
     async login() {
       this.isLoading = true;
       try {
-        const response = await axiosIns.post(`/login`, {
+        const resp = await axiosIns.post(`/login`, {
           username: this.form.username,
           password: this.form.password,
         });
-        const payload = response.data.data;
-
-        localStorage.removeItem("userData");
-        localStorage.setItem("token", JSON.stringify(payload.token));
-        localStorage.setItem("userData", JSON.stringify(payload));
-        this.userData = payload.user;
-
-        if (response.status == 200) {
+        if (resp.status == 201) {
+          localStorage.setItem("token", resp.data.token);
+          axiosIns.defaults.headers.common["Authorization"] = `Bearer ${resp.data.token}`;
           return true;
         }
       } catch (error) {
-        toast.error(error.response.data.message);
+        return false;
       } finally {
         this.isLoading = false;
       }
@@ -48,32 +51,36 @@ export const useAuthStore = defineStore("auth", {
     async logout() {
       this.isLoading = true;
       try {
-        const response = await axiosIns.get(`/logout`);
+        const response = await axiosIns.post(`/logout`);
         if (response.status == 200) {
-          localStorage.removeItem("userData");
+          this.user = null;
           localStorage.removeItem("token");
-          localStorage.clear();
-
           const pinia = getActivePinia();
-
           pinia._s.forEach((store) => {
             if (store.$id !== "auth" && store.$id !== "style") {
-              console.info(store);
               store.$reset();
             }
-
-            // store.$reset();
           });
-          setTimeout(() => {}, 500);
           return true;
         } else {
           return false;
         }
       } catch (error) {
-        toast.error(error);
+        return false;
       } finally {
         this.isLoading = false;
       }
+    },
+    async getAuthUser() {
+      try {
+        const respo = await axiosIns.get(`/auth/user`);
+        this.user = respo.data;
+        return respo.data;
+      } catch (error) {
+      } finally {
+        this.isLoading = false;
+      }
+      return false;
     },
     isLoggedIn() {
       const user = localStorage.getItem("userData");

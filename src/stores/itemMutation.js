@@ -39,11 +39,11 @@ export const useItemMutationStore = defineStore("itemMutataionStore", {
     },
   },
   actions: {
-    async getData({ id, currentLimit = 10 }) {
+    async getData({ sku, currentLimit = 10 }) {
       this.currentLimit = currentLimit;
       this.isLoading = true;
       try {
-        const response = await axiosIns.get(`/item-mutation?limit=${this.currentLimit}&id=${id}`);
+        const response = await axiosIns.get(`/item-mutation?limit=${this.currentLimit}&sku=${sku}`);
         this.responses = response.data.data;
       } catch (error) {
         alert(error);

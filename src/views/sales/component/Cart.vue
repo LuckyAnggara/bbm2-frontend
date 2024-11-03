@@ -35,17 +35,6 @@
           placeholder="Cari Nama / SKU / Product / Scan Barcode .."
           @chosen="addItem"
         ></Select2>
-
-        <!-- <Searchbar
-          @keyup="search()"
-          v-model="itemStore.searchName"
-          :is-loading="itemStore.isLoading"
-          :result-items="itemStore.items"
-          :placeholder="'Cari Nama / SKU / Product / Scan Barcode'"
-          :aria-result="true"
-          @add-data="addItem"
-        >
-        </Searchbar> -->
       </div>
 
       <div class="flex flex-col space-y-4 items-end w-full">
@@ -157,7 +146,7 @@
                       class="sm:w-full text-xs w-20 text-black dark:text-white dark:border-gray-800 border-gray-300 text-md rounded-lg p-2 font-medium"
                       v-model="item.qty"
                     />
-                    <template #popper> Persediaan product ini kurang dari 0 </template>
+                    <template #popper> current stock is {{ item.stock }}</template>
                   </VTooltip>
                 </td>
                 <td class="text-xs text-gray-900 dark:text-white px-2 w-4">
@@ -235,6 +224,18 @@
           </div>
         </div>
       </div>
+
+      <!-- <div
+        class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+        role="alert"
+      >
+        <ExclamationTriangleIcon class="flex-shrink-0 inline w-4 h-4 me-3" />
+        <span class="sr-only">Alert</span>
+        <div>
+          <span class="font-medium">Alert!</span> There is an item with a purchase quantity exceeding the stock level;
+          if continued, it will result in a negative stock.
+        </div>
+      </div> -->
     </div>
 
     <Teleport to="body">

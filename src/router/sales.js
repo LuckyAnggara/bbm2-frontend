@@ -80,18 +80,32 @@ export const sales = [
     },
   },
   {
-    path: "/sales/:id/invoice",
+    path: "/sale/detail/:uuid/invoice",
     name: "invoice",
     component: () => import("@/views/invoice/SaleInvoice.vue"),
     meta: {
+      breadcumb: [
+        {
+          name: "Sales",
+          to: "/sales/list",
+        },
+        {
+          name: "uuid",
+          to: "/sale/detail",
+        },
+        {
+          name: "Invoice",
+          to: "",
+        },
+      ],
       transition: "slide-left",
       requiresAuth: true,
-      title: "Detail Penjualan",
+      title: "Invoice",
       layout: "layout-content",
     },
   },
   {
-    path: "/sales/detail/:id/payment-credit",
+    path: "/sale/detail/:id/payment-credit",
     name: "payment-credit",
     component: () => import("@/views/sales/PaymentCredit.vue"),
     meta: {

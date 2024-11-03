@@ -1,7 +1,49 @@
 <template>
   <template v-if="salesStore.singleResponses.credit == 1">
-    <div class="flex flex-row space-x-7">
-      <div class="w-1/3">
+    <div class="flex flex-col md:flex-row justify-end items-center space-y-3 md:space-y-0 md:space-x-4 my-2">
+      <div
+        v-if="!isEdit"
+        class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0"
+      >
+        <div class="flex items-center space-x-4 w-full md:w-auto">
+          <button
+            :disabled="salesStore.singleResponses.payment_status == 'LUNAS' ? true : false"
+            @click="showPaymentModal = true"
+            :class="[salesStore.singleResponses.payment_status == 'LUNAS' ? 'cursor-not-allowed' : '']"
+            class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            type="button"
+          >
+            <PlusIcon class="h-4 w-4 mr-2" />
+            New Payment
+          </button>
+        </div>
+
+        <div class="flex items-center space-x-4 w-full md:w-auto">
+          <button
+            :disabled="salesStore.singleResponses.payment_status == 'LUNAS' ? true : false"
+            :class="[salesStore.singleResponses.payment_status == 'LUNAS' ? 'cursor-not-allowed' : '']"
+            @click="pelunasan()"
+            class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            type="button"
+          >
+            <CheckCircleIcon class="h-4 w-4 mr-2" />
+
+            Paid off
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="sm:col-span-2" v-if="salesStore.singleResponses.payment_status == 'LUNAS'">
+      <div
+        class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
+        role="alert"
+      >
+        <span class="font-medium">Info !</span> This transaction has been <b>Paid off</b>.
+      </div>
+    </div>
+
+    <div class="flex md:flex-row flex-col md:space-y-0 space-y-7 md:space-x-7">
+      <div class="md:w-1/3 w-full">
         <h5 class="text-xl font-medium text-gray-900 dark:text-white">Credit Info</h5>
         <hr class="my-2" />
         <div class="mb-2">
@@ -17,7 +59,6 @@
             >Change Due Date</label
           >
           <vue-tailwind-datepicker
-            :disable-date="dDate"
             :auto-apply="true"
             :shortcuts="false"
             :formatter="formatter"
@@ -31,7 +72,7 @@
         <div class="mb-2">
           <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm">Credit Total</label>
           <input
-            :value="IDRCurrency.format(salesStore.editGrandTotal)"
+            :value="IDRCurrency.format(salesStore.singleResponses.grand_total)"
             disabled
             class="bg-gray-200 dark:bg-gray-900 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
@@ -39,7 +80,9 @@
         <div class="mb-2">
           <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm">Total Payment</label>
           <input
-            :value="IDRCurrency.format(salesStore.singleResponses.total_payment ?? 0)"
+            :value="
+              IDRCurrency.format(salesStore.singleResponses.grand_total - salesStore.singleResponses.remaining_credit)
+            "
             disabled
             class="bg-gray-200 dark:bg-gray-900 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
@@ -47,64 +90,24 @@
         <div class="mb-2">
           <label for="email" class="block mb-2 font-medium text-gray-900 dark:text-white text-sm">Remaining</label>
           <input
-            :value="IDRCurrency.format(salesStore.editGrandTotal)"
+            :value="IDRCurrency.format(salesStore.singleResponses.remaining_credit)"
             disabled
             class="bg-gray-200 dark:bg-gray-900 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
       </div>
-      <div class="w-2/3">
+      <div class="md:w-2/3 w-full">
         <h5 class="text-xl font-medium text-gray-900 dark:text-white">Payment Detail</h5>
         <hr class="my-2" />
-        <div class="flex flex-col md:flex-row justify-end items-center space-y-3 md:space-y-0 md:space-x-4 my-2">
-          <div
-            v-if="!isEdit"
-            class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0"
+
+        <div class="overflow-auto w-full h-fit scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700 p-1">
+          <table
+            class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 md:table-fixed table-auto duration-300 ease-in-out transform"
           >
-            <div class="flex items-center space-x-4 w-full md:w-auto">
-              <button
-                :disabled="salesStore.singleResponses.status == 'LUNAS' ? true : false"
-                @click="showPembayaranModal = true"
-                :class="[
-                  salesStore.singleResponses.status == 'LUNAS'
-                    ? 'cursor-not-allowed'
-                    : 'hover:scale-105 duration-100 ease-in-out',
-                ]"
-                class="duration-300 hover:scale-105 transition flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                type="button"
-              >
-                Tambah
-                <PlusIcon class="ml-1 w-4 h-4" />
-              </button>
-            </div>
-
-            <div class="flex items-center space-x-4 w-full md:w-auto">
-              <button
-                :disabled="salesStore.singleResponses.status == 'LUNAS' ? true : false"
-                :class="[
-                  salesStore.singleResponses.status == 'LUNAS'
-                    ? 'cursor-not-allowed'
-                    : 'hover:scale-105 duration-100 ease-in-out',
-                ]"
-                @click="prosesLunas()"
-                class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                type="button"
-              >
-                Lunas
-                <CheckCircleIcon class="h-4 w-4 ml-2" />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="overflow-y-visible w-full scrollbar-thin scrollbar-track-gray-500 scrollbar-thumb-gray-700 max-h-full h-60"
-        >
-          <table class="lg:w-full min-w-full text-sm text-left text-gray-500 dark:text-gray-400 xl:table-fixed">
             <thead class="text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" class="px-2 py-2 w-1 border border-slate-400 dark:border-slate-600">No</th>
-                <th scope="col" class="px-4 py-2 w-6 border border-slate-400 dark:border-slate-600">Date</th>
+                <th scope="col" class="px-4 py-2 md:w-6 w-fit border border-slate-400 dark:border-slate-600">Date</th>
                 <th scope="col" class="px-4 py-2 w-10 border border-slate-400 dark:border-slate-600">Amount</th>
                 <th scope="col" class="px-4 py-2 w-24 border border-slate-400 dark:border-slate-600">Notes</th>
                 <th scope="col" class="px-2 py-2 w-8 border border-slate-400 dark:border-slate-600 text-center">
@@ -134,13 +137,13 @@
                 </td>
 
                 <th class="px-4 py-1">
-                  {{ IDRCurrency.format(item.payment) }}
+                  {{ IDRCurrency.format(item.amount) }}
                 </th>
                 <td class="px-4 py-1">{{ item.notes }}</td>
                 <td class="px-2 py-1 justify-center flex flex-row">
                   <a
-                    @click="deleteData(item.id)"
-                    class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:dark:text-white hover:text-red-500 hover:scale-105 duration-300 ease-in-out"
+                    @click="deleteData(item)"
+                    class="cursor-pointer font-medium text-gray-600 dark:text-gray-200 hover:dark:text-white hover:text-red-500 hover:scale-105 duration-300 ease-in-out"
                     ><TrashIcon class="h-5 w-5"
                   /></a>
                 </td>
@@ -157,26 +160,35 @@
       <p class="mb-4 text-md text-gray-800 dark:text-gray-400">Not Credit Transaction</p>
     </div>
   </template>
-  <!-- <Teleport to="body">
-      <PembayaranModal
-        @submit-transaction="prosesTransaction"
-        @submit-lunas="prosesLunas"
-        :show="showPembayaranModal"
-        :max-payment="salesStore.singleResponses?.remaining_credit"
-        @close="showPembayaranModal = false"
-      />
-    </Teleport>
-
-    <Teleport to="body">
-      <LoadingModal :show="salesStore.isPaymentLoading">Processing transaction</LoadingModal>
-    </Teleport>
-
-    <Teleport to="body">
-      <SuccessModal :show="salesStore.isTransactionSuccess" @submit="reload"
-        ><template #message> Transaction success </template>
-        <template #buttonText> Ok </template>
-      </SuccessModal>
-    </Teleport> -->
+  <Teleport to="body">
+    <PaymentModal @submitTransaction="submitPayment" :show="showPaymentModal" @close="showPaymentModal = false" />
+  </Teleport>
+  <Teleport to="body">
+    <DeleteConfirmationModal
+      :show="showConfirmationModal"
+      @close="showConfirmationModal = false"
+      @submit="destroyData"
+      @cancel="showConfirmationModal = false"
+    >
+      <template #title>Hapus data ?</template>
+      <template #submit>Hapus !</template>
+      <template #cancel>Cancel</template>
+    </DeleteConfirmationModal>
+  </Teleport>
+  <Teleport to="body">
+    <FullPaidModal
+      :icon="InformationCircleIcon"
+      :show="showFullPaidModal"
+      @close="showFullPaidModal = false"
+      @submit="paidOff"
+      @cancel="showFullPaidModal = false"
+    >
+      <template #title>Full Paid ?</template>
+      <template #subtitle>Make this transaction full paid of credit</template>
+      <template #submit>Process !</template>
+      <template #cancel>Cancel</template>
+    </FullPaidModal>
+  </Teleport>
 </template>
 
 <script setup>
@@ -190,6 +202,7 @@ import {
   FunnelIcon,
   CheckCircleIcon,
   PlusCircleIcon,
+  InformationCircleIcon,
 } from "@heroicons/vue/24/outline";
 import { computed, ref, nextTick, onMounted, defineAsyncComponent, inject, watch } from "vue";
 import { useRoute } from "vue-router";
@@ -198,6 +211,11 @@ import { useSalesStore } from "@/stores/sales";
 import CircleLoading from "@/components/loading/CircleLoading.vue";
 import VueTailwindDatepicker from "vue-tailwind-datepicker";
 import { useDateFormat } from "@vueuse/core";
+import { toast } from "vue3-toastify";
+
+const PaymentModal = defineAsyncComponent(() => import("../modal/CreditPaymentModal.vue"));
+const DeleteConfirmationModal = defineAsyncComponent(() => import("@/components/modal/ConfirmationModal.vue"));
+const FullPaidModal = defineAsyncComponent(() => import("@/components/modal/ConfirmationModal.vue"));
 
 const swal = inject("$swal");
 
@@ -211,7 +229,10 @@ const props = defineProps({
 
 const route = useRoute();
 const salesStore = useSalesStore();
-const showPembayaranModal = ref(false);
+const showConfirmationModal = ref(false);
+const showFullPaidModal = ref(false);
+const showPaymentModal = ref(false);
+const paymentItem = ref(null);
 
 const formatter = ref({
   date: "YYYY-MM-DD",
@@ -221,74 +242,149 @@ const dDate = (date) => {
   return date < new Date();
 };
 
-// const dueDate = computed(() => {
-//   if (salesStore.singleResponses.due_date == null || salesStore.singleResponses.due_date == "") {
-//     return null;
-//   }
-//   return useDateFormat(JSON.parse(JSON.stringify(salesStore.singleResponses.due_date)), "DD MMMM YYYY");
-// });
-
 watch(dateValue, (v) => {
   salesStore.singleResponses.due_date = v;
 });
 
-function deleteData(idPayment) {
-  swal
-    .fire({
-      title: "Are you sure?",
-      text: "Data tidak bisa dikembalikan!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Ya, hapus!",
-      cancelButtonText: "Cancel!",
-      showLoaderOnConfirm: true,
-      reverseButtons: true,
-      preConfirm: () => {
-        salesStore.destroyCreditData(idPayment);
-      },
-      allowOutsideClick: () => !salesStore.isDestroyLoading,
-    })
-    .then((result) => {
-      if (result.isConfirmed) {
-        salesStore.showData(id.value);
-      }
-    });
+function deleteData(item) {
+  paymentItem.value = item;
+  showConfirmationModal.value = true;
+  console.info(item);
 }
 
-function prosesLunas() {
-  swal.fire({
-    title: "PELUNASAN",
-    text: "Data Invoice ini akan di lunasi sejumlah cicilan tersisa! Proses?",
-    icon: "info",
-    showCancelButton: true,
-    confirmButtonText: "Ya!",
-    cancelButtonText: "Cancel!",
-    showLoaderOnConfirm: salesStore.isPaymentLoading,
-    reverseButtons: true,
-    preConfirm: async () => {
-      const data = {
-        sale_id: salesStore.singleResponses.id,
-        created_at: this.moment(),
-        payment: salesStore.singleResponses.remaining_credit,
-        notes: "PELUNASAN",
-      };
-      salesStore.storeCreditPayment(data);
-    },
-    allowOutsideClick: () => !salesStore.isPaymentLoading,
-    backdrop: true,
+async function destroyData() {
+  showConfirmationModal.value = false;
+  await nextTick();
+
+  const id = toast.loading("Deleting data...", {
+    position: toast.POSITION.BOTTOM_CENTER,
+    type: "info",
+    isLoading: true,
+  });
+
+  const success = await salesStore.destroyCreditData(paymentItem.value);
+
+  if (success) {
+    toast.update(id, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "success",
+      render: "Delete data successfully !",
+      autoClose: 2000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+    toast.done(id);
+  } else {
+    toast.update(id, {
+      render: "There something wrong",
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "error",
+      autoClose: 1000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+  } // memanggil action deleteData pada store
+}
+
+function pelunasan() {
+  showFullPaidModal.value = true;
+  salesStore.$patch((state) => {
+    state.formPaymentCredit.amount = state.singleResponses.remaining_credit;
+    state.formPaymentCredit.payment_type = "CASH";
+    state.formPaymentCredit.created_at = moment();
+    state.formPaymentCredit.notes = "Repayment";
   });
 }
 
-async function prosesTransaction(data) {
-  showPembayaranModal.value = false;
-  await nextTick();
-  salesStore.storeCreditPayment(data);
+async function paidOff() {
+  showFullPaidModal.value = false;
+  const id = toast.loading("Processing payment ...", {
+    position: toast.POSITION.BOTTOM_CENTER,
+    type: "info",
+    isLoading: true,
+  });
+
+  const success = await salesStore.storeCreditPayment();
+
+  if (success) {
+    toast.update(id, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "success",
+      render: "Payment successfully !",
+      autoClose: 2000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+    toast.done(id);
+  } else {
+    toast.update(id, {
+      render: "There something wrong",
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "error",
+      autoClose: 2000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+  }
+  // swal.fire({
+  //   title: "PELUNASAN",
+  //   text: "Data Invoice ini akan di lunasi sejumlah cicilan tersisa! Proses?",
+  //   icon: "info",
+  //   showCancelButton: true,
+  //   confirmButtonText: "Ya!",
+  //   cancelButtonText: "Cancel!",
+  //   showLoaderOnConfirm: salesStore.isPaymentLoading,
+  //   reverseButtons: true,
+  //   preConfirm: async () => {
+  //     const data = {
+  //       sale_id: salesStore.singleResponses.id,
+  //       created_at: this.moment(),
+  //       payment: salesStore.singleResponses.remaining_credit,
+  //       notes: "PELUNASAN",
+  //     };
+  //     salesStore.storeCreditPayment(data);
+  //   },
+  //   allowOutsideClick: () => !salesStore.isPaymentLoading,
+  //   backdrop: true,
+  // });
 }
 
-async function reload() {
-  salesStore.isTransactionSuccess = false;
-  await nextTick();
-  salesStore.showData(id.value);
+async function submitPayment() {
+  showPaymentModal.value = false;
+  const id = toast.loading("Processing payment ...", {
+    position: toast.POSITION.BOTTOM_CENTER,
+    type: "info",
+    isLoading: true,
+  });
+
+  const success = await salesStore.storeCreditPayment();
+
+  if (success) {
+    toast.update(id, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "success",
+      render: "Payment successfully !",
+      autoClose: 2000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+    toast.done(id);
+  } else {
+    toast.update(id, {
+      render: "There something wrong",
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "error",
+      autoClose: 2000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+  }
 }
 
 const id = computed(() => {

@@ -42,6 +42,7 @@
                     >Name</label
                   >
                   <input
+                    placeholder="Enter new category name"
                     :disabled="itemCategoryStore.isStoreLoading"
                     id="category-name"
                     v-model="itemCategoryStore.currentData.name"
@@ -59,15 +60,14 @@
                     id="description-category"
                     rows="2"
                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Your description here"
+                    placeholder="Category description here"
                   ></textarea>
                 </div>
               </div>
 
               <div class="flex items-center space-x-4 justify-between place-self-end">
-                <ButtonLoader @click="prosesRequest" :loading="itemCategoryStore.isStoreLoading">
+                <ButtonLoader @click="submit" :loading="itemCategoryStore.isStoreLoading">
                   <template #title> Submit </template>
-                  <template #titleLoading> Loading... </template>
                 </ButtonLoader>
               </div>
             </form>
@@ -85,41 +85,52 @@ import { ref, computed, nextTick, watchEffect, onUnmounted } from "vue";
 import ButtonLoader from "@/components/buttons/ButtonLoader.vue";
 import { useItemCategoryStore } from "@/stores/itemCategory";
 
+import { toast } from "vue3-toastify";
+
 const props = defineProps({
   show: Boolean,
 });
 const emit = defineEmits(["close", "submitTransaction"]);
 
-let isActive = false;
-let stopWatching = null;
-
 const itemCategoryStore = useItemCategoryStore();
 
-function toggleWatchEffect() {
-  if (isActive) {
-    // menghentikan pemanggilan watchEffect
-    stopWatching();
-    isActive = false;
-  } else {
-    // memanggil kembali watchEffect
-    stopWatching = watchEffect(() => {
-      if (!itemCategoryStore.isStoreLoading) {
-        emit("close");
-        itemCategoryStore.$patch({
-          currentData: {
-            name: null,
-            description: null,
-          },
-        });
-      }
-    });
-    isActive = true;
-  }
-}
+async function submit() {
+  const id = toast.loading("Add new category in process...", {
+    position: toast.POSITION.BOTTOM_CENTER,
+    type: "info",
+    isLoading: true,
+  });
 
-async function prosesRequest() {
-  itemCategoryStore.store();
-  toggleWatchEffect();
+  const success = await itemCategoryStore.store();
+  if (success.status) {
+    toast.update(id, {
+      render: "Success !!",
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "success",
+      autoClose: 1000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+    emit("close");
+    itemCategoryStore.$patch({
+      currentData: {
+        name: null,
+        description: null,
+      },
+    });
+  } else {
+    toast.update(id, {
+      render: "Terjadi kesalahan",
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "error",
+      autoClose: 1000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+  }
+  toast.done(id);
 }
 
 onUnmounted(() => {

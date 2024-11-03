@@ -274,7 +274,7 @@ const column = [
   { key: "action", label: "Action" },
 ];
 
-const PembayaranModal = defineAsyncComponent(() => import("../sales/modal/PembayaranKreditModal.vue"));
+const PembayaranModal = defineAsyncComponent(() => import("./modal/CreditPaymentModal.vue"));
 
 const LoadingModal = defineAsyncComponent(() => import("@/components/modal/LoadingModal.vue"));
 const SuccessModal = defineAsyncComponent(() => import("@/components/modal/SuccessModal.vue"));

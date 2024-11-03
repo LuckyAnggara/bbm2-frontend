@@ -17,7 +17,7 @@ export const product = [
     },
   },
   {
-    path: "/product/new-product",
+    path: "/product/new",
     name: "new-product",
     component: () => import("@/views/product/ProductAdd.vue"),
     meta: {

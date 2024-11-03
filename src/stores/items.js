@@ -44,8 +44,6 @@ export const useItemStore = defineStore("itemStore", {
         qty_minimum: 0,
         warehouse_id: 0,
         notification_qty: false,
-        created_by: userData.id,
-        branch_id: userData.branch_id,
       },
       searchName: "",
       itemDetailData: {
@@ -218,10 +216,9 @@ export const useItemStore = defineStore("itemStore", {
         if (inListProduct) {
           this.responses.data.splice(index, 1);
         }
+        return true;
       } catch (error) {
-        toast.error(error.message, {
-          timeout: 2000,
-        });
+        return false;
       } finally {
         this.isDestroyLoading = false;
       }

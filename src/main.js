@@ -1,7 +1,5 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import Toast from "vue-toastification";
-import "vue-toastification/dist/index.css";
 import { autoAnimatePlugin } from "@formkit/auto-animate/vue";
 import "./assets/style.css";
 import App from "./App.vue";
@@ -9,8 +7,11 @@ import router from "./router/index";
 import moment from "moment";
 import VueSweetalert2 from "vue-sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
-import "@sweetalert2/themes/dark/dark.css";
+// import "@sweetalert2/themes/dark/dark.css";
 import { darkModeKey, styleKey } from "@/config.js";
+import Vue3Toasity from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+import "vue-toastification/dist/index.css";
 
 import VueBarcode from "@chenfengyuan/vue-barcode";
 
@@ -31,6 +32,10 @@ const app = createApp(App);
 app.config.globalProperties = {
   moment: moment,
 };
+app.use(Vue3Toasity, {
+  type: "default",
+  dangerouslyHTMLString: true,
+});
 
 app.use(pinia);
 
@@ -41,11 +46,6 @@ app.use(VueSweetalert2);
 app.use(FloatingVue);
 app.use(VueApexCharts);
 
-app.use(Toast, {
-  transition: "Vue-Toastification__bounce",
-  maxToasts: 20,
-  newestOnTop: true,
-});
 app.component(VueBarcode.name, VueBarcode);
 
 app.mount("#app");

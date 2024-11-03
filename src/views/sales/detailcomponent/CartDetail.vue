@@ -219,7 +219,7 @@
       </div>
     </div>
     <hr class="py-2" />
-    <div v-if="salesStore.singleResponses.retur == 1">
+    <div v-if="salesStore.singleResponses.retur_status == 1">
       <div class="px-4 text-bold text-lg">Retur Detail</div>
       <!-- <div class="px-4 pt-4 max-w-md" v-if="isEdit">
         <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status Retur</label>
@@ -338,14 +338,14 @@ const useGlobalTax = ref(false);
 const canSubmit = ref(true);
 
 const editReturTotal = computed(() => {
-  let sum = salesStore.singleResponses?.detail_retur.reduce((accumulator, item) => {
+  let sum = salesStore.singleResponses?.detail_retur?.reduce((accumulator, item) => {
     return accumulator + item.price * item.qty;
   }, 0);
   return sum;
 });
 
 const editReturTax = computed(() => {
-  let sum = salesStore.singleResponses?.detail_retur.reduce((accumulator, item) => {
+  let sum = salesStore.singleResponses?.detail_retur?.reduce((accumulator, item) => {
     return accumulator + item.tax * item.qty;
   }, 0);
   return sum;

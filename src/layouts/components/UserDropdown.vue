@@ -55,6 +55,7 @@
         <div class="px-1 py-1">
           <MenuItem>
             <button
+              @click="logout()"
               class="text-start block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white w-full"
             >
               Logout
@@ -70,35 +71,42 @@
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import { useAuthStore } from "@/stores/Auth";
 import { useRouter } from "vue-router";
-import { useToast } from "vue-toastification";
+import { toast } from "vue3-toastify";
+
 import CircleLoading from "@/components/loading/CircleLoading.vue";
-const toast = useToast();
 
 const router = useRouter();
 const authStore = useAuthStore();
 
 async function logout() {
-  toast.info("Logging out in progress", {
-    id: "logout",
-    position: "bottom-right",
-    timeout: false,
-    closeOnClick: false,
-    pauseOnFocusLoss: false,
-    pauseOnHover: false,
-    draggable: false,
-    draggablePercent: 0.6,
-    showCloseButtonOnHover: false,
-    hideProgressBar: true,
-    closeButton: "button",
-    icon: true,
-    rtl: false,
+  authStore.isLoading = true;
+  const id = toast.loading("Log out in progress...", {
+    position: toast.POSITION.BOTTOM_CENTER,
+    type: "info",
+    isLoading: true,
   });
-  setTimeout(async () => {
-    const success = await authStore.logout();
-    if (success) {
-      toast.dismiss("logout");
-      router.push({ name: "login" });
-    }
-  }, 1000);
+
+  const success = await authStore.logout();
+  if (success) {
+    toast.update(id, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "success",
+      autoClose: 1000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+    router.push({ name: "login" });
+  } else {
+    toast.update(id, {
+      render: "Terjadi kesalahan",
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "error",
+      autoClose: 1000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+  }
 }
 </script>

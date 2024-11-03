@@ -102,10 +102,6 @@
     </template>
 
     <Teleport to="body">
-      <LoadingModal :show="salesStore.isUpdateLoading">Processing transaction</LoadingModal>
-    </Teleport>
-
-    <Teleport to="body">
       <SuccessModal :show="salesStore.isTransactionSuccess" :type="'success'"
         ><template #message> Update success </template>
         <template #buttonText>
@@ -123,11 +119,39 @@
     <Teleport to="body">
       <ReturModal :show="showReturModal" @close="showReturModal = !showReturModal" />
     </Teleport>
+
+    <!--Confirmation Modal -->
+    <Teleport to="body">
+      <DeleteConfirmationModal
+        :show="showDeleteConfirmationModal"
+        @close="showDeleteConfirmationModal = false"
+        @submit="destroyData"
+        @cancel="showDeleteConfirmationModal = false"
+      >
+        <template #title>Delete data ?</template>
+        <template #submit>Delete !</template>
+        <template #cancel>Cancel</template>
+      </DeleteConfirmationModal>
+    </Teleport>
+
+    <Teleport to="body">
+      <UpdateConfirmationModal
+        :icon="InformationCircleIcon"
+        :show="showUpdateConfirmationModal"
+        @close="showUpdateConfirmationModal = false"
+        @submit="updateData"
+        @cancel="showUpdateConfirmationModal = false"
+      >
+        <template #title>Update data ?</template>
+        <template #submit>Submit !</template>
+        <template #cancel>Cancel</template>
+      </UpdateConfirmationModal>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
-import { computed, defineAsyncComponent, inject, onMounted, reactive, ref, watch } from "vue";
+import { computed, defineAsyncComponent, inject, nextTick, onMounted, onUpdated, reactive, ref, watch } from "vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
 import CustomerDetail from "./detailcomponent/CustomerDetail.vue";
@@ -138,7 +162,9 @@ import { useSalesStore } from "@/stores/sales";
 import {
   ArchiveBoxIcon,
   ArrowPathIcon,
+  DocumentTextIcon,
   FolderArrowDownIcon,
+  InformationCircleIcon,
   PencilSquareIcon,
   TrashIcon,
   XMarkIcon,
@@ -146,18 +172,19 @@ import {
 
 import LoadingModal from "@/components/modal/LoadingModal.vue";
 import SuccessModal from "@/components/modal/SuccessModal.vue";
-import { useToast } from "vue-toastification";
 import { useRoute, useRouter } from "vue-router";
 import CircleLoading from "@/components/loading/CircleLoading.vue";
 import SalesPaymentDetail from "./detailcomponent/SalesPaymentDetail.vue";
 import CartDetail from "./detailcomponent/CartDetail.vue";
 import CreditDetail from "./detailcomponent/CreditDetail.vue";
 import ShippingDetail from "./detailcomponent/ShippingDetail.vue";
-import { useSalesReturStore } from "../../stores/salesRetur";
+import { useSalesReturStore } from "@/stores/salesRetur";
+import { toast } from "vue3-toastify";
 
+const DeleteConfirmationModal = defineAsyncComponent(() => import("@/components/modal/ConfirmationModal.vue"));
+const UpdateConfirmationModal = defineAsyncComponent(() => import("@/components/modal/ConfirmationModal.vue"));
 const ReturModal = defineAsyncComponent(() => import("./modal/ReturModal.vue"));
 
-const toast = useToast();
 const router = useRouter();
 const route = useRoute();
 const swal = inject("$swal");
@@ -167,6 +194,16 @@ const salesStore = useSalesStore();
 const returStore = useSalesReturStore();
 
 const showReturModal = ref(false);
+const showDeleteConfirmationModal = ref(false);
+const showUpdateConfirmationModal = ref(false);
+
+const uuid = computed(() => {
+  return route.params.uuid ?? null;
+});
+
+const currentTab = computed(() => {
+  return route.query.tab ?? 0;
+});
 
 const activeTab = ref(0);
 const isEdit = ref(false);
@@ -188,6 +225,13 @@ const actionMenu = reactive([
     function: returModal,
     label: "Retur",
     icon: ArchiveBoxIcon,
+  },
+  {
+    function: () => {
+      router.push({ name: "invoice", params: { id: salesStore.singleResponses.uuid } });
+    },
+    label: "Invoice",
+    icon: DocumentTextIcon,
   },
   {
     function: deleteData,
@@ -225,39 +269,95 @@ function cancelEdit() {
   salesStore.copyOriginalSingleResponses();
   isEdit.value = !isEdit.value;
 }
-function deleteData(item) {
-  if (isEdit.value) {
-    swal.fire("Sedang dalam mode edit");
-  } else {
-    swal.fire({
-      title: "Hapus?",
-      text: "Data tidak bisa dikembalikan!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Ya, hapus!",
-      cancelButtonText: "Cancel!",
-      showLoaderOnConfirm: true,
-      reverseButtons: true,
-      preConfirm: async () => {
-        await salesStore.destroy(salesStore.singleResponses.id, false);
-        router.push({ name: "list-product" });
-      },
-      allowOutsideClick: () => !salesStore.isDestroyLoading,
-      backdrop: true,
-    });
-  }
+
+function deleteData() {
+  showDeleteConfirmationModal.value = true;
 }
+
+async function destroyData() {
+  showDeleteConfirmationModal.value = false;
+  await nextTick();
+
+  const id = toast.loading("Deleting data...", {
+    position: toast.POSITION.BOTTOM_CENTER,
+    type: "info",
+    isLoading: true,
+  });
+
+  const success = await salesStore.destroyData(salesStore.singleResponses.id);
+  console.info(success);
+
+  if (success) {
+    toast.update(id, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "success",
+      render: "Delete data successfully !",
+      autoClose: 2000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+    toast.done(id);
+    router.push({ name: "list-sale" });
+  } else {
+    toast.update(id, {
+      render: "There something wrong",
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "error",
+      autoClose: 2000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+  } // memanggil action deleteData pada store
+}
+
 function update() {
   if (canUpdate.value) {
-    salesStore.update();
+    showUpdateConfirmationModal.value = true;
   }
+}
+
+async function updateData() {
+  showUpdateConfirmationModal.value = false;
+  const id = toast.loading("Updating ...", {
+    position: toast.POSITION.BOTTOM_CENTER,
+    type: "info",
+    isLoading: true,
+  });
+
+  const success = await salesStore.update();
+
+  if (success) {
+    toast.update(id, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "success",
+      render: "Update data successfully !",
+      autoClose: 2000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+    toast.done(id);
+  } else {
+    toast.update(id, {
+      render: "There something wrong",
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "error",
+      autoClose: 2000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+  }
+  isEdit.value = !isEdit.value;
 }
 const canUpdate = computed(() => {
   if (!salesPayment.value) {
     activeTab.value = 0;
     toast.error("Incomplete Sales Information", {
-      timeout: 2000,
-      position: "top-center",
+      autoClose: 2000,
+      position: toast.POSITION.BOTTOM_CENTER,
     });
     return false;
   }
@@ -265,8 +365,8 @@ const canUpdate = computed(() => {
   if (!customer.value) {
     activeTab.value = 1;
     toast.error("Incomplete Customer Information", {
-      timeout: 2000,
-      position: "top-center",
+      autoClose: 2000,
+      position: toast.POSITION.BOTTOM_CENTER,
     });
     return false;
   }
@@ -274,8 +374,8 @@ const canUpdate = computed(() => {
   if (!cart.value) {
     activeTab.value = 2;
     toast.error("Incomplete Cart Information", {
-      timeout: 2000,
-      position: "top-center",
+      autoClose: 2000,
+      position: toast.POSITION.BOTTOM_CENTER,
     });
     return false;
   }
@@ -283,8 +383,8 @@ const canUpdate = computed(() => {
   if (!credit.value) {
     activeTab.value = 3;
     toast.error("Incomplete Credit Information", {
-      timeout: 2000,
-      position: "top-center",
+      autoClose: 2000,
+      position: toast.POSITION.BOTTOM_CENTER,
     });
     return false;
   }
@@ -292,8 +392,8 @@ const canUpdate = computed(() => {
   if (!shipping.value) {
     activeTab.value = 4;
     toast.error("Incomplete Shipping Information", {
-      timeout: 2000,
-      position: "top-center",
+      autoClose: 2000,
+      position: toast.POSITION.BOTTOM_CENTER,
     });
     return false;
   }
@@ -380,10 +480,6 @@ const shipping = computed(() => {
   return true;
 });
 
-const uuid = computed(() => {
-  return route.params.uuid ?? null;
-});
-
 onMounted(async () => {
   if (taxStore.items.length == 0 || taxStore.items.length == null) {
     taxStore.getData();
@@ -391,5 +487,6 @@ onMounted(async () => {
   if (salesStore.singleResponses == null) {
     await salesStore.showData(uuid.value);
   }
+  activeTab.value = Number(currentTab.value);
 });
 </script>

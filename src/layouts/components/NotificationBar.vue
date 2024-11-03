@@ -118,7 +118,6 @@ const router = useRouter();
 
 // Throttle pemanggilan data setiap 10 detik
 async function openNotif(item) {
-  console.info(item.link);
   await router.push({ path: item.link });
 
   if (item.status == "unread") {

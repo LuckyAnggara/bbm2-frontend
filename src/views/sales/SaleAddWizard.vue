@@ -16,7 +16,7 @@
         >
           <CheckCircleIcon class="w-4 h-4 mr-2 sm:w-5 sm:h-5" v-if="step == 1" />
           <span v-else class="mr-2">1.</span>
-          Info <span class="hidden sm:inline-flex sm:ml-2">Pelanggan</span>
+          Customer <span class="hidden sm:inline-flex sm:ml-2">Info</span>
         </span>
       </li>
       <li
@@ -34,7 +34,7 @@
         >
           <CheckCircleIcon class="w-4 h-4 mr-2 sm:w-5 sm:h-5" v-if="step == 2" />
           <span v-else class="mr-2">2.</span>
-          Keranjang <span class="hidden sm:inline-flex sm:ml-2">Belanja</span>
+          Cart <span class="hidden sm:inline-flex sm:ml-2"></span>
         </span>
       </li>
       <li
@@ -52,13 +52,13 @@
         >
           <CheckCircleIcon class="w-4 h-4 mr-2 sm:w-5 sm:h-5" v-if="step == 3" />
           <span v-else class="mr-2">3.</span>
-          Konfirmasi
+          Confirmation
         </span>
       </li>
       <li :class="[step == 4 ? 'text-blue-600 dark:text-blue-500' : 'cursor-pointer']" class="flex items-center">
         <CheckCircleIcon class="w-4 h-4 mr-2 sm:w-5 sm:h-5" v-if="step == 4" />
         <span v-else class="mr-2">4.</span>
-        Pembayaran
+        Payment
       </li>
     </ol>
   </div>

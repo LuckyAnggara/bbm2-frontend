@@ -130,7 +130,9 @@
                 >
                   Cancel
                 </button>
-                <ButtonLoader :loading="returStore.isStoreLoading" @proses="canSubmit">Submit</ButtonLoader>
+                <ButtonLoader @proses="canSubmit">
+                  <template #title> <span>Submit</span> </template></ButtonLoader
+                >
                 <!-- <button @click="canSubmit" type="button">Confirm</button> -->
               </div>
             </div>
@@ -146,12 +148,11 @@ import { PaperAirplaneIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { computed, onActivated, onMounted, ref } from "vue";
 
 import { useSalesStore } from "@/stores/sales";
-import { useToast } from "vue-toastification";
 
 import { useSalesReturStore } from "@/stores/salesRetur";
 import { useArrayFilter, useArraySome } from "@vueuse/core";
 import { useRoute } from "vue-router";
-
+import { toast } from "vue3-toastify";
 import ButtonLoader from "@/components/buttons/ButtonLoader.vue";
 
 const props = defineProps({
@@ -160,7 +161,6 @@ const props = defineProps({
 });
 const emit = defineEmits(["close", "next"]);
 
-const toast = useToast();
 const salesStore = useSalesStore();
 const returStore = useSalesReturStore();
 const route = useRoute();
@@ -174,11 +174,46 @@ async function canSubmit() {
   if (b.value == true) {
     returStore.data.dataRetur = useArrayFilter(returStore.dataRetur, (i) => i.retur_qty > 0);
     returStore.data.uuid = uuid.value;
-    await returStore.store(uuid.value);
-    emit("close");
+    proses();
   } else {
-    toast.error("Check your retur quantity", {
-      position: "bottom-right",
+    toast.error("Check your retur quantity...", {
+      position: toast.POSITION.BOTTOM_CENTER,
+      autoClose: 1500,
+    });
+  }
+}
+
+async function proses() {
+  emit("close");
+
+  const id = toast.loading("Processing sales returns...", {
+    position: toast.POSITION.BOTTOM_CENTER,
+    type: "info",
+    isLoading: true,
+  });
+
+  const result = await returStore.store(uuid.value);
+  if (result.status) {
+    toast.update(id, {
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "success",
+      render: "Sales returns successfull !",
+      autoClose: 2000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
+    });
+    toast.done(id);
+    salesStore.setReturData(result.data);
+  } else {
+    toast.update(id, {
+      render: "There something wrong",
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "error",
+      autoClose: 1000,
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
     });
   }
 }

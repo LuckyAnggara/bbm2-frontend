@@ -1,69 +1,68 @@
-import { defineStore } from 'pinia'
-import axiosIns from '../services/axios'
-import { useToast } from 'vue-toastification'
-import { useAuthStore } from './auth'
-const userData = JSON.parse(localStorage.getItem('userData'))
-const toast = useToast()
+import { defineStore } from "pinia";
+import axiosIns from "../services/axios";
+import { useToast } from "vue-toastification";
+import { useAuthStore } from "./auth";
+const userData = JSON.parse(localStorage.getItem("userData"));
+const toast = useToast();
 // ITEM STORE
-export const useItemCategoryStore = defineStore('itemCategoryStore', {
+export const useItemCategoryStore = defineStore("itemCategoryStore", {
   state: () => {
     return {
       responses: {},
       isLoading: false,
       isStoreLoading: false,
       currentLimit: 10,
-      searchName: '',
+      searchName: "",
       currentData: {
         name: null,
-        branch_id: userData.branch_id,
+        description: null,
       },
       itemDetailData: {
         name: null,
       },
-    }
+    };
   },
   getters: {
     items: (state) => {
-      return state.responses?.data
+      return state.responses?.data;
     },
     searchQuery(state) {
-      if (state.searchName == '' || null) {
-        return ''
+      if (state.searchName == "" || null) {
+        return "";
       }
-      return '&name=' + state.searchName
+      return "&name=" + state.searchName;
     },
   },
   actions: {
     async getData() {
-      this.isLoading = true
+      this.isLoading = true;
       try {
-        const response = await axiosIns.get(
-          `/item-categories?${this.searchQuery}`
-        )
-        this.responses = response.data
+        const response = await axiosIns.get(`/item-categories?${this.searchQuery}`);
+        this.responses = response.data;
       } catch (error) {
-        alert(error)
+        alert(error);
       }
-      this.isLoading = false
+      this.isLoading = false;
     },
     async store() {
-      this.isStoreLoading = true
+      this.isStoreLoading = true;
       try {
-        const response = await axiosIns.post(
-          `/item-categories`,
-          this.currentData
-        )
-        toast.success('Kategori baru berhasil ditambahkan', {
-          timeout: 3000,
-        })
-        this.responses.data.push(response.data.data)
+        const response = await axiosIns.post(`/item-categories`, this.currentData);
+        console.info(response);
+        if (response.status == 200) {
+          this.responses.data.push(response.data.data);
+          return {
+            status: true,
+            data: response.data,
+          };
+        } else {
+          return false;
+        }
       } catch (error) {
-        toast.error(error.message, {
-          timeout: 3000,
-        })
+        return false;
       } finally {
-        this.isStoreLoading = false
+        this.isStoreLoading = false;
       }
     },
   },
-})
+});

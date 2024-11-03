@@ -24,22 +24,18 @@ export const useSalesReturStore = defineStore("salesReturStore", {
   },
   actions: {
     async store() {
-      const salesStore = useSalesStore();
       this.isStoreLoading = true;
       try {
         const returResponse = await axiosIns.post(`/sales-retur`, this.data);
-        toast.success("Retur berhasil di proses", {
-          timeout: 3000,
-        });
         this.isTransactionSuccess = true;
-        salesStore.$patch((state) => {
-          state.singleResponses.retur = 1;
-          state.singleResponses.total_retur = returResponse.data.data;
-        });
+        return {
+          status: true,
+          data: returResponse.data.data,
+        };
       } catch (error) {
-        toast.error(error.message, {
-          timeout: 3000,
-        });
+        return {
+          status: false,
+        };
       } finally {
         this.isStoreLoading = false;
       }

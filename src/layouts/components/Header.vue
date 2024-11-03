@@ -19,7 +19,7 @@
             <Logo size="w-8 h-8" class="mr-2" />
 
             <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">{{
-              authStore.userData?.branch?.name ?? ""
+              authStore.user?.branch?.name ?? ""
             }}</span>
           </a>
         </div>
@@ -56,8 +56,8 @@ import Logo from "@/components/Logo.vue";
 import { MoonIcon, SunIcon, Bars3BottomLeftIcon } from "@heroicons/vue/24/solid";
 import { useLayoutStore } from "@/stores/layout";
 import { Bars3Icon } from "@heroicons/vue/24/outline";
+
 // import { useVersionStore } from '@/stores/version'
-const toast = useToast();
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -81,31 +81,6 @@ watch(isDark, (newX) => {
 watch(openSideBar, (newX) => {
   localStorage.setItem("openSideBar", JSON.stringify(newX));
 });
-
-async function logout() {
-  toast.info("Logging out in progress", {
-    id: "logout",
-    position: "top-right",
-    timeout: false,
-    closeOnClick: false,
-    pauseOnFocusLoss: false,
-    pauseOnHover: false,
-    draggable: false,
-    draggablePercent: 0.6,
-    showCloseButtonOnHover: false,
-    hideProgressBar: true,
-    closeButton: "button",
-    icon: true,
-    rtl: false,
-  });
-  setTimeout(async () => {
-    const success = await authStore.logout();
-    if (success) {
-      toast.dismiss("logout");
-      router.push({ name: "login" });
-    }
-  }, 5000);
-}
 
 // onBeforeMount(() => {
 //   versionStore.get() // <div>

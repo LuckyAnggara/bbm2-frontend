@@ -292,7 +292,7 @@
 </template>
 
 <script setup>
-import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref } from "vue";
+import { computed, defineAsyncComponent, inject, nextTick, onMounted, onUpdated, ref, watch } from "vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
 import HeadlessMenu from "@/components/menu/HeadlessMenu.vue";
@@ -430,7 +430,22 @@ const uuid = computed(() => {
   return route.params.uuid ?? null;
 });
 
+watch(
+  () => uuid.value,
+  async (newValue, oldValue) => {
+    await customerStore.showData(newValue);
+    isEdit.value = false;
+  },
+  { deep: true }
+);
+
 onMounted(async () => {
+  if (customerStore.singleResponses == null) {
+    await customerStore.showData(uuid.value);
+  }
+});
+
+onUpdated(async () => {
   if (customerStore.singleResponses == null) {
     await customerStore.showData(uuid.value);
   }

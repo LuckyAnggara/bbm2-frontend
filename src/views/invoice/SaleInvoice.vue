@@ -232,8 +232,8 @@ const route = useRoute();
 
 const isOpen = ref(false);
 
-const id = computed(() => {
-  return route.params.id ?? null;
+const uuid = computed(() => {
+  return route.params.uuid ?? null;
 });
 
 function paymentCreditView() {
@@ -244,6 +244,6 @@ function paymentCreditView() {
 }
 
 onMounted(() => {
-  salesStore.showData(id.value);
+  salesStore.showData(uuid.value);
 });
 </script>

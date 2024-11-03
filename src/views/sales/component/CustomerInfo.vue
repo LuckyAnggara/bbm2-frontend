@@ -37,7 +37,7 @@
           :use-loader="true"
           :data="customerStore.items"
           v-model="customerStore.searchName"
-          placeholder="Cari customer existing .."
+          placeholder="Find existing customer.."
           @chosen="addData"
         ></Select2>
       </div>
@@ -45,7 +45,7 @@
         <div class="bg-white shadow-md dark:bg-gray-800 rounded-lg px-6 py-6">
           <div class="flex flex-col space-y-4">
             <div>
-              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name*</label>
               <input
                 required
                 ref="namaLengkap"
@@ -60,18 +60,17 @@
                 <span v-if="salesStore.currentData.customerData.isCustomer" class="text-blue-400 py-2"
                   >Pelanggan Tetap</span
                 >
-                <span v-else class="text-green-400 py-2">Pelanggan Baru</span>
+                <span v-else class="text-green-400 py-2">New Customer</span>
               </div>
             </div>
             <div>
               <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
               <select
-                :disabled="!isEdit"
                 v-model="salesStore.currentData.customerData.type"
                 :class="[formDisabled ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-900']"
                 class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               >
-                <option value="" disabled selected>Choose Customer Type</option>
+                <option value="0" disabled selected>Choose Customer Type</option>
                 <option value="personal">Personal</option>
                 <option value="company">Company</option>
               </select>
@@ -121,10 +120,15 @@
                 >Simpan pelanggan
               </label>
             </div>
-
-            <small class="text-red-500 font-medium text-start" v-if="salesStore.currentData.customerData.saveCustomer"
-              >Mohon lengkapi data pelanggan setelah transaksi selesai</small
+            <div
+              v-if="salesStore.currentData.customerData.saveCustomer"
+              class="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800"
+              role="alert"
             >
+              <ExclamationTriangleIcon class="flex-shrink-0 inline w-4 h-4 me-3" />
+              <span class="sr-only">Info</span>
+              <div><span class="font-medium">Info alert!</span> Complete customer data after this transaction.</div>
+            </div>
           </div>
           <div class="flex items-center space-x-4 justify-between mt-8">
             <div class="flex space-x-4">
@@ -182,14 +186,20 @@
 
 <script setup>
 import Select2 from "@/components/Select2.vue";
-import { PaperAirplaneIcon, TrashIcon, PencilSquareIcon, XMarkIcon } from "@heroicons/vue/24/outline";
+import {
+  PaperAirplaneIcon,
+  TrashIcon,
+  PencilSquareIcon,
+  XMarkIcon,
+  ExclamationTriangleIcon,
+} from "@heroicons/vue/24/outline";
 import { nextTick, ref, computed, watch, onUnmounted, onMounted } from "vue";
 import { useCustomerStore } from "@/stores/customer";
 import { useSalesStore } from "@/stores/sales";
 import { useAuthStore } from "@/stores/auth";
-import { useToast } from "vue-toastification";
 
 import Searchbar from "@/components/input/Searchbar.vue";
+import { toast } from "vue3-toastify";
 import CircleLoading from "@/components/loading/CircleLoading.vue";
 import { useDebounceFn } from "@vueuse/core";
 
@@ -197,7 +207,7 @@ const emit = defineEmits(["next"]);
 
 const namaLengkap = ref(null);
 const submit = ref(null);
-const toast = useToast();
+
 const customerStore = useCustomerStore();
 const salesStore = useSalesStore();
 const authStore = useAuthStore();
@@ -213,9 +223,9 @@ function nextStep() {
   if (salesStore.currentData.customerData.withoutCustomer) {
     emit("next");
   } else if (!canNext.value) {
-    toast.error("Lengkapi data customer", {
-      timeout: 1000,
-      position: "top-center",
+    toast.error("Fill customer data !!", {
+      position: toast.POSITION.BOTTOM_CENTER,
+      autoClose: 1000,
     });
   } else {
     emit("next");
@@ -234,22 +244,7 @@ function clearData() {
     salesStore.currentData.customerData.isCustomer = false;
     isEdit.value = false;
     customerStore.searchName = "";
-    salesStore.currentData.customerData = {
-      id: 1,
-      name: "",
-      address: "",
-      phone_number: "",
-      saveCustomer: false,
-      user: {
-        id: authStore.userData.id,
-        branchId: authStore.userData.branch_id,
-      },
-    };
-
-    toast.info("Data pelanggan di hapus", {
-      timeout: 2000,
-      position: "bottom-center",
-    });
+    salesStore.resetFormCustomerData();
   }
 }
 
@@ -278,11 +273,6 @@ function addData(item) {
   });
 
   salesStore.currentData.customerData.isCustomer = true;
-
-  toast.success(item.name + " menjadi pelanggan transaksi ini", {
-    timeout: 2000,
-    position: "bottom-center",
-  });
 }
 
 const canNext = computed(() => {
@@ -324,9 +314,9 @@ watch(
   () => salesStore.currentData.customerData.saveCustomer,
   (newValue, oldValue) => {
     if (newValue == true) {
-      toast.info("Data pelanggan akan di simpan!!", {
-        timeout: 2000,
-        position: "bottom-center",
+      toast.info("Customer data will be save !!", {
+        position: toast.POSITION.BOTTOM_CENTER,
+        autoClose: 1000,
       });
     }
   },
