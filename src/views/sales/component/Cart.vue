@@ -1,27 +1,5 @@
 <template>
   <section class="w-full flex flex-col relative justify-between">
-    <div class="flex items-center justify-between w-full mb-4">
-      <button
-        @click="emit('previous')"
-        type="button"
-        class="text-red-600 inline-flex items-center hover:text-white border hover:scale-105 ease-in-out duration-300 border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
-      >
-        <ArrowUturnLeftIcon class="h-5 w-5 mr-2" />
-
-        Kembali
-      </button>
-
-      <button
-        v-if="canSubmit"
-        @click="emit('next')"
-        type="button"
-        class="text-blue-600 inline-flex items-center hover:text-white border hover:scale-105 ease-in-out duration-300 border-blue-600 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-900"
-      >
-        Lanjut
-        <PaperAirplaneIcon class="h-5 w-5 ml-2" />
-      </button>
-    </div>
-
     <div class="flex flex-col space-y-6">
       <div class="relative bg-white shadow-md dark:bg-gray-800 rounded-lg h-fit w-1/2">
         <Select2
@@ -119,13 +97,20 @@
                     <span class="text-xs">{{ IDRCurrency.format(calculateTax(item)) }}</span>
                   </template>
                   <template v-else>
-                    <div class="flex flex-row space-x-2 items-center">
+                    <div
+                      :title="
+                        !item.can_tax
+                          ? 'Product tidak di setting untuk pajak, ubah setting pajak di product detail'
+                          : ''
+                      "
+                      class="flex flex-row space-x-2 items-center"
+                    >
                       <input
                         v-model="item.tax_status"
                         :disabled="!item.can_tax"
                         type="checkbox"
                         value=""
-                        :class="item.can_tax ? '' : 'invisible'"
+                        :class="item.can_tax ? '' : ''"
                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
                       />
                       <span class="text-xs">{{ IDRCurrency.format(calculateTax(item)) }}</span>

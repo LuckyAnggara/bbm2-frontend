@@ -2,18 +2,6 @@
   <section class="flex w-full">
     <div class="lg:w-3/6 sm:2/6 w-full mx-auto">
       <div class="flex flex-col space-y-5 w-full">
-        <div class="flex items-center justify-between w-full">
-          <button
-            @click="emit('previous')"
-            type="button"
-            class="inline-flex items-center hover:text-white border hover:scale-105 ease-in-out duration-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900 text-red-600 border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300"
-          >
-            <ArrowUturnLeftIcon class="h-5 w-5 mr-2" />
-
-            Kembali
-          </button>
-        </div>
-
         <div class="relative h-fit bg-white shadow-md dark:bg-gray-800 md:rounded-lg py-5 px-2">
           <div class="flex flex-col space-y-2 px-6">
             <div class="">

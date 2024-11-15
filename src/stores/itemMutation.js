@@ -13,6 +13,10 @@ export const useItemMutationStore = defineStore("itemMutataionStore", {
       currentData: {
         name: null,
       },
+      filter: {
+        searchName: null,
+        currentLimit: 10,
+      },
     };
   },
   getters: {
@@ -37,6 +41,12 @@ export const useItemMutationStore = defineStore("itemMutataionStore", {
     total(state) {
       return state.responses?.total;
     },
+    searchQuery(state) {
+      if (state.filter.searchName == "" || state.filter.searchName == null) {
+        return "";
+      }
+      return "&name=" + state.filter.searchName;
+    },
   },
   actions: {
     async getData({ sku, currentLimit = 10 }) {
@@ -44,6 +54,16 @@ export const useItemMutationStore = defineStore("itemMutataionStore", {
       this.isLoading = true;
       try {
         const response = await axiosIns.get(`/item-mutation?limit=${this.currentLimit}&sku=${sku}`);
+        this.responses = response.data.data;
+      } catch (error) {
+        alert(error);
+      }
+      this.isLoading = false;
+    },
+    async getDataItemwithStock(page = "") {
+      this.isLoading = true;
+      try {
+        const response = await axiosIns.get(`/item-stock?limit=${this.filter.currentLimit}${this.searchQuery}${page}`);
         this.responses = response.data.data;
       } catch (error) {
         alert(error);

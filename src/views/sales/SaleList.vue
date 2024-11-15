@@ -269,21 +269,6 @@
                             Invoice
                           </button>
                         </MenuItem>
-
-                        <!-- <MenuItem v-slot="{ active }">
-                          <button
-                            @click="editData(item.id)"
-                            :class="[
-                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
-                              'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                            ]"
-                          >
-                            <PencilSquareIcon class="w-5 h-5 mr-3" />
-
-                            Edit
-                          </button>
-                        </MenuItem> -->
-
                         <MenuItem v-slot="{ active }">
                           <button
                             @click="deleteData(item.id)"
@@ -339,9 +324,11 @@
     >
       <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
         Showing
-        <span class="font-semibold text-gray-900 dark:text-white">{{ salesStore.from }} - {{ salesStore.to }}</span>
+        <span class="font-semibold text-gray-900 dark:text-white"
+          >{{ salesStore.from }} - {{ salesStore.items.length }}</span
+        >
         of
-        <span class="font-semibold text-gray-900 dark:text-white">{{ salesStore.totalResp }}</span>
+        <span class="font-semibold text-gray-900 dark:text-white">{{ salesStore.items.length }}</span>
       </span>
       <ul class="inline-flex items-stretch -space-x-px">
         <li>
@@ -512,9 +499,9 @@ async function destroyData() {
     isLoading: true,
   });
 
-  const success = await salesStore.destroyData(deleteId.value);
+  const result = await salesStore.destroyData(deleteId.value);
 
-  if (success) {
+  if (result.status) {
     toast.update(id, {
       position: toast.POSITION.BOTTOM_CENTER,
       type: "success",
@@ -527,7 +514,7 @@ async function destroyData() {
     toast.done(id);
   } else {
     toast.update(id, {
-      render: "There something wrong",
+      render: result.message,
       position: toast.POSITION.BOTTOM_CENTER,
       type: "error",
       autoClose: 1000,

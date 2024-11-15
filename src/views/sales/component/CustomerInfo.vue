@@ -1,15 +1,5 @@
 <template>
   <section class="w-full flex flex-col relative justify-between space-y-4">
-    <div class="flex items-center space-x-4 justify-end">
-      <button
-        @click="nextStep"
-        type="submit"
-        class="text-blue-600 inline-flex items-center hover:text-white border hover:scale-105 ease-in-out duration-300 border-blue-600 hover:bg-blue-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600"
-      >
-        Lanjut
-        <PaperAirplaneIcon class="h-5 w-5 ml-2" />
-      </button>
-    </div>
     <div class="bg-white shadow-md dark:bg-gray-800 rounded-lg px-6 py-6">
       <div class="flex items-center">
         <input
@@ -43,6 +33,22 @@
       </div>
       <form class="w-full flex flex-col space-y-4">
         <div class="bg-white shadow-md dark:bg-gray-800 rounded-lg px-6 py-6">
+          <div v-if="canSubmit == true || isEdit == true">
+            <div
+              v-if="salesStore.currentData.customerData.isCustomer"
+              class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-blue-800 dark:text-blue-400"
+              role="alert"
+            >
+              <span class="font-medium">Pelanggan tetap!</span>.
+            </div>
+            <div
+              v-else
+              class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+              role="alert"
+            >
+              <span class="font-medium">Pelanggan baru</span>.
+            </div>
+          </div>
           <div class="flex flex-col space-y-4">
             <div>
               <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name*</label>
@@ -56,12 +62,6 @@
                 class="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 placeholder="Customer Name"
               />
-              <div v-if="canSubmit == true || isEdit == true">
-                <span v-if="salesStore.currentData.customerData.isCustomer" class="text-blue-400 py-2"
-                  >Pelanggan Tetap</span
-                >
-                <span v-else class="text-green-400 py-2">New Customer</span>
-              </div>
             </div>
             <div>
               <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>

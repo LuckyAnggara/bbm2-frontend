@@ -3,11 +3,11 @@
   <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
     <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
       <div class="w-full md:w-1/2 flex space-x-3">
-        <div class="flex items-center">
+        <div class="flex items-center w-fit">
           <label for="years" class="block text-sm font-medium text-gray-900 dark:text-white mr-2">Show</label>
           <select
             v-model="itemStore.currentLimit"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block sm:w-16 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-16"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block sm:w-32 px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
             <option :selected="itemStore.currentLimit == length ? true : false" v-for="length in lengths" :key="length">
               {{ length }}
@@ -47,7 +47,7 @@
       >
         <button
           type="button"
-          class="flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
         >
           <DocumentTextIcon class="mr-1 w-4 h-4" />
           Report
@@ -93,11 +93,11 @@
       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-fixed">
         <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-center">
           <tr>
-            <th scope="col" class="px-4 py-1 w-32 border border-slate-400 dark:border-slate-600" rowspan="2">Nama</th>
+            <th scope="col" class="px-4 py-1 w-36 border border-slate-400 dark:border-slate-600" rowspan="2">Nama</th>
             <th scope="col" class="px-4 py-1 w-6 border border-slate-400 dark:border-slate-600" rowspan="2">Satuan</th>
-            <th scope="col" class="px-4 py-1 w-24 border border-slate-400 dark:border-slate-600" colspan="4">Stok</th>
+            <th scope="col" class="px-4 py-1 w-40 border border-slate-400 dark:border-slate-600" colspan="4">Stok</th>
             <!-- <th scope="col" class="px-4 py-1 border border-slate-400 dark:border-slate-600" colspan="4">Saldo</th> -->
-            <th scope="col" class="px-4 py-1 w-6 border border-slate-400 dark:border-slate-600" rowspan="2">Actions</th>
+            <th scope="col" class="px-4 py-1 w-0.5 border border-slate-400 dark:border-slate-600" rowspan="2"></th>
           </tr>
           <tr>
             <th scope="col" class="px-4 py-1 border border-slate-400 dark:border-slate-600">Awal</th>
@@ -107,18 +107,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-if="itemStore.isLoading">
+          <tr v-if="itemMutationStore.isLoading">
             <td colspan="7" class="text-center py-6">
               <CircleLoading>Prosesing ... </CircleLoading>
             </td>
           </tr>
-          <tr v-else-if="!itemStore.isLoading && itemStore.items.length < 1">
+          <tr v-else-if="!itemMutationStore.isLoading && itemMutationStore.items.length < 1">
             <td colspan="7" class="text-center py-6">No Data</td>
           </tr>
           <tr
             v-else
-            v-for="(item, index) in itemStore.items"
-            :key="item.id"
+            v-for="(item, index) in itemMutationStore.items"
+            :key="index"
             :class="
               (index + 1) % 2 !== 0
                 ? 'bg-white dark:bg-gray-900 dark:border-gray-700'
@@ -129,17 +129,56 @@
             <th scope="row" class="px-4 py-1 font-medium text-gray-900 dark:text-white">
               {{ item.name.toUpperCase() }}
             </th>
-            <td class="px-4 py-1">{{ item.unit.name.toUpperCase() }}</td>
+            <td class="px-4 py-1">{{ item.unit.name?.toUpperCase() }}</td>
             <td class="px-4 py-1">{{ item.beg_balance.stock }}</td>
             <td class="px-4 py-1">{{ item.in_stock }}</td>
             <td class="px-4 py-1">{{ item.out_stock }}</td>
             <td class="px-4 py-1">{{ item.ending_stock }}</td>
-            <td class="px-4 py-1">
-              <a
-                @click="invoice(id)"
-                class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:dark:text-white hover:text-red-500 hover:-translate-y-2 duration-300 ease-in-out"
-                ><MagnifyingGlassIcon class="h-7 w-7"
-              /></a>
+            <td class="px-4 py-1 text-center">
+              <div>
+                <Menu as="div" class="relative inline-block text-left">
+                  <div>
+                    <MenuButton
+                      class="hover:scale-125 ease-in-out duration-300 flex w-full rounded-md font-medium text-black dark:text-white"
+                    >
+                      <EllipsisVerticalIcon class="h-5 w-5 text-black dark:text-white" aria-hidden="true" />
+                    </MenuButton>
+                  </div>
+
+                  <transition
+                    enter-active-class="transition duration-100 ease-out"
+                    enter-from-class="transform scale-95 opacity-0"
+                    enter-to-class="transform scale-100 opacity-100"
+                    leave-active-class="transition duration-75 ease-in"
+                    leave-from-class="transform scale-100 opacity-100"
+                    leave-to-class="transform scale-95 opacity-0"
+                  >
+                    <MenuItems
+                      class="z-50 py-1 absolute right-0 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white dark:bg-gray-800 dark:text-gray-100 shadow-lg ring-1 ring-black dark:ring-gray-700 ring-opacity-5 focus:outline-none"
+                    >
+                      <div class="px-2 py-1">
+                        <MenuItem
+                          v-for="(menu, childIndex) in itemMenu"
+                          v-slot="{ active }"
+                          :key="childIndex"
+                          :disabled="itemStore.isDestroyLoading"
+                        >
+                          <button
+                            @click="menu.function(item)"
+                            :class="[
+                              active ? 'bg-blue-500 text-white' : 'text-gray-900 dark:text-white',
+                              'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                            ]"
+                          >
+                            <component :is="menu.icon" class="w-5 h-5 mr-3" />
+                            {{ menu.label }}
+                          </button>
+                        </MenuItem>
+                      </div>
+                    </MenuItems>
+                  </transition>
+                </Menu>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -189,17 +228,36 @@
 </template>
 
 <script setup>
-import { DocumentTextIcon, PencilSquareIcon, TrashIcon, MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import {
+  DocumentTextIcon,
+  PencilSquareIcon,
+  TrashIcon,
+  MagnifyingGlassIcon,
+  EllipsisVerticalIcon,
+} from "@heroicons/vue/24/outline";
 import { onMounted, computed, onUnmounted, ref, nextTick, inject } from "vue";
 import TableComplex from "@/components/table/TableComplex.vue";
 import CircleLoading from "@/components/loading/CircleLoading.vue";
 import { IDRCurrency } from "@/utilities/formatter";
 import { useItemStore } from "@/stores/items";
 import { initDropdowns } from "flowbite";
+import { useItemMutationStore } from "@/stores/itemMutation";
 
 const swal = inject("$swal");
 const itemStore = useItemStore();
+const itemMutationStore = useItemMutationStore();
 const lengths = ref([5, 10, 20, 30, 40, 50]);
+
+const itemMenu = computed(() => {
+  return [
+    {
+      function: () => {},
+      label: "Detail",
+      icon: DocumentTextIcon,
+    },
+  ];
+});
 
 itemStore.$subscribe((mutation, state) => {
   if (mutation.events.key == "currentLimit") {
@@ -216,8 +274,9 @@ const nextPage = computed(() => {
 });
 
 onMounted(() => {
-  itemStore.getData();
-  initDropdowns();
+  // itemStore.getData();
+  console.info("aa");
+  itemMutationStore.getDataItemwithStock();
 });
 
 onUnmounted(() => {

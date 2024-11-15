@@ -17,7 +17,7 @@ export const sales = [
     },
   },
   {
-    path: "/sale/new",
+    path: "/sales/new",
     name: "new-sale",
     component: () => import("@/views/sales/SaleAddWizard.vue"),
     meta: {
@@ -38,7 +38,7 @@ export const sales = [
     },
   },
   {
-    path: "/sale/detail/:uuid",
+    path: "/sales/detail/:uuid",
     name: "detail-sale",
     component: () => import("@/views/sales/SaleDetail.vue"),
     meta: {
@@ -59,7 +59,7 @@ export const sales = [
     },
   },
   {
-    path: "/sale/:id/edit",
+    path: "/sales/:id/edit",
     name: "edit-sale",
     component: () => import("@/views/sales/WizardEditSale.vue"),
     meta: {
@@ -80,7 +80,7 @@ export const sales = [
     },
   },
   {
-    path: "/sale/detail/:uuid/invoice",
+    path: "/sales/detail/:uuid/invoice",
     name: "invoice",
     component: () => import("@/views/invoice/SaleInvoice.vue"),
     meta: {
@@ -91,7 +91,7 @@ export const sales = [
         },
         {
           name: "uuid",
-          to: "/sale/detail",
+          to: "/sales/detail",
         },
         {
           name: "Invoice",
@@ -105,7 +105,7 @@ export const sales = [
     },
   },
   {
-    path: "/sale/detail/:id/payment-credit",
+    path: "/sales/detail/:id/payment-credit",
     name: "payment-credit",
     component: () => import("@/views/sales/PaymentCredit.vue"),
     meta: {

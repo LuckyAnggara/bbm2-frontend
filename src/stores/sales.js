@@ -392,10 +392,28 @@ export const useSalesStore = defineStore("salesStore", {
       this.isDestroyLoading = true;
       try {
         const response = await axiosIns.delete(`/sales/${id}`);
-        this.responses.data.splice(index, 1);
-        return true;
+
+        if (response.status == 200) {
+          const index = this.items.findIndex((x) => x.id == id);
+          this.responses.data.splice(index, 1);
+
+          return {
+            status: true,
+            data: response.data.data,
+          };
+        } else {
+          return {
+            status: false,
+            data: null,
+            message: "Ops, Something wrong.",
+          };
+        }
       } catch (error) {
-        return false;
+        return {
+          status: false,
+          data: null,
+          message: error,
+        };
       } finally {
         this.isDestroyLoading = false;
       }

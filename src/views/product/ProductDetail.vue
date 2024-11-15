@@ -417,7 +417,7 @@
                           <td class="px-4 py-2">
                             <router-link :to="item.link" v-if="item.link == null || item.link == '' ? false : true">
                               <span class="text-blue-700 dark:text-blue-400">
-                                {{ item.notes }}
+                                {{ item.link }}
                               </span></router-link
                             >
                             <span v-else>

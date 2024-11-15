@@ -2,85 +2,63 @@
   <div class="pr-24">
     <ol class="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
       <li
-        :class="[
-          step == 1
-            ? 'text-blue-600 dark:text-blue-500'
-            : salesStore.currentData.customerData.name
-            ? 'text-green-600 dark:text-green-500 cursor-pointer'
-            : '',
-        ]"
+        v-for="(item, index) in steps"
+        :key="index"
+        :class="[index == step ? 'text-blue-600 dark:text-blue-500' : 'text-gray-600 dark:text-gray-500']"
         class="flex md:w-full items-center sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700"
       >
         <span
           class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500"
         >
-          <CheckCircleIcon class="w-4 h-4 mr-2 sm:w-5 sm:h-5" v-if="step == 1" />
-          <span v-else class="mr-2">1.</span>
-          Customer <span class="hidden sm:inline-flex sm:ml-2">Info</span>
+          <span class="mr-2">{{ index + 1 }}.</span>
+          {{ item }}
         </span>
-      </li>
-      <li
-        :class="[
-          step == 2
-            ? 'text-blue-600 dark:text-blue-500'
-            : salesStore.currentData.currentCart.length > 0
-            ? 'text-green-600 dark:text-green-500 cursor-pointer'
-            : '',
-        ]"
-        class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700"
-      >
-        <span
-          class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500"
-        >
-          <CheckCircleIcon class="w-4 h-4 mr-2 sm:w-5 sm:h-5" v-if="step == 2" />
-          <span v-else class="mr-2">2.</span>
-          Cart <span class="hidden sm:inline-flex sm:ml-2"></span>
-        </span>
-      </li>
-      <li
-        :class="[
-          step == 3
-            ? 'text-blue-600 dark:text-blue-500'
-            : salesStore.currentData.currentCart.length > 0
-            ? 'text-green-600 dark:text-green-500 cursor-pointer'
-            : '',
-        ]"
-        class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700"
-      >
-        <span
-          class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500"
-        >
-          <CheckCircleIcon class="w-4 h-4 mr-2 sm:w-5 sm:h-5" v-if="step == 3" />
-          <span v-else class="mr-2">3.</span>
-          Confirmation
-        </span>
-      </li>
-      <li :class="[step == 4 ? 'text-blue-600 dark:text-blue-500' : 'cursor-pointer']" class="flex items-center">
-        <CheckCircleIcon class="w-4 h-4 mr-2 sm:w-5 sm:h-5" v-if="step == 4" />
-        <span v-else class="mr-2">4.</span>
-        Payment
       </li>
     </ol>
+  </div>
+
+  <div class="flex flex-row space-x-1 mt-10">
+    <div>
+      <button
+        @click="previousPage()"
+        :disabled="step == 0"
+        :class="step == 0 ? 'cursor-not-allowed' : ''"
+        class="flex flex-row space-x-2 w-32 justify-between text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+      >
+        <ChevronLeftIcon class="h-5 w-5 mr-2" />
+        Previous
+      </button>
+    </div>
+    <div>
+      <button
+        @click="nextPage()"
+        :disabled="step == steps.length - 2"
+        :class="step == steps.length - 2 ? 'cursor-not-allowed' : ''"
+        class="flex flex-row space-x-2 w-32 justify-between text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+      >
+        Next <ChevronRightIcon class="h-5 w-5 ml-2" />
+      </button>
+    </div>
   </div>
   <Transition :name="transitionName" mode="out-in">
     <div class="mt-8" :key="step">
       <!-- Info Pelanggan -->
-      <CustomerInfo v-if="step == 1" @next="step++" />
+      <CustomerInfo v-if="step == 0" @next="step++" />
       <!-- Keranjang Belanja -->
-      <Cart v-else-if="step == 2" @next="step++" @previous="step--" />
+      <Cart v-else-if="step == 1" @next="step++" @previous="step--" />
       <!-- Konfirmasi -->
-      <Confirmation v-else-if="step == 3" @next="step++" @previous="step--" />
+      <Confirmation v-else-if="step == 2" @next="step++" @previous="step--" />
       <!-- Pembayaran -->
-      <Payment v-else-if="step == 4" @next="step++" @previous="step--" />
+      <Payment v-else-if="step == 3" @next="step++" @previous="step--" />
     </div>
   </Transition>
 </template>
 
 <script setup>
-import { CheckCircleIcon } from "@heroicons/vue/24/outline";
-import { defineAsyncComponent, onMounted, onUnmounted, ref, watch } from "vue";
+import { CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/24/outline";
+import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-
+import { toast } from "vue3-toastify";
 import { useSalesStore } from "@/stores/sales";
 
 const Cart = defineAsyncComponent(() => import("./component/Cart.vue"));
@@ -92,15 +70,68 @@ const salesStore = useSalesStore();
 
 const route = useRoute();
 
-const customer = ref(route.meta);
+const steps = ref(["Customer", "Cart", "Confirmation", "Payment"]);
+// Data validasi untuk setiap langkah
+const isCustomerValid = ref(false);
+const isCartValid = ref(false);
+const isConfirmationValid = ref(false);
 
 const emit = defineEmits(["next", "previous"]);
 
-const step = ref(1);
+const step = ref(0);
 const transitionName = ref("slide-right");
+
 watch(step, (val, old) => {
   transitionName.value = val > old ? "slide-left" : "slide-right";
 });
+
+// Validasi langkah berdasarkan `salesStore.currentData`
+const validateStep = computed(() => {
+  const currentData = salesStore.currentData;
+
+  switch (step.value) {
+    case 0: // Customer Step
+      if (!currentData.customerData.isCustomer && !currentData.customerData.withoutCustomer) {
+        // Validasi data tambahan di step 0
+        const { name, address, type } = currentData.customerData;
+        return (
+          name?.trim().length > 0 && // Nama harus diisi
+          address?.trim().length > 0 && // Alamat harus diisi
+          type !== null &&
+          type !== "" // Tipe tidak boleh kosong
+        );
+      }
+      // Jika isCustomer atau withoutCustomer true, validasi lolos
+      return true;
+    case 1: // Cart Step
+      return currentData.currentCart.length > 0; // Pastikan ada barang di keranjang
+    case 2: // Confirmation Step
+      return (
+        currentData.total.amount > 0 && currentData.transaction.bank.id // Pastikan ada total dan metode pembayaran
+      );
+    case 3: // Payment Step
+      return true; // Anggap langkah terakhir selalu valid
+    default:
+      return false;
+  }
+});
+
+// Fungsi untuk pindah ke langkah berikutnya jika validasi lolos
+function nextPage() {
+  if (validateStep.value) {
+    step.value++;
+  } else {
+    toast("Eits, belum bisa lanjut! Lengkapi dulu ya, biar makin mantap!", {
+      position: toast.POSITION.BOTTOM_CENTER,
+      type: "warning",
+    });
+  }
+}
+
+// Fungsi untuk kembali ke langkah sebelumnya
+function previousPage() {
+  step.value = Math.max(0, step.value - 1);
+}
 
 onUnmounted(() => {
   salesStore.$reset();
